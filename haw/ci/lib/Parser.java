@@ -6,7 +6,7 @@ public class Parser {
 		this.tokenStream = tokenStream;
 	}
 	
-	public String compile() {
+	public String build() {
 		
 		return "";
 	}
