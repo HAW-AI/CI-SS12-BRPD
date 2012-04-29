@@ -1,8 +1,8 @@
 package haw.ci.lexer;
 
-import static haw.ci.lexer.Tokens.*;
-import static haw.ci.lexer.Yytoken.*;
-import haw.ci.lexer.Yytoken;
+import static haw.ci.lib.Tokens.*;
+import static haw.ci.lib.Yytoken.*;
+import haw.ci.lib.Yytoken;
 import java.io.IOException;
 
 %%
@@ -14,8 +14,12 @@ import java.io.IOException;
 %column
 
 %{
-	public Yytoken nextToken() throws IOException {
-		return yylex();
+	public Yytoken nextToken() {
+		try {
+			return yylex();
+		} catch (IOException e) {
+			return null;
+		}
 	}
 %}
 
