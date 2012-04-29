@@ -3,13 +3,21 @@ package haw.ci.lexer;
 import static haw.ci.lexer.Tokens.*;
 import static haw.ci.lexer.Yytoken.*;
 import haw.ci.lexer.Yytoken;
+import java.io.IOException;
 
 %%
 %public
-%class Scanner
+%class Tokenizer
+%implements ITokenStream
 %char
 %line
 %column
+
+%{
+	public Yytoken nextToken() throws IOException {
+		return yylex();
+	}
+%}
 
 whitespace   = [ \n\t]
 letter       = [A-Za-z]*

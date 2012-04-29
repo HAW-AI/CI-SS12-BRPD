@@ -1,4 +1,4 @@
-package haw.ci.lexer;
+package haw.ci.lib;
 
 public class Yytoken {
 	private Tokens token;
