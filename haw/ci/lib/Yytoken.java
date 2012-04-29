@@ -2,6 +2,7 @@ package haw.ci.lib;
 
 public class Yytoken {
 	private Tokens token;
+	
 	private int line;
 	private int column;
 	private Object value;
@@ -27,5 +28,9 @@ public class Yytoken {
 	}
 	public static Yytoken token(Tokens token, int line, int column) {
 		return token(token, line, column, null);
+	}
+	
+	public Tokens getToken() {
+		return token;
 	}
 }
