@@ -1,0 +1,23 @@
+MODULE Vererbung2;
+
+TYPE
+
+   Objekt* = POINTER TO Objektbeschreibung;
+   Objektbeschreibung = RECORD x-: INTEGER; END;
+
+PROCEDURE (objekt: Objekt) SetzeX* (wert: INTEGER); 
+BEGIN
+   objekt.x := wert;
+END SetzeX; 
+
+VAR
+
+   objekt1: Objekt;
+   int: INTEGER;
+
+BEGIN
+   NEW (objekt1);
+   objekt1.SetzeX (1);
+   int := objekt1.x;
+
+END Vererbung2.
