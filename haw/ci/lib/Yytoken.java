@@ -33,4 +33,8 @@ public class Yytoken {
 	public Tokens getToken() {
 		return token;
 	}
+	
+	public int getLine() {
+		return line;
+	}
 }
