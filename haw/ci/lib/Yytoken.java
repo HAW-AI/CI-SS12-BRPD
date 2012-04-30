@@ -5,9 +5,9 @@ public class Yytoken {
 	
 	private int line;
 	private int column;
-	private Object value;
+	private String value;
 	
-	public Yytoken(Tokens token, int line, int column, Object value) {
+	public Yytoken(Tokens token, int line, int column, String value) {
 		this.token = token;
 		this.line = line;
 		this.column = column;
@@ -23,7 +23,7 @@ public class Yytoken {
 	 * @param token
 	 * @return
 	 */
-	public static Yytoken token(Tokens token, int line, int column, Object value) {
+	public static Yytoken token(Tokens token, int line, int column, String value) {
 		return new Yytoken(token, line, column, value);
 	}
 	public static Yytoken token(Tokens token, int line, int column) {
