@@ -239,11 +239,14 @@ public class Parser {
 		return node;
 	}
 //Expression = SimpleExpression [(Õ=Õ | Õ#Õ | Õ<Õ | Õ<=Õ | Õ>Õ | Õ>=Õ) SimpleExpression].
-	private void Expression() {
-		SimpleExpression();
+	private AbstractNode Expression() {
+		AbstractNode node;
+		node = SimpleExpression();
 		while (accept(EQUAL) || accept(LESS) || accept(LESS_EQUAL) || accept(MORE) || accept(MORE_EQUAL)) {
-			SimpleExpression();
+			node = new BinaryOperationNode(current.getToken(), node, SimpleExpression());
 		}
+
+		return node;
 	}
 //IndexExpression = integer | ConstIdent.
 	private void IndexExpression() {
