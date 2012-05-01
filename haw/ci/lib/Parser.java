@@ -187,7 +187,7 @@ public class Parser {
 		}
 	}
 //Factor = ident Selector | integer | string | Read | Õ(Õ Expression Õ)Õ.
-	private void Factor() {
+	private AbstractNode Factor() {
 		switch(current.getToken()) {
 		case IDENTIFER:
 			break;
@@ -215,10 +215,13 @@ public class Parser {
 	}
 //Term = Factor {(Õ*Õ | Õ/Õ) Factor}.
 	private AbstractNode Term() {
-		Factor();
+		AbstractNode node = Factor();
+
 		if (accept(MATH_MUL) || accept(MATH_DIV)) {
-			Factor();
+			node = new BinaryOperationNode(current.getToken(), node, Factor());
 		}
+
+		return node;
 	}
 //SimpleExpression = [Õ-Õ] Term {(Õ+Õ | Õ-Õ) Term}.
 	private AbstractNode SimpleExpression() {
