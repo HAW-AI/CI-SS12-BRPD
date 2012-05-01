@@ -214,19 +214,26 @@ public class Parser {
 		// TODO: implement
 	}
 //Term = Factor {(Õ*Õ | Õ/Õ) Factor}.
-	private void Term() {
+	private AbstractNode Term() {
 		Factor();
 		if (accept(MATH_MUL) || accept(MATH_DIV)) {
 			Factor();
 		}
 	}
 //SimpleExpression = [Õ-Õ] Term {(Õ+Õ | Õ-Õ) Term}.
-	private void SimpleExpression() {
-		accept(MATH_SUB);
-		Term();
+	private AbstractNode SimpleExpression() {
+		AbstractNode node;
+		if (accept(MATH_SUB)) {
+			node = new NegatedNode(Term());
+		} else {
+			node = Term();
+		}
+
 		if (accept(MATH_ADD) || accept(MATH_SUB)) {
 			Term();
 		}
+
+		return node;
 	}
 //Expression = SimpleExpression [(Õ=Õ | Õ#Õ | Õ<Õ | Õ<=Õ | Õ>Õ | Õ>=Õ) SimpleExpression].
 	private void Expression() {
