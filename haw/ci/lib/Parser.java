@@ -146,12 +146,18 @@ public class Parser {
 		accept(END);
 	}
 //WhileStatement = ÕWHILEÕ Expression ÕDOÕ StatementSequence ÕENDÕ.
-	private void WhileStatement() {
-		accept(WHILE);
-		Expression();
-		accept(DO);
-		StatementSequence();
-		accept(END);
+	private AbstractNode WhileStatement() {
+		AbstractNode node, expression, statementSequence;
+		if (accept(WHILE)) {
+			expression = Expression();
+			if (accept(DO)) {
+				statementSequence = StatementSequence();
+				if (accept(END)) {
+					node = new WhileStatementNode(expression, statementSequence);
+				}
+			}
+		}
+		return node;
 	}
 //RepeatStatement = ÕREPEATÕ StatementSequence ÕUNTILÕ Expression.
 	private void RepeatStatement() {
@@ -161,15 +167,18 @@ public class Parser {
 		Expression();
 	}
 //Statement = [Assignment | ProcedureCall | IfStatement | ÕPRINTÕ Expression | WhileStatement | RepeatStatement].
-	private void Statement() {
+	private AbstractNode Statement() {
 		// TODO: implement
 	}
 //StatementSequence = Statement {Õ;Õ Statement}.
-	private void StatementSequence() {
-		Statement();
+	private AbstractNode StatementSequence() {
+		AbstractNode node;
+		node = new StatementSequenceNode(Statement());
 		while (accept(SEMICOLON)) {
-			Statement();
+			node.addStatement(Statement());
 		}
+
+		return node;
 	}
 //Selector = {Õ.Õ ident | Õ[Õ Expression Õ]Õ}.
 	private void Selector() {
