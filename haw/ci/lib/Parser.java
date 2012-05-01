@@ -233,7 +233,7 @@ public class Parser {
 		}
 
 		if (accept(MATH_ADD) || accept(MATH_SUB)) {
-			Term();
+			node = new BinaryOperationNode(current.getToken(), node, Term());
 		}
 
 		return node;
