@@ -221,7 +221,7 @@ public class Parser {
 		}
 	}
 //SimpleExpression = [Õ-Õ] Term {(Õ+Õ | Õ-Õ) Term}.
-	private void SimplesExpression() {
+	private void SimpleExpression() {
 		accept(MATH_SUB);
 		Term();
 		if (accept(MATH_ADD) || accept(MATH_SUB)) {
@@ -230,9 +230,9 @@ public class Parser {
 	}
 //Expression = SimpleExpression [(Õ=Õ | Õ#Õ | Õ<Õ | Õ<=Õ | Õ>Õ | Õ>=Õ) SimpleExpression].
 	private void Expression() {
-		SimplesExpression();
+		SimpleExpression();
 		while (accept(EQUAL) || accept(LESS) || accept(LESS_EQUAL) || accept(MORE) || accept(MORE_EQUAL)) {
-			SimplesExpression();
+			SimpleExpression();
 		}
 	}
 //IndexExpression = integer | ConstIdent.
