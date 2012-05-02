@@ -187,19 +187,25 @@ public class Parser {
 		return new StatementSequenceNode(list);
 	}
 //Selector = {Õ.Õ ident | Õ[Õ Expression Õ]Õ}.
-	private void Selector() {
+	private SelectorNode Selector() {
+		SelectorNode node = null;
 		// TODO: while
 		switch(current.getToken()) {
 		case DOT:
 			next();
-			accept(IDENTIFER);
+			if (accept(IDENTIFER)) {
+				IdentNode ident = new IdentNode(current.getValue());
+				node = new SelectorNode(ident);
+			}
 			break;
 		case BRACE_SQUARE_OPEN:
+			// TODO
 			next();
 			Expression();
 			accept(BRACE_SQUARE_CLOSE);
 			break;
 		}
+		return node;
 	}
 //Factor = ident Selector | integer | string | Read | Õ(Õ Expression Õ)Õ.
 	private AbstractNode Factor() {
@@ -271,8 +277,12 @@ public class Parser {
 		ConstIdent();
 	}
 //ConstIdent = ident.
-	private void ConstIdent() {
-		accept(IDENTIFER);
+	private IdentNode ConstIdent() {
+		IdentNode node = null;
+		if (accept(IDENTIFER)) {
+			node = new IdentNode(current.getValue());
+		}
+		return node;
 	}
 
 	public String build() {
