@@ -203,10 +203,12 @@ public class Parser {
 	}
 //Factor = ident Selector | integer | string | Read | Õ(Õ Expression Õ)Õ.
 	private AbstractNode Factor() {
+		AbstractNode node = null;
 		switch(current.getToken()) {
 		case IDENTIFER:
 			break;
 		case INTEGER:
+			node = new IntegerNode(Integer.getInteger(current.getValue()));
 			break;
 		// TODO: String
 		case READ:

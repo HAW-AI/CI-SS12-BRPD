@@ -37,4 +37,8 @@ public class Yytoken {
 	public int getLine() {
 		return line;
 	}
+	
+	public String getValue() {
+		return value;
+	}
 }
