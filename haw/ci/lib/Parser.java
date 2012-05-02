@@ -150,7 +150,9 @@ public class Parser {
 	}
 //WhileStatement = ÕWHILEÕ Expression ÕDOÕ StatementSequence ÕENDÕ.
 	private AbstractNode WhileStatement() {
-		AbstractNode node, expression, statementSequence;
+		AbstractNode node, expression;
+		StatementSequenceNode statementSequence;
+		node = null;
 		if (accept(WHILE)) {
 			expression = Expression();
 			if (accept(DO)) {
@@ -216,6 +218,7 @@ public class Parser {
 			accept(BRACE_ROUND_CLOSE);
 			break;
 		}
+		return null;
 	}
 //Read = READ [Prompt].
 	private void Read() {
