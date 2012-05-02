@@ -12,11 +12,16 @@ public class Parser {
 		this.tokenStream = tokenStream;
 	}
 //IdentList = ident {Õ,Õ ident}.
-	private void IdentList() {
-		accept(IDENTIFER);
-		while (accept(COMMA)) {
-			accept(IDENTIFER);
+	private IdentListNode IdentList() {
+		IdentListNode node = null;
+		List<IdentNode> identList = null;
+		if (accept(IDENTIFER)) {
+			identList.add(ConstIdent());
 		}
+		while (accept(COMMA)) {
+			identList.add(ConstIdent());
+		}
+		return new IdentListNode(identList);
 	}
 //ArrayType = ÕARRAYÕ Õ[Õ IndexExpression Õ]Õ ÕOFÕ Type.
 	private void Arraytype() {
