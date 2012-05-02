@@ -126,10 +126,11 @@ public class Parser {
 		accept(DOT);
 	}
 //Assignment = ident Selector Õ:=Õ Expression.
-	private void Assignment() {
-		accept(IDENTIFER);
+	private AssignmentNode Assignment() {
+		SelectorNode selector = Selector();
 		accept(ASSIGN);
-		Expression();
+
+		return new AssignmentNode(selector, Expression());
 	}
 //ActualParameters = Expression {Õ,Õ Expression}.
 	private void ActualParameters() {
