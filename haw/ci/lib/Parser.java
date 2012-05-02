@@ -33,10 +33,13 @@ public class Parser {
 	}
 //FieldList = [IdentList Õ:Õ Type].
 	private void FieldList() {
-		if (accept(IDENTIFER)) {
-			accept(COLON);
-			Type();
+		IdentListNode identList = IdentList();
+
+		if (accept(COLON)) {
+			return new FieldListNode(identList, Type());
 		}
+		// TODO should be some error
+		return null;
 	}
 //RecordType = ÕRECORDÕ FieldList {Õ;Õ FieldList} ÕENDÕ.
 	private void RecordType() {
