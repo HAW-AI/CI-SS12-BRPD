@@ -1,24 +1,13 @@
 package haw.ci.lib;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 public class StatementSequenceNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
-	private final ArrayList<StatementNode> statements;
+	private final List<AbstractNode> statements;
 	
-	public StatementSequenceNode(StatementNode statement) {
-		this.statements = (ArrayList<StatementNode>) Arrays.asList(statement);
-	}
-
-	public void addStatement(StatementNode statement) {
-		if (statement != null) {
-			this.statements.add(statement);
-		}
-	}
-	
-	public ArrayList<StatementNode> getStatements() {
-		return new ArrayList<StatementNode>(this.statements);
+	public StatementSequenceNode(List<AbstractNode> list) {
+		this.statements = list;
 	}
 	
 	public int hashCode() {

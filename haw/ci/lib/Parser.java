@@ -2,6 +2,9 @@ package haw.ci.lib;
 
 import static haw.ci.lib.Tokens.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Parser {
 	private ITokenStream tokenStream;
 	private Yytoken current;
@@ -169,16 +172,17 @@ public class Parser {
 //Statement = [Assignment | ProcedureCall | IfStatement | ÕPRINTÕ Expression | WhileStatement | RepeatStatement].
 	private AbstractNode Statement() {
 		// TODO: implement
+		return null;
 	}
 //StatementSequence = Statement {Õ;Õ Statement}.
-	private AbstractNode StatementSequence() {
-		AbstractNode node;
-		node = new StatementSequenceNode(Statement());
+	private StatementSequenceNode StatementSequence() {
+		List<AbstractNode> list = Arrays.asList(Statement());
+
 		while (accept(SEMICOLON)) {
-			node.addStatement(Statement());
+			list.add(Statement());
 		}
 
-		return node;
+		return new StatementSequenceNode(list);
 	}
 //Selector = {Õ.Õ ident | Õ[Õ Expression Õ]Õ}.
 	private void Selector() {
