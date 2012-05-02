@@ -32,7 +32,7 @@ public class Parser {
 		Type();
 	}
 //FieldList = [IdentList Õ:Õ Type].
-	private void FieldList() {
+	private FieldListNode FieldList() {
 		IdentListNode identList = IdentList();
 
 		if (accept(COLON)) {
@@ -42,13 +42,18 @@ public class Parser {
 		return null;
 	}
 //RecordType = ÕRECORDÕ FieldList {Õ;Õ FieldList} ÕENDÕ.
-	private void RecordType() {
+	private RecordTypeNode RecordType() {
+		// TODO throw some error if not record
 		accept(RECORD);
-		FieldList();
+		List<FieldListNode> fieldLists = Arrays.asList(FieldList());
+
 		while(accept(SEMICOLON)) {
-			FieldList();
+			fieldLists.add(FieldList());
 		}
+		// TODO throw some error if not end
 		accept(END);
+
+		return new RecordTypeNode(fieldLists);
 	}
 //Type = ident | ArrayType | RecordType.
 	private void Type() {
