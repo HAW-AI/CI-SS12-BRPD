@@ -286,8 +286,20 @@ public class Parser {
 		return node;
 	}
 //IndexExpression = integer | ConstIdent.
-	private void IndexExpression() {
-		ConstIdent();
+	private AbstractNode IndexExpression() {
+		next();
+		AbstractNode node = null;
+		// Have to do it this way because calling Integer() or ConstIdent() will move to next Token
+		switch (current.getToken()) {
+		case INTEGER:
+			node = new IntegerNode(Integer.getInteger(current.getValue()));
+			break;
+		case IDENTIFER:
+			node = new IdentNode(current.getValue());
+		default:
+			break;
+		}
+		return node;
 	}
 //ConstIdent = ident.
 	private IdentNode ConstIdent() {
