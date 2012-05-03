@@ -1,11 +1,13 @@
-package haw.ci.lib;
+package haw.ci.lib.nodes;
 
-public class BinaryOperationNode extends AbstractNode {
+import haw.ci.lib.Tokens;
+
+public class ExpressionNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	private final Tokens binOpToken;
 	private final AbstractNode left, right;
 	
-	public BinaryOperationNode(Tokens binOpToken, AbstractNode left, AbstractNode right) {
+	public ExpressionNode(Tokens binOpToken, AbstractNode left, AbstractNode right) {
 		this.binOpToken = binOpToken;
 		this.left = left;
 		this.right = right;
@@ -23,8 +25,8 @@ public class BinaryOperationNode extends AbstractNode {
 	public boolean equals(Object object) {
 		if (this == object) { return true; }
 		if (object == null) { return false; }
-		if (object instanceof BinaryOperationNode) {
-			BinaryOperationNode otherNode = (BinaryOperationNode) object;
+		if (object instanceof ExpressionNode) {
+			ExpressionNode otherNode = (ExpressionNode) object;
 			if (binOpToken == null && otherNode.binOpToken != null) {
 				return false;
 			} else if (!binOpToken.equals(otherNode.binOpToken)) {

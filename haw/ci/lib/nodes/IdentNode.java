@@ -1,4 +1,4 @@
-package haw.ci.lib;
+package haw.ci.lib.nodes;
 
 public class IdentNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
@@ -30,6 +30,10 @@ public class IdentNode extends AbstractNode {
 		} else {
 			return false;
 		}
+	}
+	
+	public String toString() {
+		return this.value;
 	}
 
 }

@@ -1,11 +1,13 @@
-package haw.ci.lib;
+package haw.ci.lib.nodes;
 
 public class AssignmentNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	private final SelectorNode selector;
 	private final AbstractNode expression;
+	private IdentNode ident;
 
-	public AssignmentNode(SelectorNode selector, AbstractNode expression) {
+	public AssignmentNode(IdentNode ident, SelectorNode selector, AbstractNode expression) {
+		this.ident = ident;
 		this.selector = selector;
 		this.expression = expression;
 	}
@@ -13,6 +15,7 @@ public class AssignmentNode extends AbstractNode {
 	public int hashCode() {
 		final int prime = 43;
         int result = 1;
+        result = prime * result + ((ident == null) ? 0 : ident.hashCode());
         result = prime * result + ((selector == null) ? 0 : selector.hashCode());
         result = prime * result + ((expression == null) ? 0 : expression.hashCode());
         return result;

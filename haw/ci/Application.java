@@ -7,6 +7,7 @@ import java.io.Reader;
 
 import haw.ci.lib.ITokenStream;
 import haw.ci.lib.Parser;
+import haw.ci.lib.ParserAcceptError;
 import haw.ci.lib.Tokenizer;
 
 public class Application {
@@ -14,6 +15,12 @@ public class Application {
 		Reader fileReader = new FileReader(new File("./example4.ob"));
 		ITokenStream tokenStream = new Tokenizer(fileReader);
 		Parser parser = new Parser(tokenStream);
-		System.out.println(parser.build());
+		try {
+			System.out.println(parser.build());
+		} catch (ParserAcceptError e) {
+			System.out.println("Mature Failure");
+			System.out.println(e);
+			System.out.println(e.getStackTrace());
+		}
 	}
 }

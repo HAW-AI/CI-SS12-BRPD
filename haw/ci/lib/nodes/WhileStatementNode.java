@@ -1,4 +1,4 @@
-package haw.ci.lib;
+package haw.ci.lib.nodes;
 
 public class WhileStatementNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;

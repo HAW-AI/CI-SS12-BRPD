@@ -1,4 +1,4 @@
-package haw.ci.lib;
+package haw.ci.lib.nodes;
 
 import java.util.List;
 

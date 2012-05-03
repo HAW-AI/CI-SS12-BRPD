@@ -1,65 +1,71 @@
 package haw.ci.lib;
 
 import static haw.ci.lib.Tokens.*;
+import haw.ci.lib.nodes.*;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class Parser {
+	private final boolean DEBUG = true;
 	private ITokenStream tokenStream;
 	private Yytoken current;
+	private Yytoken next;
 	public Parser(ITokenStream tokenStream) {
 		this.tokenStream = tokenStream;
 	}
 //IdentList = ident {Õ,Õ ident}.
-	private IdentListNode IdentList() {
-		IdentListNode node = null;
-		List<IdentNode> identList = null;
-		if (accept(IDENTIFER)) {
-			identList.add(ConstIdent());
+	private IdentListNode IdentList() throws ParserAcceptError {
+		IdentListNode identList = new IdentListNode();
+		if (test(IDENTIFER)) {
+			identList.add(Ident());
 		}
-		while (accept(COMMA)) {
-			identList.add(ConstIdent());
+		while (test(COMMA)) {
+			next();
+			identList.add(Ident());
 		}
-		return new IdentListNode(identList);
+		return identList;
 	}
 //ArrayType = ÕARRAYÕ Õ[Õ IndexExpression Õ]Õ ÕOFÕ Type.
-	private void Arraytype() {
-		accept(ARRAY);
-		accept(BRACE_SQUARE_OPEN);
+	private AbstractNode Arraytype() throws ParserAcceptError {
+		require(ARRAY);
+		require(BRACE_SQUARE_OPEN);
 		IndexExpression();
-		accept(OF);
+		require(OF);
 		Type();
+		return null;
 	}
 //FieldList = [IdentList Õ:Õ Type].
-	private FieldListNode FieldList() {
+	private FieldListNode FieldList() throws ParserAcceptError {
 		IdentListNode identList = IdentList();
 
-		if (accept(COLON)) {
+		if (require(COLON)) {
 			return new FieldListNode(identList, Type());
 		}
 		// TODO should be some error
 		return null;
 	}
 //RecordType = ÕRECORDÕ FieldList {Õ;Õ FieldList} ÕENDÕ.
-	private RecordTypeNode RecordType() {
+	private RecordTypeNode RecordType() throws ParserAcceptError {
 		// TODO throw some error if not record
-		accept(RECORD);
+		require(RECORD);
 		List<FieldListNode> fieldLists = Arrays.asList(FieldList());
 
-		while(accept(SEMICOLON)) {
+		while(require(SEMICOLON)) {
 			fieldLists.add(FieldList());
 		}
 		// TODO throw some error if not end
-		accept(END);
+		require(END);
 
 		return new RecordTypeNode(fieldLists);
 	}
 //Type = ident | ArrayType | RecordType.
-	private void Type() {
+	private TypeNode Type() throws ParserAcceptError {
+		TypeNode type = null;
 		switch (current.getToken()) {
 		case IDENTIFER:
-			// was hier?
+			type = new TypeNode(current.getValue());
+			next();
 			break;
 		case ARRAY:
 			Arraytype();
@@ -68,110 +74,185 @@ public class Parser {
 			RecordType();
 			break;
 		}
+		return type;
 	}
 //FPSection = [ÕVARÕ] IdentList Õ:Õ Type.
-	private void FPSection() {
-		accept(VAR);
-		IdentList();
-		accept(COLON);
-		Type();
+	private FormalParameterSectionNode FPSection() throws ParserAcceptError {
+		require(VAR);
+		IdentListNode identList = IdentList();
+		require(COLON);
+		TypeNode type = Type();
+		return new FormalParameterSectionNode(identList, type);
 	}
 //FormalParameters = FPSection {Õ;Õ FPSection}.
-	private void FormalParameters() {
-		FPSection();
-		while (accept(SEMICOLON)) {
-			FPSection();
+	private FormalParameterNode FormalParameters() throws ParserAcceptError {
+		FormalParameterNode formalParameter = new FormalParameterNode();
+		formalParameter.add(FPSection());
+		while (test(SEMICOLON)) {
+			next();
+			formalParameter.add(FPSection());
 		}
+		return formalParameter;
 	}
 //ProcedureHeading = ÕPROCEDUREÕ ident Õ(Õ [FormalParameters] Õ)Õ.
-	private void ProcedureHeading() {
-		accept(PROCEDURE);
-		accept(IDENTIFER);
-		accept(BRACE_ROUND_OPEN);
-		FormalParameters();
-		accept(BRACE_ROUND_CLOSE);
+	private ProcedureHeadingNode ProcedureHeading() throws ParserAcceptError {
+		require(PROCEDURE);
+		IdentNode ident = Ident();
+		require(BRACE_ROUND_OPEN);
+		FormalParameterNode formalParameter = FormalParameters();
+		require(BRACE_ROUND_CLOSE);
+		return new ProcedureHeadingNode(ident, formalParameter);
 	}
 //ProcedureBody = Declarations ÕBEGINÕ StatementSequence ÕENDÕ.
-	private void ProcedureBody() {
-		Declarations();
-		accept(BEGIN);
-		StatementSequence();
-		accept(END);
+	private ProcedureBodyNode ProcedureBody() throws ParserAcceptError {
+		debug("proc body declarations");
+		DeclarationNode declaration = Declarations();
+		require(BEGIN);
+		debug("proc body statements");
+		StatementSequenceNode statementSequence = StatementSequence();
+		require(END);
+		return new ProcedureBodyNode(declaration, statementSequence);
 	}
 //ProcedureDeclaration = ProcedureHeading Õ;Õ ProcedureBody ident.
-	private void ProcedureDeclatation() {
-		ProcedureHeading();
-		accept(SEMICOLON);
-		ProcedureBody();
-		accept(IDENTIFER);
+	private ProcedureNode ProcedureDeclatation() throws ParserAcceptError {
+		debug("get proc head");
+		ProcedureHeadingNode procedureHeading = ProcedureHeading();
+		require(SEMICOLON);
+		debug("get proc body");
+		ProcedureBodyNode procedureBody = ProcedureBody();
+		require(IDENTIFER);
+		return new ProcedureNode(procedureHeading, procedureBody);
 	}
 //Declarations = 
 //	[ÕCONSTÕ ident Õ=Õ Expression Õ;Õ {ident Õ=Õ Expression Õ;Õ}] 
 //	[ÕTYPEÕ ident Õ=Õ Type Õ;Õ {ident Õ=Õ Type Õ;Õ}]
 //	[ÕVARÕ IdentList Õ:Õ Type Õ;Õ {IdentList Õ:Õ Type Õ;Õ}] 
 // 	{ProcedureDeclaration Õ;Õ}.
-	private void Declarations() {
-		// TODO: implement
+	private DeclarationNode Declarations() throws ParserAcceptError {
+		DeclarationNode declaration = new DeclarationNode();
+		if (test(CONST)) {
+			debug("const");
+			declaration.add(Const());
+		}
+		if (test(TYPE)) {
+			debug("type");
+			declaration.add(Type());
+		}
+		if (test(VAR)) {
+			debug("var");
+			declaration.add(Var());
+		}
+		if (test(PROCEDURE)) {
+			debug("procedure");
+			declaration.add(ProcedureDeclatation());
+		}
+		return declaration;
 	}
+
+//	[ÕCONSTÕ ident Õ=Õ Expression Õ;Õ {ident Õ=Õ Expression Õ;Õ}]
+	private ConstListNode Const() throws ParserAcceptError {
+		ConstListNode constList = new ConstListNode();
+		require(CONST);
+		IdentNode ident = Ident();
+		require(EQUAL);
+		ExpressionNode expression = Expression();
+		require(SEMICOLON);
+		constList.add(new ConstNode(ident, expression));
+		while (test(IDENTIFER)) {
+			ident = Ident();
+			require(EQUAL);
+			expression = Expression();
+			require(SEMICOLON);
+			constList.add(new ConstNode(ident, expression));
+		}
+		return constList;
+	}
+// ÕVARÕ IdentList Õ:Õ Type Õ;Õ {IdentList Õ:Õ Type Õ;Õ}
+	private VarListNode Var() throws ParserAcceptError {
+		VarListNode varList = new VarListNode();
+		require(VAR);
+		IdentListNode identList = IdentList();
+		require(COLON);
+		TypeNode type = Type();
+		require(SEMICOLON);
+		varList.add(new VarNode(identList,type));
+		while(test(IDENTIFER)) {
+			identList = IdentList();
+			require(COLON);
+			type = Type();
+			require(SEMICOLON);
+			varList.add(new VarNode(identList,type));	
+		}
+		return varList;
+	}
+	
 //Module = ÕMODULEÕ ident Õ;Õ Declarations ÕBEGINÕ StatementSequence ÕENDÕ ident Õ.Õ.
-	private void Module() {
-		accept(MODULE);
-		accept(IDENTIFER);
-		accept(SEMICOLON);
-		Declarations();
-		accept(BEGIN);
-		StatementSequence();
-		accept(END);
-		accept(IDENTIFER);
-		accept(DOT);
+	private AbstractNode Module() throws ParserAcceptError {
+		require(MODULE);
+		debug("ident");
+		IdentNode ident = Ident();
+		require(SEMICOLON);
+		debug("declaration");
+		DeclarationNode declaration = Declarations();
+		require(BEGIN);
+		debug("statementSequence");
+		StatementSequenceNode statementSequence = StatementSequence();
+		require(END);
+		require(IDENTIFER);
+		require(DOT);
+		return new ModuleNode(ident, declaration, statementSequence);
 	}
 //Assignment = ident Selector Õ:=Õ Expression.
-	private AssignmentNode Assignment() {
+	private AssignmentNode Assignment() throws ParserAcceptError {
+		IdentNode ident = Ident();
 		SelectorNode selector = Selector();
-		accept(ASSIGN);
+		require(ASSIGN);
 
-		return new AssignmentNode(selector, Expression());
+		return new AssignmentNode(ident, selector, Expression());
 	}
 //ActualParameters = Expression {Õ,Õ Expression}.
-	private void ActualParameters() {
+	private AbstractNode ActualParameters() throws ParserAcceptError {
 		Expression();
-		while(accept(COMMA)) {
+		while(require(COMMA)) {
 			Expression();
 		}
+		return new EmptyNode();
 	}
 //ProcedureCall = ident Õ(Õ [ActualParameters] Õ)Õ.
-	private void ProcedureCall() {
-		accept(IDENTIFER);
-		accept(BRACE_ROUND_OPEN);
+	private AbstractNode ProcedureCall() throws ParserAcceptError {
+		require(IDENTIFER);
+		require(BRACE_ROUND_OPEN);
 		ActualParameters();
-		accept(BRACE_ROUND_CLOSE);
+		require(BRACE_ROUND_CLOSE);
+		return new EmptyNode();
 	}
 //IfStatement = ÕIFÕ Expression ÕTHENÕ StatementSequence {ÕELSIFÕ Expression ÕTHENÕ StatementSequence} [ÕELSEÕ StatementSequence] ÕENDÕ.
-	private void IfStatement() {
-		accept(IF);
+	private AbstractNode IfStatement() throws ParserAcceptError {
+		require(IF);
 		Expression();
-		accept(THEN);
+		require(THEN);
 		StatementSequence();
-		while (accept(ELSIF)) {
+		while (require(ELSIF)) {
 			Expression();
-			accept(THEN);
+			require(THEN);
 			StatementSequence();
 		}
-		if (accept(ELSE)) {
+		if (require(ELSE)) {
 			StatementSequence();
 		}
-		accept(END);
+		require(END);
+		return new EmptyNode();
 	}
 //WhileStatement = ÕWHILEÕ Expression ÕDOÕ StatementSequence ÕENDÕ.
-	private AbstractNode WhileStatement() {
+	private AbstractNode WhileStatement() throws ParserAcceptError {
 		AbstractNode node, expression;
 		StatementSequenceNode statementSequence;
 		node = null;
-		if (accept(WHILE)) {
+		if (require(WHILE)) {
 			expression = Expression();
-			if (accept(DO)) {
+			if (require(DO)) {
 				statementSequence = StatementSequence();
-				if (accept(END)) {
+				if (require(END)) {
 					node = new WhileStatementNode(expression, statementSequence);
 				}
 			}
@@ -179,50 +260,66 @@ public class Parser {
 		return node;
 	}
 //RepeatStatement = ÕREPEATÕ StatementSequence ÕUNTILÕ Expression.
-	private void RepeatStatement() {
-		accept(REPEAT);
+	private AbstractNode RepeatStatement() throws ParserAcceptError {
+		require(REPEAT);
 		StatementSequence();
-		accept(UNTIL);
+		require(UNTIL);
 		Expression();
+		return new EmptyNode();
 	}
 //Statement = [Assignment | ProcedureCall | IfStatement | ÕPRINTÕ Expression | WhileStatement | RepeatStatement].
-	private AbstractNode Statement() {
-		// TODO: implement
-		return null;
+	private StatementNode Statement() throws ParserAcceptError {
+		if (test(IDENTIFER)) {
+			if (testNext(BRACE_ROUND_OPEN)) {
+				// TODO ProcCall
+			}
+			else {
+				debug("statement assignment");
+				return new StatementNode(Assignment());
+			}
+		}
+		if (test(IF)) {
+			return null;
+		}
+		if (test(PRINT)) {
+			return null;
+		}
+		if (test(WHILE)) {
+			return null;
+		}
+		if (test(REPEAT)) {
+			return null;
+		}
+		return null; // Throw Statement Missing
 	}
 //StatementSequence = Statement {Õ;Õ Statement}.
-	private StatementSequenceNode StatementSequence() {
-		List<AbstractNode> list = Arrays.asList(Statement());
-
-		while (accept(SEMICOLON)) {
-			list.add(Statement());
+	private StatementSequenceNode StatementSequence() throws ParserAcceptError {
+		StatementSequenceNode statementSequence = new StatementSequenceNode();
+		debug("statement");
+		statementSequence.add(Statement());
+		while (test(SEMICOLON)) {
+			debug("more statement");
+			next();
+			statementSequence.add(Statement());
 		}
-
-		return new StatementSequenceNode(list);
+		return statementSequence;
 	}
 //Selector = {Õ.Õ ident | Õ[Õ Expression Õ]Õ}.
-	private SelectorNode Selector() {
-		SelectorNode node = null;
-		// TODO: while
-		switch(current.getToken()) {
-		case DOT:
+	private SelectorNode Selector() throws ParserAcceptError {
+		if (test(DOT)) {
 			next();
-			if (accept(IDENTIFER)) {
-				IdentNode ident = new IdentNode(current.getValue());
-				node = new SelectorNode(ident);
-			}
-			break;
-		case BRACE_SQUARE_OPEN:
-			// TODO
-			next();
-			Expression();
-			accept(BRACE_SQUARE_CLOSE);
-			break;
+			return new SelectorNode(Ident(), Selector());
 		}
-		return node;
+		if (test(BRACE_SQUARE_OPEN)) {
+			next();
+			ExpressionNode expression = Expression();
+			require(BRACE_SQUARE_CLOSE);
+			return new SelectorNode(Expression(), Selector());
+		}
+		return new SelectorNode();
 	}
 //Factor = ident Selector | integer | string | Read | Õ(Õ Expression Õ)Õ.
-	private AbstractNode Factor() {
+	private AbstractNode Factor() throws ParserAcceptError {
 		AbstractNode node = null;
 		switch(current.getToken()) {
 		case IDENTIFER:
@@ -237,54 +334,56 @@ public class Parser {
 		case BRACE_ROUND_OPEN:
 			next();
 			Expression();
-			accept(BRACE_ROUND_CLOSE);
+			require(BRACE_ROUND_CLOSE);
 			break;
 		}
-		return null;
+		return new EmptyNode();
 	}
 //Read = READ [Prompt].
-	private void Read() {
-		accept(READ);
+	private AbstractNode Read() throws ParserAcceptError {
+		require(READ);
 		Prompt();
+		return new EmptyNode();
 	}
 //Prompt = string.
-	private void Prompt() {
+	private AbstractNode Prompt() {
 		// TODO: implement
+		return new EmptyNode();
 	}
 //Term = Factor {(Õ*Õ | Õ/Õ) Factor}.
-	private AbstractNode Term() {
+	private AbstractNode Term() throws ParserAcceptError {
 		AbstractNode node = Factor();
 
-		if (accept(MATH_MUL) || accept(MATH_DIV)) {
-			node = new BinaryOperationNode(current.getToken(), node, Factor());
+		if (require(MATH_MUL) || require(MATH_DIV)) {
+			node = new ExpressionNode(current.getToken(), node, Factor());
 		}
 
 		return node;
 	}
 //SimpleExpression = [Õ-Õ] Term {(Õ+Õ | Õ-Õ) Term}.
-	private AbstractNode SimpleExpression() {
+	private AbstractNode SimpleExpression() throws ParserAcceptError {
 		AbstractNode node;
-		if (accept(MATH_SUB)) {
+		if (require(MATH_SUB)) {
 			node = new NegatedNode(Term());
 		} else {
 			node = Term();
 		}
 
-		if (accept(MATH_ADD) || accept(MATH_SUB)) {
-			node = new BinaryOperationNode(current.getToken(), node, Term());
+		if (require(MATH_ADD) || require(MATH_SUB)) {
+			node = new ExpressionNode(current.getToken(), node, Term());
 		}
 
 		return node;
 	}
 //Expression = SimpleExpression [(Õ=Õ | Õ#Õ | Õ<Õ | Õ<=Õ | Õ>Õ | Õ>=Õ) SimpleExpression].
-	private AbstractNode Expression() {
+	private ExpressionNode Expression() throws ParserAcceptError {
 		AbstractNode node;
 		node = SimpleExpression();
-		while (accept(EQUAL) || accept(LESS) || accept(LESS_EQUAL) || accept(MORE) || accept(MORE_EQUAL)) {
-			node = new BinaryOperationNode(current.getToken(), node, SimpleExpression());
+		while (require(EQUAL) || require(LESS) || require(LESS_EQUAL) || require(MORE) || require(MORE_EQUAL)) {
+			node = new ExpressionNode(current.getToken(), node, SimpleExpression());
 		}
 
-		return node;
+		return (ExpressionNode) node;
 	}
 //IndexExpression = integer | ConstIdent.
 	private AbstractNode IndexExpression() {
@@ -303,37 +402,73 @@ public class Parser {
 		return node;
 	}
 //ConstIdent = ident.
-	private IdentNode ConstIdent() {
+	private IdentNode ConstIdent() throws ParserAcceptError {
 		IdentNode node = null;
-		if (accept(IDENTIFER)) {
+		if (test(IDENTIFER)) {
 			node = new IdentNode(current.getValue());
 		}
 		return node;
 	}
 
-	public String build() {
-		next();
-		Module();
-		return "yeah";
-	}
-
-	private Yytoken next() {
-		return this.current = tokenStream.nextToken();
+	private IdentNode Ident() {
+		IdentNode node = null;
+		if (test(IDENTIFER)) {
+			node = new IdentNode(current.getValue());
+			next();
+		}
+		return node;
 	}
 	
-	private boolean accept(Tokens token) {
-		if (current.getToken() == token) {
+	public AbstractNode build() throws ParserAcceptError {
+		init();
+		return Module();
+	}
+
+	private void init() {
+		next();next(); // accept, or die
+	}
+	
+	private Yytoken next() {
+		current = next;
+		next = tokenStream.nextToken();
+		return current;
+	}
+	
+	/**
+	 * Test if current token matchs required token and overread
+	 * @param token
+	 * @return
+	 * @throws ParserAcceptError 
+	 */
+	private boolean require(Tokens token) throws ParserAcceptError {
+		if (test(token)) {
 			next();
 			return true;
 		}
-		return false;
+		else {
+			throw new ParserAcceptError(token, current);
+		}
 	}
 	
-	private boolean except(Tokens token) {
-		if (accept(token)) {
-			System.out.println(String.format("%s not accepted at line %d", token, current.getLine()));
-			return false;
-		}
-		return true;
+	/**
+	 * Test if current token matches required token
+	 * @param token
+	 * @return
+	 */
+	private boolean test(Tokens token) {
+		return current.getToken() == token;
+	}
+	
+	/**
+	 * Test if next token matches required token
+	 * @param token
+	 * @return
+	 */
+	private boolean testNext(Tokens token) {
+		return !next.equals(null) && next.getToken() == token;
+	}
+	
+	private void debug(String string) {
+		if (DEBUG) System.out.println("-- DEBUG -- "+string);
 	}
 }

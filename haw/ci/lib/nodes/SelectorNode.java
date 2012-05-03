@@ -1,13 +1,24 @@
-package haw.ci.lib;
+package haw.ci.lib.nodes;
 
 public class SelectorNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
-	private final IdentNode ident;
+	private IdentNode ident;
+	private SelectorNode selector;
+	private ExpressionNode expression;
 	
-	public SelectorNode(IdentNode ident) {
-		this.ident = ident;
+	public SelectorNode() {
 	}
 	
+	public SelectorNode(IdentNode ident, SelectorNode selector) {
+		this.ident = ident;
+		this.selector = selector;
+	}
+
+	public SelectorNode(ExpressionNode expression, SelectorNode selector) {
+		this.expression = expression;
+		this.selector = selector;
+	}
+
 	public int hashCode() {
 		final int prime = 43;
         int result = 1;
