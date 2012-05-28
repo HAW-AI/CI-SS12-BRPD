@@ -21,7 +21,7 @@ public enum Tokens {
 	VAR, PROCEDURE, MODULE,
 	// literals
 	INTEGER, IDENTIFER,
-	COMMENT
+	STRING
 }
 
 /*

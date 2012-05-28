@@ -32,8 +32,7 @@ other_identifer = "_"
 integer   = {digit}+
 real      = {integer}\.{integer}
 identifer = {letter}({alphanumeric}|{other_identifer})*
-comment_line = "#"[^\r\n]*
-comment = {comment_line}
+string = "(alphanumeric|whitespace)*"
 
 math_add = "+"
 math_mul = "*"
@@ -82,8 +81,6 @@ cmd_while  = [Ww][Hh][Ii][Ll][Ee]
 
 {whitespace}*	{}
 
-{comment}       { return token(COMMENT, yyline, yycolumn, yytext()); }
-
 {math_add}      { return token(MATH_ADD, yyline, yycolumn); }
 {math_mul}      { return token(MATH_MUL, yyline, yycolumn); }
 {math_sub}      { return token(MATH_SUB, yyline, yycolumn); }
@@ -129,5 +126,6 @@ cmd_while  = [Ww][Hh][Ii][Ll][Ee]
 
 {integer}       { return token(INTEGER, yyline, yycolumn, yytext()); }
 {identifer}     { return token(IDENTIFER, yyline, yycolumn, yytext()); }
+{string}        { return token(STRING, yyline, yycolumn, yytext()); }
 
 . { System.out.println("Illegal char, '" + yytext() + "' line: " + yyline + ", column: " + yycolumn); }
