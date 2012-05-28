@@ -1,4 +1,4 @@
-package haw.ci.lexer;
+package haw.ci.lib;
 
 import static haw.ci.lib.Tokens.*;
 import static haw.ci.lib.Yytoken.*;
@@ -28,11 +28,12 @@ letter       = [A-Za-z]*
 digit        = [0-9]
 alphanumeric = {letter}|{digit}
 other_identifer = "_"
+quote_double = \"
 
 integer   = {digit}+
 real      = {integer}\.{integer}
 identifer = {letter}({alphanumeric}|{other_identifer})*
-string = "(alphanumeric|whitespace)*"
+string    = {quote_double}({alphanumeric}|{whitespace})*{quote_double}
 
 math_add = "+"
 math_mul = "*"
