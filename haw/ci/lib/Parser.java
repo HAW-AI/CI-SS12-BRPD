@@ -155,7 +155,7 @@ public class Parser {
 		require(CONST);
 		IdentNode ident = Ident();
 		require(EQUAL);
-		ExpressionNode expression = Expression();
+		AbstractNode expression = Expression();
 		require(SEMICOLON);
 		constList.add(new ConstNode(ident, expression));
 		while (test(IDENTIFER)) {
@@ -204,6 +204,7 @@ public class Parser {
 	}
 //Assignment = ident Selector Õ:=Õ Expression.
 	private AssignmentNode Assignment() throws ParserAcceptError {
+		AssignmentNode node;
 		IdentNode ident = Ident();
 		SelectorNode selector = Selector();
 		require(ASSIGN);
@@ -312,7 +313,7 @@ public class Parser {
 		}
 		if (test(BRACE_SQUARE_OPEN)) {
 			next();
-			ExpressionNode expression = Expression();
+			AbstractNode expression = Expression();
 			require(BRACE_SQUARE_CLOSE);
 			return new SelectorNode(Expression(), Selector());
 		}
@@ -320,16 +321,17 @@ public class Parser {
 	}
 //Factor = ident Selector | integer | string | Read | Õ(Õ Expression Õ)Õ.
 	private AbstractNode Factor() throws ParserAcceptError {
-		AbstractNode node = null;
+		AbstractNode node = new EmptyNode();
 		switch(current.getToken()) {
 		case IDENTIFER:
 			break;
 		case INTEGER:
 			node = new IntegerNode(Integer.getInteger(current.getValue()));
+			next();
 			break;
 		// TODO: String
 		case READ:
-			Read();
+			node = Read();
 			break;
 		case BRACE_ROUND_OPEN:
 			next();
@@ -337,13 +339,28 @@ public class Parser {
 			require(BRACE_ROUND_CLOSE);
 			break;
 		}
-		return new EmptyNode();
+		return node;
+	}
+//String
+	private StringNode String() throws ParserAcceptError {
+		StringNode node = null;
+		if (test(STRING)) {
+			node = new StringNode(current.getValue().substring(1, current.getValue().length() - 1));
+			next();
+		}
+		return node;
 	}
 //Read = READ [Prompt].
-	private AbstractNode Read() throws ParserAcceptError {
+	private ReadNode Read() throws ParserAcceptError {
 		require(READ);
-		Prompt();
-		return new EmptyNode();
+		ReadNode node;
+		if (current.getToken() == STRING) {
+			node = new ReadNode(String());
+		} else {
+			node = new ReadNode();
+		}
+
+		return node;
 	}
 //Prompt = string.
 	private AbstractNode Prompt() {
@@ -379,14 +396,14 @@ public class Parser {
 		return node;
 	}
 //Expression = SimpleExpression [(Õ=Õ | Õ#Õ | Õ<Õ | Õ<=Õ | Õ>Õ | Õ>=Õ) SimpleExpression].
-	private ExpressionNode Expression() throws ParserAcceptError {
+	private AbstractNode Expression() throws ParserAcceptError {
 		AbstractNode node;
 		node = SimpleExpression();
 		while (test(EQUAL) || test(LESS) || test(LESS_EQUAL) || test(MORE) || test(MORE_EQUAL)) {
 			node = new ExpressionNode(current.getToken(), node, SimpleExpression());
 		}
 
-		return (ExpressionNode) node;
+		return node;
 	}
 //IndexExpression = integer | ConstIdent.
 	private AbstractNode IndexExpression() {

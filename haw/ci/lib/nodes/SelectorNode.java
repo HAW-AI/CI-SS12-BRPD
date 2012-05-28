@@ -4,7 +4,7 @@ public class SelectorNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	private IdentNode ident;
 	private SelectorNode selector;
-	private ExpressionNode expression;
+	private AbstractNode expression;
 	
 	public SelectorNode() {
 	}
@@ -14,7 +14,7 @@ public class SelectorNode extends AbstractNode {
 		this.selector = selector;
 	}
 
-	public SelectorNode(ExpressionNode expression, SelectorNode selector) {
+	public SelectorNode(AbstractNode expression, SelectorNode selector) {
 		this.expression = expression;
 		this.selector = selector;
 	}
