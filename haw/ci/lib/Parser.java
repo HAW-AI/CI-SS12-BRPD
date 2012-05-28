@@ -354,7 +354,8 @@ public class Parser {
 	private AbstractNode Term() throws ParserAcceptError {
 		AbstractNode node = Factor();
 
-		if (require(MATH_MUL) || require(MATH_DIV)) {
+		if (test(MATH_MUL) || test(MATH_DIV)) {
+			next();
 			node = new ExpressionNode(current.getToken(), node, Factor());
 		}
 
@@ -363,13 +364,15 @@ public class Parser {
 //SimpleExpression = [Õ-Õ] Term {(Õ+Õ | Õ-Õ) Term}.
 	private AbstractNode SimpleExpression() throws ParserAcceptError {
 		AbstractNode node;
-		if (require(MATH_SUB)) {
+		if (test(MATH_SUB)) {
+			next();
 			node = new NegatedNode(Term());
 		} else {
 			node = Term();
 		}
 
-		if (require(MATH_ADD) || require(MATH_SUB)) {
+		if (test(MATH_ADD) || test(MATH_SUB)) {
+			// TODO: next() needed?
 			node = new ExpressionNode(current.getToken(), node, Term());
 		}
 
@@ -379,7 +382,7 @@ public class Parser {
 	private ExpressionNode Expression() throws ParserAcceptError {
 		AbstractNode node;
 		node = SimpleExpression();
-		while (require(EQUAL) || require(LESS) || require(LESS_EQUAL) || require(MORE) || require(MORE_EQUAL)) {
+		while (test(EQUAL) || test(LESS) || test(LESS_EQUAL) || test(MORE) || test(MORE_EQUAL)) {
 			node = new ExpressionNode(current.getToken(), node, SimpleExpression());
 		}
 
