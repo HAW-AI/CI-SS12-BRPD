@@ -16,7 +16,7 @@ public class StatementSequenceNode extends AbstractNode {
 		return nodes.equals(object);
 	}
 
-	public void add(StatementNode node) {
-		nodes.add(node);
+	public void add(AbstractNode abstractNode) {
+		nodes.add((StatementNode) abstractNode);
 	}
 }

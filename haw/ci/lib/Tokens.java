@@ -6,7 +6,7 @@ public enum Tokens {
 	// Variable hanlding
 	ASSIGN, 
 	// conditionals
-	EQUAL, LESS, LESS_EQUAL, MORE, MORE_EQUAL,
+	EQUAL, NOT_EQUAL, LESS, LESS_EQUAL, MORE, MORE_EQUAL,
 	// tbw
 	DOT, COMMA, COLON, SEMICOLON,
 	BRACE_ROUND_OPEN, BRACE_ROUND_CLOSE,

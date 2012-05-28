@@ -1,0 +1,59 @@
+package haw.ci.lib.nodes;
+
+public class IfStatementNode extends AbstractNode {
+	private static final long serialVersionUID = -8068718524238360831L;
+	private AbstractNode expression;
+	private StatementSequenceNode statementSeq1;
+	private AbstractNode elsif;
+	private StatementSequenceNode statementSeq2;
+
+	public IfStatementNode(AbstractNode expression,
+			StatementSequenceNode statementSeq1, AbstractNode elsif,
+			StatementSequenceNode statementSeq2) {
+		this.expression = expression;
+		this.statementSeq1 = statementSeq1;
+		this.elsif = elsif;
+		this.statementSeq2 = statementSeq2;
+	}
+	
+	public int hashCode() {
+		final int prime = 43;
+		int result = 1;
+		result = prime * result + ((expression == null) ? 0 : expression.hashCode());
+		result = prime * result + ((statementSeq1 == null) ? 0 : statementSeq1.hashCode());
+		result = prime * result + ((elsif == null) ? 0 : elsif.hashCode());
+		result = prime * result + ((statementSeq2 == null) ? 0 : statementSeq2.hashCode());
+		return result;
+	}
+	
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IfStatementNode other = (IfStatementNode) obj;
+		if (elsif == null) {
+			if (other.elsif != null)
+				return false;
+		} else if (!elsif.equals(other.elsif))
+			return false;
+		if (expression == null) {
+			if (other.expression != null)
+				return false;
+		} else if (!expression.equals(other.expression))
+			return false;
+		if (statementSeq1 == null) {
+			if (other.statementSeq1 != null)
+				return false;
+		} else if (!statementSeq1.equals(other.statementSeq1))
+			return false;
+		if (statementSeq2 == null) {
+			if (other.statementSeq2 != null)
+				return false;
+		} else if (!statementSeq2.equals(other.statementSeq2))
+			return false;
+		return true;
+	}
+}

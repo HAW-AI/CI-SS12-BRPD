@@ -43,6 +43,7 @@ math_div = "/"
 assign = ":="
 
 cond_equal  = "="
+cond_not_equal = "#"
 cond_less   = "<"
 cond_less_or_equal = "<="
 cond_more   = ">"
@@ -90,6 +91,7 @@ cmd_while  = [Ww][Hh][Ii][Ll][Ee]
 {assign}        { return token(ASSIGN, yyline, yycolumn); }
 
 {cond_equal}    { return token(EQUAL, yyline, yycolumn); }
+{cond_not_equal}    { return token(NOT_EQUAL, yyline, yycolumn); }
 {cond_less_or_equal} { return token(LESS_EQUAL, yyline, yycolumn); }
 {cond_less_or_more}  { return token(MORE_EQUAL, yyline, yycolumn); }
 {cond_less}     { return token(LESS, yyline, yycolumn); }

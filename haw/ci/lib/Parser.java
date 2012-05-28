@@ -228,28 +228,46 @@ public class Parser {
 		return new EmptyNode();
 	}
 //IfStatement = ÕIFÕ Expression ÕTHENÕ StatementSequence {ÕELSIFÕ Expression ÕTHENÕ StatementSequence} [ÕELSEÕ StatementSequence] ÕENDÕ.
-	private AbstractNode IfStatement() throws ParserAcceptError {
-		require(IF);
-		Expression();
-		require(THEN);
-		StatementSequence();
-		while (require(ELSIF)) {
-			Expression();
-			require(THEN);
-			StatementSequence();
+	private IfStatementNode IfStatement() throws ParserAcceptError {
+		AbstractNode node, expression = null, elsif = null;
+		StatementSequenceNode statementSeq1 = null, statementSeq2 = null;
+		if (require(IF)) {
+			expression = Expression();
 		}
-		if (require(ELSE)) {
-			StatementSequence();
+		if (require(THEN)) {
+			statementSeq1 = StatementSequence();
+		}
+		if (test(ELSIF)) {
+			elsif = Elsif();
+		}
+		if (test(ELSE)) {
+			statementSeq2 = StatementSequence();
 		}
 		require(END);
-		return new EmptyNode();
+
+		return new IfStatementNode(expression, statementSeq1, elsif, statementSeq2);
 	}
-//WhileStatement = ÕWHILEÕ Expression ÕDOÕ StatementSequence ÕENDÕ.
+	private IfStatementNode Elsif() throws ParserAcceptError {
+		AbstractNode expression = null, elsif = null;
+		StatementSequenceNode statementSeq = null;
+		if (require(ELSIF)) {
+			expression = Expression();
+		}
+		if (require(THEN)) {
+			statementSeq = StatementSequence();
+		}
+		if (test(ELSIF)) {
+			elsif = Elsif();
+		}
+		return new IfStatementNode(expression, statementSeq, elsif, null);
+	}
+	//WhileStatement = ÕWHILEÕ Expression ÕDOÕ StatementSequence ÕENDÕ.
 	private AbstractNode WhileStatement() throws ParserAcceptError {
 		AbstractNode node, expression;
 		StatementSequenceNode statementSequence;
 		node = null;
 		if (require(WHILE)) {
+			debug(current.toString());
 			expression = Expression();
 			if (require(DO)) {
 				statementSequence = StatementSequence();
@@ -269,7 +287,7 @@ public class Parser {
 		return new EmptyNode();
 	}
 //Statement = [Assignment | ProcedureCall | IfStatement | ÕPRINTÕ Expression | WhileStatement | RepeatStatement].
-	private StatementNode Statement() throws ParserAcceptError {
+	private AbstractNode Statement() throws ParserAcceptError {
 		if (test(IDENTIFER)) {
 			if (testNext(BRACE_ROUND_OPEN)) {
 				// TODO ProcCall
@@ -280,13 +298,16 @@ public class Parser {
 			}
 		}
 		if (test(IF)) {
-			return null;
+			return IfStatement();
 		}
 		if (test(PRINT)) {
 			return null;
 		}
 		if (test(WHILE)) {
-			return null;
+			debug("while statement");
+			debug(current.toString());
+			debug(next.toString());
+			return WhileStatement();
 		}
 		if (test(REPEAT)) {
 			return null;
@@ -324,6 +345,7 @@ public class Parser {
 		AbstractNode node = new EmptyNode();
 		switch(current.getToken()) {
 		case IDENTIFER:
+			node = Ident();
 			break;
 		case INTEGER:
 			node = new IntegerNode(Integer.getInteger(current.getValue()));
@@ -390,7 +412,9 @@ public class Parser {
 
 		if (test(MATH_ADD) || test(MATH_SUB)) {
 			// TODO: next() needed?
-			node = new ExpressionNode(current.getToken(), node, Term());
+			Tokens token = current.getToken();
+			next();
+			node = new ExpressionNode(token, node, Term());
 		}
 
 		return node;
@@ -399,8 +423,11 @@ public class Parser {
 	private AbstractNode Expression() throws ParserAcceptError {
 		AbstractNode node;
 		node = SimpleExpression();
-		while (test(EQUAL) || test(LESS) || test(LESS_EQUAL) || test(MORE) || test(MORE_EQUAL)) {
-			node = new ExpressionNode(current.getToken(), node, SimpleExpression());
+		while (test(EQUAL) || test(NOT_EQUAL) || test(LESS) || test(LESS_EQUAL) || test(MORE) || test(MORE_EQUAL)) {
+			Tokens token = current.getToken();
+			next();
+			node = new ExpressionNode(token, node, SimpleExpression());
+			debug(current.toString());
 		}
 
 		return node;
@@ -433,8 +460,11 @@ public class Parser {
 	private IdentNode Ident() {
 		IdentNode node = null;
 		if (test(IDENTIFER)) {
+			debug("IdentNode");
+			debug(current.getValue().toString());
 			node = new IdentNode(current.getValue());
 			next();
+			debug(current.toString());
 		}
 		return node;
 	}
