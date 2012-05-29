@@ -531,4 +531,11 @@ public class Parser {
 	private void debug(String string) {
 		if (DEBUG) System.out.println("-- DEBUG -- "+string);
 	}
+	
+	public Yytoken getCurrent() {
+		return current;
+	}
+	public Yytoken getNext() {
+		return next;
+	}
 }

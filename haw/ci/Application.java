@@ -18,7 +18,7 @@ public class Application {
 		try {
 			System.out.println(parser.build());
 		} catch (ParserAcceptError e) {
-			System.out.println("Mature Failure");
+			System.out.println(String.format("Matrue Failure (cur: %s, nex: %s)", parser.getCurrent(),parser.getNext()));
 			e.printStackTrace();
 		}
 	}
