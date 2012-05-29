@@ -218,20 +218,21 @@ public class Parser {
 		return new AssignmentNode(ident, selector, Expression());
 	}
 //ActualParameters = Expression {Õ,Õ Expression}.
-	private AbstractNode ActualParameters() throws ParserAcceptError {
-		Expression();
+	private ActualParametersNode ActualParameters() throws ParserAcceptError {
+		ActualParametersNode expressions = new ActualParametersNode();
+		expressions.add(Expression());
 		while(require(COMMA)) {
-			Expression();
+			expressions.add(Expression());
 		}
-		return new EmptyNode();
+		return expressions;
 	}
 //ProcedureCall = ident Õ(Õ [ActualParameters] Õ)Õ.
 	private AbstractNode ProcedureCall() throws ParserAcceptError {
-		require(IDENTIFER);
+		IdentNode ident = Ident();
 		require(BRACE_ROUND_OPEN);
-		ActualParameters();
+		ActualParametersNode actualParameters = ActualParameters();
 		require(BRACE_ROUND_CLOSE);
-		return new EmptyNode();
+		return new ProcedureCallNode(ident, actualParameters);
 	}
 //IfStatement = ÕIFÕ Expression ÕTHENÕ StatementSequence {ÕELSIFÕ Expression ÕTHENÕ StatementSequence} [ÕELSEÕ StatementSequence] ÕENDÕ.
 	private IfStatementNode IfStatement() throws ParserAcceptError {
@@ -296,7 +297,7 @@ public class Parser {
 	private AbstractNode Statement() throws ParserAcceptError {
 		if (test(IDENTIFER)) {
 			if (testNext(BRACE_ROUND_OPEN)) {
-				// TODO ProcCall
+				return ProcedureCall();
 			}
 			else {
 				debug("statement assignment");
