@@ -11,4 +11,7 @@ public class ConstNode extends AbstractNode {
 		this.expression = expression;
 	}
 
+	public IdentNode getIdent() {
+		return ident;
+	}
 }
