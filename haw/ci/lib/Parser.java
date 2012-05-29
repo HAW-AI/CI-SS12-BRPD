@@ -221,7 +221,8 @@ public class Parser {
 	private ActualParametersNode ActualParameters() throws ParserAcceptError {
 		ActualParametersNode expressions = new ActualParametersNode();
 		expressions.add(Expression());
-		while(require(COMMA)) {
+		while(test(COMMA)) {
+			next();
 			expressions.add(Expression());
 		}
 		return expressions;
