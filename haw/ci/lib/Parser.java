@@ -146,7 +146,7 @@ public class Parser {
 			debug("var");
 			declaration.add(Var());
 		}
-		if (test(PROCEDURE)) {
+		while (test(PROCEDURE)) {
 			debug("procedure");
 			declaration.add(ProcedureDeclatation());
 		}
