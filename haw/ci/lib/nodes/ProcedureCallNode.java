@@ -40,4 +40,10 @@ public class ProcedureCallNode extends AbstractNode {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "ProcedureCallNode [ident=" + ident + ", actualParameters="
+				+ actualParameters + "]";
+	}
+
 }
