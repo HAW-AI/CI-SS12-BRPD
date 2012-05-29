@@ -12,7 +12,7 @@ import haw.ci.lib.Tokenizer;
 
 public class Application {
 	public static void main(String[] args) throws IOException {
-		Reader fileReader = new FileReader(new File("./example4.ob"));
+		Reader fileReader = new FileReader(new File("./example5.ob"));
 		ITokenStream tokenStream = new Tokenizer(fileReader);
 		Parser parser = new Parser(tokenStream);
 		try {
