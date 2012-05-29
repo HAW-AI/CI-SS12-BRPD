@@ -1,6 +1,7 @@
 package haw.ci.lib.nodes;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ConstListNode extends AbstractNode {
@@ -10,5 +11,9 @@ public class ConstListNode extends AbstractNode {
 
 	public void add(ConstNode node) {
 		nodes.add(node);
+	}
+	
+	public List<ConstNode> getList() {
+		return nodes;
 	}
 }
