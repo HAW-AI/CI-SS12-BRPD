@@ -96,6 +96,7 @@ public class Parser {
 	}
 //ProcedureHeading = ÕPROCEDUREÕ ident Õ(Õ [FormalParameters] Õ)Õ.
 	private ProcedureHeadingNode ProcedureHeading() throws ParserAcceptError {
+		debug("---------------------- ProcedureHeading");
 		require(PROCEDURE);
 		IdentNode ident = Ident();
 		require(BRACE_ROUND_OPEN);
@@ -105,26 +106,25 @@ public class Parser {
 	}
 //ProcedureBody = Declarations ÕBEGINÕ StatementSequence ÕENDÕ.
 	private ProcedureBodyNode ProcedureBody() throws ParserAcceptError {
+		debug("---------------------- ProcedureBody");
 		debug("proc body declarations");
 		DeclarationNode declaration = Declarations();
 		require(BEGIN);
 		debug("proc body statements");
 		StatementSequenceNode statementSequence = StatementSequence();
 		require(END);
-		if (test(IDENTIFER)) {
-			Ident();
-		}
-		require(SEMICOLON);
 		return new ProcedureBodyNode(declaration, statementSequence);
 	}
 //ProcedureDeclaration = ProcedureHeading Õ;Õ ProcedureBody ident.
 	private ProcedureNode ProcedureDeclatation() throws ParserAcceptError {
+		debug("---------------------- ProcedureDeclaration");
 		debug("get proc head");
 		ProcedureHeadingNode procedureHeading = ProcedureHeading();
 		require(SEMICOLON);
 		debug("get proc body");
 		ProcedureBodyNode procedureBody = ProcedureBody();
 		require(IDENTIFER);
+		require(SEMICOLON);
 		return new ProcedureNode(procedureHeading, procedureBody);
 	}
 //Declarations = 
