@@ -301,7 +301,7 @@ public class Parser {
 			return IfStatement();
 		}
 		if (test(PRINT)) {
-			return null;
+			return Print();
 		}
 		if (test(WHILE)) {
 			debug("while statement");
@@ -314,7 +314,13 @@ public class Parser {
 		}
 		return null; // Throw Statement Missing
 	}
-//StatementSequence = Statement {Õ;Õ Statement}.
+	private PrintNode Print() throws ParserAcceptError {
+		require(PRINT);
+		PrintNode node;
+		node = new PrintNode(Expression());
+		return node;
+	}
+	//StatementSequence = Statement {Õ;Õ Statement}.
 	private StatementSequenceNode StatementSequence() throws ParserAcceptError {
 		StatementSequenceNode statementSequence = new StatementSequenceNode();
 		debug("statement");
