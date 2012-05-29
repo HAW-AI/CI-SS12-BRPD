@@ -87,10 +87,12 @@ public class Parser {
 //FormalParameters = FPSection {Õ;Õ FPSection}.
 	private FormalParameterNode FormalParameters() throws ParserAcceptError {
 		FormalParameterNode formalParameter = new FormalParameterNode();
-		formalParameter.add(FPSection());
-		while (test(SEMICOLON)) {
-			next();
+		if (test(VAR)) {
 			formalParameter.add(FPSection());
+			while (test(SEMICOLON)) {
+				next();
+				formalParameter.add(FPSection());
+			}
 		}
 		return formalParameter;
 	}
