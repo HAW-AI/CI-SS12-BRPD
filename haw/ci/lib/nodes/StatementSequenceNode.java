@@ -5,7 +5,7 @@ import java.util.List;
 
 public class StatementSequenceNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
-	private List<StatementNode> nodes = new ArrayList<StatementNode>();
+	private List<AbstractNode> nodes = new ArrayList<AbstractNode>();
 	
 	
 	public int hashCode() {
@@ -17,6 +17,6 @@ public class StatementSequenceNode extends AbstractNode {
 	}
 
 	public void add(AbstractNode abstractNode) {
-		nodes.add((StatementNode) abstractNode);
+		nodes.add(abstractNode);
 	}
 }
