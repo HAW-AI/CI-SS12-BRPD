@@ -111,6 +111,10 @@ public class Parser {
 		debug("proc body statements");
 		StatementSequenceNode statementSequence = StatementSequence();
 		require(END);
+		if (test(IDENTIFER)) {
+			Ident();
+		}
+		require(SEMICOLON);
 		return new ProcedureBodyNode(declaration, statementSequence);
 	}
 //ProcedureDeclaration = ProcedureHeading Õ;Õ ProcedureBody ident.
