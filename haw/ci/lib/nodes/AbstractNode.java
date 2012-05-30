@@ -11,8 +11,14 @@ public abstract class AbstractNode implements Serializable {
 		return this.getClass().getName();
 	}
 	
+	// root call
 	public String compile() {
 		SymbolTable symbolTable = symbolTable();
+		return generateCode();
+	}
+	
+	// recursiv call
+	public String compile(SymbolTable symbolTable) {
 		return generateCode();
 	}
 	
