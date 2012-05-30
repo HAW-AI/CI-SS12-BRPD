@@ -7,29 +7,29 @@ begin
  i := 10;
  j := 20;
  k := 30;
- 
+
  while i > 0 do
    Print i;
    i := i-1;
-  end; 
-  
+  end;
+
  repeat
   k := i + 1;
   Print k;
   i := i + 1;
- until i = 5; 
- 
+ until i = 5;
+
  if k = 5
  then k := 10; Print k
- end; 
+ end;
  Print 10;
- 
- if k > j 
- then Print 0 
- else j := -100; Print j 
- end; 
+
+ if k > j
+ then Print 0
+ else j := -100; Print j
+ end;
  Print -100;
- 
+
  k := 10;
  if k = 1
  then Print k
@@ -38,4 +38,5 @@ begin
  elsif k = 10 then Print k
  else Print 999
  end
- end m2.
+end m2.
+
