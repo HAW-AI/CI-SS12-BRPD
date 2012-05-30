@@ -27,23 +27,25 @@ public class Parser {
 		return identList;
 	}
 //ArrayType = ÕARRAYÕ Õ[Õ IndexExpression Õ]Õ ÕOFÕ Type.
-	private AbstractNode Arraytype() throws ParserAcceptError {
+	private ArrayTypeNode Arraytype() throws ParserAcceptError {
 		require(ARRAY);
 		require(BRACE_SQUARE_OPEN);
-		IndexExpression();
+		AbstractNode node = IndexExpression();
+		require(BRACE_SQUARE_CLOSE);
 		require(OF);
-		Type();
-		return null;
+		TypeNode type = Type();
+		return new ArrayTypeNode(node, type);
 	}
 //FieldList = [IdentList Õ:Õ Type].
 	private FieldListNode FieldList() throws ParserAcceptError {
 		IdentListNode identList = IdentList();
+		FieldListNode node = null;
 
 		if (require(COLON)) {
-			return new FieldListNode(identList, Type());
+			node = new FieldListNode(identList, Type());
 		}
 		// TODO should be some error
-		return null;
+		return node;
 	}
 //RecordType = ÕRECORDÕ FieldList {Õ;Õ FieldList} ÕENDÕ.
 	private RecordTypeNode RecordType() throws ParserAcceptError {
@@ -294,6 +296,7 @@ public class Parser {
 	}
 //Statement = [Assignment | ProcedureCall | IfStatement | ÕPRINTÕ Expression | WhileStatement | RepeatStatement].
 	private AbstractNode Statement() throws ParserAcceptError {
+		AbstractNode node = null;
 		if (test(IDENTIFER)) {
 			if (testNext(BRACE_ROUND_OPEN)) {
 				return ProcedureCall();
@@ -314,7 +317,7 @@ public class Parser {
 		if (test(REPEAT)) {
 			return RepeatStatement();
 		}
-		return null; // Throw Statement Missing
+		return node; // Throw Statement Missing
 	}
 	private PrintNode Print() throws ParserAcceptError {
 		require(PRINT);
@@ -327,24 +330,27 @@ public class Parser {
 		StatementSequenceNode statementSequence = new StatementSequenceNode();
 		statementSequence.add(Statement());
 		while (test(SEMICOLON)) {
-			next();
-			statementSequence.add(Statement());
+			AbstractNode nextStatement = Statement();
+			if (nextStatement != null) {
+				statementSequence.add(nextStatement);
+			}
 		}
 		return statementSequence;
 	}
 //Selector = {Õ.Õ ident | Õ[Õ Expression Õ]Õ}.
 	private SelectorNode Selector() throws ParserAcceptError {
+		SelectorNode selectorNode = null;
 		if (test(DOT)) {
-			next();
-			return new SelectorNode(Ident(), Selector());
+			require(DOT);
+			selectorNode = new SelectorNode(Ident(), Selector());
 		}
 		if (test(BRACE_SQUARE_OPEN)) {
-			next();
+			require(BRACE_SQUARE_OPEN);
 			AbstractNode expression = Expression();
 			require(BRACE_SQUARE_CLOSE);
-			return new SelectorNode(Expression(), Selector());
+			selectorNode = new SelectorNode(expression, Selector());
 		}
-		return new SelectorNode();
+		return selectorNode;
 	}
 //Factor = ident Selector | integer | string | Read | Õ(Õ Expression Õ)Õ.
 	private AbstractNode Factor() throws ParserAcceptError {
