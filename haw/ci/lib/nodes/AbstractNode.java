@@ -13,24 +13,33 @@ public abstract class AbstractNode implements Serializable {
 	}
 	
 	/*
+	 * Zu klärende Fragen:
+	 * 1) Muss die SymbolTabelle vollständig aufgebaut sein, bevor der codeGen prozess begonnen wird?
+	 * 2) Sollte jeder Node in ein Descriptor aufgehen? 
+	 * 3) Die Descriptoren werden in die SymbolTabelle geschrieben?
+	 */
+	
+	
+	/*
 	 * 1) trigger sym. tab. generation.
 	 * 2) genrate code based on symboltable
 	 */
 	public String compile() {
 		symbolTable(new SymbolTable());
-		return generateCode();
+//		return generateCode();
+		return "";
 	}
 	
 	protected void symbolTable(SymbolTable symbolTable) {
 		if (this.symbolTable != null) return;
 		this.symbolTable = symbolTable;
-		buildSymbolTable();
+//		buildSymbolTable();
 	}
 	/*
 	 * declare variables or create child table
 	 */
-	protected abstract void buildSymbolTable();
+//	protected abstract void buildSymbolTable();
 	
-	protected abstract String generateCode();
+//	protected abstract String generateCode();
 	
 }
