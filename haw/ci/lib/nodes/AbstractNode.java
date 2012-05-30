@@ -6,23 +6,31 @@ import java.io.Serializable;
 
 public abstract class AbstractNode implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private Object symbolTable;
 
 	public String toString() {
 		return this.getClass().getName();
 	}
 	
-	// root call
+	/*
+	 * 1) trigger sym. tab. generation.
+	 * 2) genrate code based on symboltable
+	 */
 	public String compile() {
-		SymbolTable symbolTable = symbolTable();
+		symbolTable(new SymbolTable());
 		return generateCode();
 	}
 	
-	// recursiv call
-	public String compile(SymbolTable symbolTable) {
-		return generateCode();
+	protected void symbolTable(SymbolTable symbolTable) {
+		if (this.symbolTable != null) return;
+		this.symbolTable = symbolTable;
+		buildSymbolTable();
 	}
+	/*
+	 * declare variables or create child table
+	 */
+	protected abstract void buildSymbolTable();
 	
-	public abstract SymbolTable symbolTable();
-	public abstract String generateCode();
+	protected abstract String generateCode();
 	
 }
