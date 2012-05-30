@@ -137,19 +137,15 @@ public class Parser {
 	private DeclarationNode Declarations() throws ParserAcceptError {
 		DeclarationNode declaration = new DeclarationNode();
 		if (test(CONST)) {
-			debug("const");
 			declaration.add(Const());
 		}
 		if (test(TYPE)) {
-			debug("type");
 			declaration.add(Type());
 		}
 		if (test(VAR)) {
-			debug("var");
 			declaration.add(Var());
 		}
 		while (test(PROCEDURE)) {
-			debug("procedure");
 			declaration.add(ProcedureDeclatation());
 		}
 		return declaration;
@@ -275,7 +271,6 @@ public class Parser {
 		StatementSequenceNode statementSequence;
 		node = null;
 		if (require(WHILE)) {
-			debug(current.toString());
 			expression = Expression();
 			if (require(DO)) {
 				statementSequence = StatementSequence();
@@ -301,7 +296,6 @@ public class Parser {
 				return ProcedureCall();
 			}
 			else {
-				debug("statement assignment");
 				return new StatementNode(Assignment());
 			}
 		}
@@ -312,9 +306,6 @@ public class Parser {
 			return Print();
 		}
 		if (test(WHILE)) {
-			debug("while statement");
-			debug(current.toString());
-			debug(next.toString());
 			return WhileStatement();
 		}
 		if (test(REPEAT)) {
@@ -331,10 +322,8 @@ public class Parser {
 	//StatementSequence = Statement {Õ;Õ Statement}.
 	private StatementSequenceNode StatementSequence() throws ParserAcceptError {
 		StatementSequenceNode statementSequence = new StatementSequenceNode();
-		debug("statement");
 		statementSequence.add(Statement());
 		while (test(SEMICOLON)) {
-			debug("more statement");
 			next();
 			statementSequence.add(Statement());
 		}
@@ -441,7 +430,6 @@ public class Parser {
 			Tokens token = current.getToken();
 			next();
 			node = new ExpressionNode(token, node, SimpleExpression());
-			debug(current.toString());
 		}
 
 		return node;
@@ -474,11 +462,8 @@ public class Parser {
 	private IdentNode Ident() {
 		IdentNode node = null;
 		if (test(IDENTIFER)) {
-			debug("IdentNode");
-			debug(current.getValue().toString());
 			node = new IdentNode(current.getValue());
 			next();
-			debug(current.toString());
 		}
 		return node;
 	}
