@@ -245,6 +245,7 @@ public class Parser {
 			elsif = Elsif();
 		}
 		if (test(ELSE)) {
+			require(ELSE);
 			statementSeq2 = StatementSequence();
 		}
 		require(END);
