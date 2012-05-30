@@ -14,7 +14,7 @@ import haw.ci.lib.nodes.AbstractNode;
 
 public class Application {
 	public static void main(String[] args) throws IOException {
-		Reader fileReader = new FileReader(new File("./example5.ob"));
+		Reader fileReader = new FileReader(new File("./test1-statements.ob"));
 		ITokenStream tokenStream = new Tokenizer(fileReader);
 		Parser parser = new Parser(tokenStream);
 		AbstractNode node;

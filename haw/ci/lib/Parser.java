@@ -283,11 +283,13 @@ public class Parser {
 	}
 //RepeatStatement = ÕREPEATÕ StatementSequence ÕUNTILÕ Expression.
 	private AbstractNode RepeatStatement() throws ParserAcceptError {
+		StatementSequenceNode statementSequence;
+		AbstractNode expression;
 		require(REPEAT);
-		StatementSequence();
+		statementSequence = StatementSequence();
 		require(UNTIL);
-		Expression();
-		return new EmptyNode();
+		expression = Expression();
+		return new RepeatStatementNode(statementSequence, expression);
 	}
 //Statement = [Assignment | ProcedureCall | IfStatement | ÕPRINTÕ Expression | WhileStatement | RepeatStatement].
 	private AbstractNode Statement() throws ParserAcceptError {
@@ -309,7 +311,7 @@ public class Parser {
 			return WhileStatement();
 		}
 		if (test(REPEAT)) {
-			return null;
+			return RepeatStatement();
 		}
 		return null; // Throw Statement Missing
 	}
