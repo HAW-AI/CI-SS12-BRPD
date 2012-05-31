@@ -4,6 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActualParametersNode extends AbstractNode {
+	
+	@Override
+	public String toString() {
+		String output = "ActualParametersNode";
+		
+		for (AbstractNode node : nodes) {
+			output += "\n" + node.toString();
+		}
+		return  output;
+	}
+
 	private static final long serialVersionUID = 4324447615915518226L;
 
 	private List<AbstractNode> nodes = new ArrayList<AbstractNode>();

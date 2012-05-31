@@ -1,14 +1,21 @@
 package haw.ci.lib.descriptor;
 
 public class SimpleTypeDescriptor implements TypeDescriptor {
-
-	// integer | string | boolean | . . .
-	// not sure what to do here
+		public enum Type{
+			BOOLEAN, INTEGER, STRING;
+		}
+		private Type type;
 	
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+		public SimpleTypeDescriptor(Type type) {
+			this.type=type;
+		}
+	
+		@Override
+		public int size() {
+			return 1;
+		}
+	
+		public Type type(){
+			return this.type;
+		}
 }

@@ -3,14 +3,15 @@ package haw.ci.lib.descriptor;
 public class VariableDescriptor implements Descriptor {
 
 	private TypeDescriptor type;
+	private int address;
 
-	public int address() {
-		return 0;
+	public VariableDescriptor(TypeDescriptor type, int address) {
+		this.type = type;
+		this.address = address;
 	}
 	
-	// Dont know what this is supposed to mean
-	public boolean isvarpar() {
-		return false;
+	public int address() {
+		return address;
 	}
 	
 	public TypeDescriptor type() {
@@ -19,8 +20,7 @@ public class VariableDescriptor implements Descriptor {
 	
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return -1;
 	}
 
 }

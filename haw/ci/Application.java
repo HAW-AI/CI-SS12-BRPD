@@ -24,7 +24,7 @@ public class Application {
 			
 			SymTaG.build(node);
 		} catch (ParserAcceptError e) {
-			System.out.println(String.format("Matrue Failure (cur: %s, nex: %s)", parser.getCurrent(),parser.getNext()));
+			System.out.println(String.format("Failure (cur: %s, nex: %s)", parser.getCurrent(),parser.getNext()));
 			e.printStackTrace();
 		}
 	}

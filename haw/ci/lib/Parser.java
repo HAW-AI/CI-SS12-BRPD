@@ -413,6 +413,7 @@ public class Parser {
 	private PrintNode Print() throws ParserAcceptError {
 		require(PRINT);
 		PrintNode node;
+		debug("in print");
 		node = new PrintNode(Expression());
 		return node;
 	}
@@ -420,14 +421,14 @@ public class Parser {
 	private StatementSequenceNode StatementSequence() throws ParserAcceptError {
 		StatementSequenceNode statementSequence = new StatementSequenceNode();
 		statementSequence.add(Statement());
-		while (test(SEMICOLON)) {
+ 		while (test(SEMICOLON)) {
 			require(SEMICOLON);
 			AbstractNode nextStatement = Statement();
 			if (nextStatement != null) {
 				statementSequence.add(nextStatement);
 			}
 		}
-		return statementSequence;
+ 		return statementSequence;
 	}
 //Selector = {Õ.Õ ident | Õ[Õ Expression Õ]Õ}.
 	private SelectorNode Selector() throws ParserAcceptError {
@@ -446,10 +447,15 @@ public class Parser {
 	}
 //Factor = ident Selector | integer | string | Read | Õ(Õ Expression Õ)Õ.
 	private AbstractNode Factor() throws ParserAcceptError {
-		AbstractNode node = new EmptyNode();
+		AbstractNode node = null;
 		switch(current.getToken()) {
 		case IDENTIFER:
-			node = Ident();
+			if(testNext(DOT) || testNext(BRACE_SQUARE_OPEN)) {
+				next();
+				node = Selector();
+			} else {
+				node = Ident();
+			}
 			break;
 		case INTEGER:
 			node = new IntegerNode(Integer.valueOf(current.getValue()));
@@ -461,7 +467,7 @@ public class Parser {
 			break;
 		case BRACE_ROUND_OPEN:
 			next();
-			Expression();
+			node = Expression();
 			require(BRACE_ROUND_CLOSE);
 			break;
 		}
@@ -496,6 +502,8 @@ public class Parser {
 //Term = Factor {(Õ*Õ | Õ/Õ) Factor}.
 	private AbstractNode Term() throws ParserAcceptError {
 		AbstractNode node = Factor();
+		debug("in term");
+		debug(node.toString());
 
 		if (test(MATH_MUL) || test(MATH_DIV)) {
 			next();
@@ -512,6 +520,8 @@ public class Parser {
 			node = new NegatedNode(Term());
 		} else {
 			node = Term();
+			debug("in simple expression else");
+			debug(node.toString());
 		}
 
 		if (test(MATH_ADD) || test(MATH_SUB)) {
@@ -526,7 +536,7 @@ public class Parser {
 //Expression = SimpleExpression [(Õ=Õ | Õ#Õ | Õ<Õ | Õ<=Õ | Õ>Õ | Õ>=Õ) SimpleExpression].
 	private AbstractNode Expression() throws ParserAcceptError {
 		AbstractNode node;
-		debug("before simpleexp");
+  		debug("before simpleexp");
 		node = SimpleExpression();
 		debug("after simpleexp");
 		while (test(EQUAL) || test(NOT_EQUAL) || test(LESS) || test(LESS_EQUAL) || test(MORE) || test(MORE_EQUAL)) {

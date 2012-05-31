@@ -1,22 +1,25 @@
 package haw.ci.lib.descriptor;
 
-import haw.ci.lib.nodes.TypeNode;
-
 public class ArrayDescriptor implements TypeDescriptor {
 
-	private TypeNode type;
+	private TypeDescriptor type;
+	private int numberOfElements;
+	
+	public ArrayDescriptor(int numberOfElements, TypeDescriptor type) {
+		this.numberOfElements = numberOfElements;
+		this.type  = type;
+	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return numberOfElements() * type.size();
 	}
 	
 	public int numberOfElements() {
-		return 0;
+		return numberOfElements;
 	}
 	
-	public TypeNode type() {
+	public TypeDescriptor type() {
 		return type;
 	}
 
