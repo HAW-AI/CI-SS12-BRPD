@@ -1,9 +1,82 @@
 package haw.ci.lib;
 
-import static haw.ci.lib.Tokens.*;
-import haw.ci.lib.nodes.*;
+import static haw.ci.lib.Tokens.ARRAY;
+import static haw.ci.lib.Tokens.ASSIGN;
+import static haw.ci.lib.Tokens.BEGIN;
+import static haw.ci.lib.Tokens.BRACE_ROUND_CLOSE;
+import static haw.ci.lib.Tokens.BRACE_ROUND_OPEN;
+import static haw.ci.lib.Tokens.BRACE_SQUARE_CLOSE;
+import static haw.ci.lib.Tokens.BRACE_SQUARE_OPEN;
+import static haw.ci.lib.Tokens.COLON;
+import static haw.ci.lib.Tokens.COMMA;
+import static haw.ci.lib.Tokens.CONST;
+import static haw.ci.lib.Tokens.DO;
+import static haw.ci.lib.Tokens.DOT;
+import static haw.ci.lib.Tokens.ELSE;
+import static haw.ci.lib.Tokens.ELSIF;
+import static haw.ci.lib.Tokens.END;
+import static haw.ci.lib.Tokens.EQUAL;
+import static haw.ci.lib.Tokens.IDENTIFER;
+import static haw.ci.lib.Tokens.IF;
+import static haw.ci.lib.Tokens.LESS;
+import static haw.ci.lib.Tokens.LESS_EQUAL;
+import static haw.ci.lib.Tokens.MATH_ADD;
+import static haw.ci.lib.Tokens.MATH_DIV;
+import static haw.ci.lib.Tokens.MATH_MUL;
+import static haw.ci.lib.Tokens.MATH_SUB;
+import static haw.ci.lib.Tokens.MODULE;
+import static haw.ci.lib.Tokens.MORE;
+import static haw.ci.lib.Tokens.MORE_EQUAL;
+import static haw.ci.lib.Tokens.NOT_EQUAL;
+import static haw.ci.lib.Tokens.OF;
+import static haw.ci.lib.Tokens.PRINT;
+import static haw.ci.lib.Tokens.PROCEDURE;
+import static haw.ci.lib.Tokens.READ;
+import static haw.ci.lib.Tokens.RECORD;
+import static haw.ci.lib.Tokens.REPEAT;
+import static haw.ci.lib.Tokens.SEMICOLON;
+import static haw.ci.lib.Tokens.STRING;
+import static haw.ci.lib.Tokens.THEN;
+import static haw.ci.lib.Tokens.TYPE;
+import static haw.ci.lib.Tokens.UNTIL;
+import static haw.ci.lib.Tokens.VAR;
+import static haw.ci.lib.Tokens.WHILE;
+import haw.ci.lib.nodes.AbstractNode;
+import haw.ci.lib.nodes.ActualParametersNode;
+import haw.ci.lib.nodes.ArrayTypeNode;
+import haw.ci.lib.nodes.AssignmentNode;
+import haw.ci.lib.nodes.ConstListNode;
+import haw.ci.lib.nodes.ConstNode;
+import haw.ci.lib.nodes.DeclarationNode;
+import haw.ci.lib.nodes.EmptyNode;
+import haw.ci.lib.nodes.ExpressionNode;
+import haw.ci.lib.nodes.FieldListNode;
+import haw.ci.lib.nodes.FormalParameterNode;
+import haw.ci.lib.nodes.FormalParameterSectionNode;
+import haw.ci.lib.nodes.IdentListNode;
+import haw.ci.lib.nodes.IdentNode;
+import haw.ci.lib.nodes.IfStatementNode;
+import haw.ci.lib.nodes.IntegerNode;
+import haw.ci.lib.nodes.ModuleNode;
+import haw.ci.lib.nodes.NegatedNode;
+import haw.ci.lib.nodes.PrintNode;
+import haw.ci.lib.nodes.ProcedureBodyNode;
+import haw.ci.lib.nodes.ProcedureCallNode;
+import haw.ci.lib.nodes.ProcedureHeadingNode;
+import haw.ci.lib.nodes.ProcedureNode;
+import haw.ci.lib.nodes.ReadNode;
+import haw.ci.lib.nodes.RecordTypeNode;
+import haw.ci.lib.nodes.RepeatStatementNode;
+import haw.ci.lib.nodes.SelectorNode;
+import haw.ci.lib.nodes.StatementNode;
+import haw.ci.lib.nodes.StatementSequenceNode;
+import haw.ci.lib.nodes.StringNode;
+import haw.ci.lib.nodes.TypeNode;
+import haw.ci.lib.nodes.VarListNode;
+import haw.ci.lib.nodes.VarNode;
+import haw.ci.lib.nodes.WhileStatementNode;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
@@ -41,22 +114,28 @@ public class Parser {
 		IdentListNode identList = IdentList();
 		FieldListNode node = null;
 
-		if (require(COLON)) {
+		if (test(COLON)) {
+			require(COLON);
 			node = new FieldListNode(identList, Type());
 		}
-		// TODO should be some error
 		return node;
 	}
 //RecordType = ÕRECORDÕ FieldList {Õ;Õ FieldList} ÕENDÕ.
 	private RecordTypeNode RecordType() throws ParserAcceptError {
-		// TODO throw some error if not record
 		require(RECORD);
-		List<FieldListNode> fieldLists = Arrays.asList(FieldList());
-
-		while(require(SEMICOLON)) {
-			fieldLists.add(FieldList());
+		List<FieldListNode> fieldLists = new ArrayList<FieldListNode>();
+		FieldListNode fieldList = FieldList();
+		if (fieldList != null) {
+			fieldLists.add(fieldList);
 		}
-		// TODO throw some error if not end
+
+		while(test(SEMICOLON)) {
+			require(SEMICOLON);
+			fieldList = FieldList();
+			if(fieldList != null) {
+				fieldLists.add(FieldList());
+			}
+		}
 		require(END);
 
 		return new RecordTypeNode(fieldLists);
@@ -208,7 +287,6 @@ public class Parser {
 	}
 //Assignment = ident Selector Õ:=Õ Expression.
 	private AssignmentNode Assignment() throws ParserAcceptError {
-		AssignmentNode node;
 		IdentNode ident = Ident();
 		SelectorNode selector = Selector();
 		require(ASSIGN);
@@ -235,7 +313,7 @@ public class Parser {
 	}
 //IfStatement = ÕIFÕ Expression ÕTHENÕ StatementSequence {ÕELSIFÕ Expression ÕTHENÕ StatementSequence} [ÕELSEÕ StatementSequence] ÕENDÕ.
 	private IfStatementNode IfStatement() throws ParserAcceptError {
-		AbstractNode node, expression = null, elsif = null;
+		AbstractNode expression = null, elsif = null;
 		StatementSequenceNode statementSeq1 = null, statementSeq2 = null;
 		if (require(IF)) {
 			expression = Expression();
