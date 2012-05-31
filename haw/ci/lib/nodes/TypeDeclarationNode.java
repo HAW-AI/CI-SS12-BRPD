@@ -1,12 +1,12 @@
 package haw.ci.lib.nodes;
 
-public class ArrayTypeNode extends TypeNode {
-	private static final long serialVersionUID = -104260727543163557L;
-	private AbstractNode indexExpression;
+public class TypeDeclarationNode extends AbstractNode {
+	private static final long serialVersionUID = -1319709422716461088L;
+	private IdentNode ident;
 	private TypeNode type;
-
-	public ArrayTypeNode(AbstractNode indexExpression, TypeNode type) {
-		this.indexExpression = indexExpression;
+	
+	public TypeDeclarationNode(IdentNode ident, TypeNode type) {
+		this.ident = ident;
 		this.type = type;
 	}
 
@@ -14,8 +14,7 @@ public class ArrayTypeNode extends TypeNode {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((indexExpression == null) ? 0 : indexExpression.hashCode());
+		result = prime * result + ((ident == null) ? 0 : ident.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
@@ -28,11 +27,11 @@ public class ArrayTypeNode extends TypeNode {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ArrayTypeNode other = (ArrayTypeNode) obj;
-		if (indexExpression == null) {
-			if (other.indexExpression != null)
+		TypeDeclarationNode other = (TypeDeclarationNode) obj;
+		if (ident == null) {
+			if (other.ident != null)
 				return false;
-		} else if (!indexExpression.equals(other.indexExpression))
+		} else if (!ident.equals(other.ident))
 			return false;
 		if (type == null) {
 			if (other.type != null)
@@ -41,6 +40,10 @@ public class ArrayTypeNode extends TypeNode {
 			return false;
 		return true;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "TypeDeclarationNode [ident=" + ident + ", type=" + type + "]";
+	}
 	
 }

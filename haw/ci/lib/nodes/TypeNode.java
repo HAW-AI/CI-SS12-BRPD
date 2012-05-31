@@ -1,9 +1,7 @@
 package haw.ci.lib.nodes;
 
-public class TypeNode extends AbstractNode {
-	private static final long serialVersionUID = 6427346395274523870L;
+public abstract class TypeNode extends AbstractNode {
 
-	public TypeNode(String value) {
-		// TODO Auto-generated constructor stub
-	}
+	private static final long serialVersionUID = 9078726397585347046L;
+	
 }

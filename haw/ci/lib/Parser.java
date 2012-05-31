@@ -55,6 +55,7 @@ import haw.ci.lib.nodes.FormalParameterNode;
 import haw.ci.lib.nodes.FormalParameterSectionNode;
 import haw.ci.lib.nodes.IdentListNode;
 import haw.ci.lib.nodes.IdentNode;
+import haw.ci.lib.nodes.IdentifierTypeNode;
 import haw.ci.lib.nodes.IfStatementNode;
 import haw.ci.lib.nodes.IntegerNode;
 import haw.ci.lib.nodes.ModuleNode;
@@ -71,6 +72,7 @@ import haw.ci.lib.nodes.SelectorNode;
 import haw.ci.lib.nodes.StatementNode;
 import haw.ci.lib.nodes.StatementSequenceNode;
 import haw.ci.lib.nodes.StringNode;
+import haw.ci.lib.nodes.TypeDeclarationNode;
 import haw.ci.lib.nodes.TypeNode;
 import haw.ci.lib.nodes.VarListNode;
 import haw.ci.lib.nodes.VarNode;
@@ -100,7 +102,7 @@ public class Parser {
 		return identList;
 	}
 //ArrayType = ÕARRAYÕ Õ[Õ IndexExpression Õ]Õ ÕOFÕ Type.
-	private ArrayTypeNode Arraytype() throws ParserAcceptError {
+	private TypeNode Arraytype() throws ParserAcceptError {
 		require(ARRAY);
 		require(BRACE_SQUARE_OPEN);
 		AbstractNode node = IndexExpression();
@@ -121,7 +123,7 @@ public class Parser {
 		return node;
 	}
 //RecordType = ÕRECORDÕ FieldList {Õ;Õ FieldList} ÕENDÕ.
-	private RecordTypeNode RecordType() throws ParserAcceptError {
+	private TypeNode RecordType() throws ParserAcceptError {
 		require(RECORD);
 		List<FieldListNode> fieldLists = new ArrayList<FieldListNode>();
 		FieldListNode fieldList = FieldList();
@@ -145,14 +147,14 @@ public class Parser {
 		TypeNode type = null;
 		switch (current.getToken()) {
 		case IDENTIFER:
-			type = new TypeNode(current.getValue());
+			type = new IdentifierTypeNode(current.getValue());
 			next();
 			break;
 		case ARRAY:
-			Arraytype();
+			type = Arraytype();
 			break;
 		case RECORD:
-			RecordType();
+			type = RecordType();
 			break;
 		}
 		return type;
@@ -221,7 +223,14 @@ public class Parser {
 			declaration.add(Const());
 		}
 		if (test(TYPE)) {
-			declaration.add(Type());
+			require(TYPE);
+			while(test(IDENTIFER)) {
+				IdentNode ident = Ident();
+				require(EQUAL);
+				TypeNode type = Type();
+				require(SEMICOLON);
+				declaration.add(new TypeDeclarationNode(ident, type));
+			}
 		}
 		if (test(VAR)) {
 			declaration.add(Var());
