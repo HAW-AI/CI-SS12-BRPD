@@ -41,5 +41,17 @@ public class AssignmentNode extends AbstractNode {
 			return false;
 		}
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, "AssignmentNode\n");
+		if(ident != null) {
+		    result += ident.toString(indentation+1) + "\n";
+		}
+		if(expression != null) {
+		    result += expression.toString(indentation+1);
+		}
+	    return result;
+	}
 
 }

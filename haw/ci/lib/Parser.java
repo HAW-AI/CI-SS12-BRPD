@@ -181,7 +181,6 @@ public class Parser {
 	}
 //ProcedureHeading = ÕPROCEDUREÕ ident Õ(Õ [FormalParameters] Õ)Õ.
 	private ProcedureHeadingNode ProcedureHeading() throws ParserAcceptError {
-		debug("---------------------- ProcedureHeading");
 		require(PROCEDURE);
 		IdentNode ident = Ident();
 		require(BRACE_ROUND_OPEN);
@@ -191,22 +190,16 @@ public class Parser {
 	}
 //ProcedureBody = Declarations ÕBEGINÕ StatementSequence ÕENDÕ.
 	private ProcedureBodyNode ProcedureBody() throws ParserAcceptError {
-		debug("---------------------- ProcedureBody");
-		debug("proc body declarations");
 		DeclarationNode declaration = Declarations();
 		require(BEGIN);
-		debug("proc body statements");
 		StatementSequenceNode statementSequence = StatementSequence();
 		require(END);
 		return new ProcedureBodyNode(declaration, statementSequence);
 	}
 //ProcedureDeclaration = ProcedureHeading Õ;Õ ProcedureBody ident.
 	private ProcedureNode ProcedureDeclatation() throws ParserAcceptError {
-		debug("---------------------- ProcedureDeclaration");
-		debug("get proc head");
 		ProcedureHeadingNode procedureHeading = ProcedureHeading();
 		require(SEMICOLON);
-		debug("get proc body");
 		ProcedureBodyNode procedureBody = ProcedureBody();
 		require(IDENTIFER);
 		require(SEMICOLON);
@@ -281,13 +274,10 @@ public class Parser {
 //Module = ÕMODULEÕ ident Õ;Õ Declarations ÕBEGINÕ StatementSequence ÕENDÕ ident Õ.Õ.
 	private AbstractNode Module() throws ParserAcceptError {
 		require(MODULE);
-		debug("ident");
 		IdentNode ident = Ident();
 		require(SEMICOLON);
-		debug("declaration");
 		DeclarationNode declaration = Declarations();
 		require(BEGIN);
-		debug("statementSequence");
 		StatementSequenceNode statementSequence = StatementSequence();
 		require(END);
 		require(IDENTIFER);
@@ -296,13 +286,9 @@ public class Parser {
 	}
 //Assignment = ident Selector Õ:=Õ Expression.
 	private AssignmentNode Assignment() throws ParserAcceptError {
-		debug("assign left");
 		IdentNode ident = Ident();
-		debug("after identifier");
 		SelectorNode selector = Selector();
-		debug("after selector");
 		require(ASSIGN);
-		debug("assign right");
 
 		return new AssignmentNode(ident, selector, Expression());
 	}
@@ -413,7 +399,6 @@ public class Parser {
 	private PrintNode Print() throws ParserAcceptError {
 		require(PRINT);
 		PrintNode node;
-		debug("in print");
 		node = new PrintNode(Expression());
 		return node;
 	}
@@ -502,8 +487,6 @@ public class Parser {
 //Term = Factor {(Õ*Õ | Õ/Õ) Factor}.
 	private AbstractNode Term() throws ParserAcceptError {
 		AbstractNode node = Factor();
-		debug("in term");
-		debug(node.toString());
 
 		if (test(MATH_MUL) || test(MATH_DIV)) {
 			next();
@@ -520,8 +503,6 @@ public class Parser {
 			node = new NegatedNode(Term());
 		} else {
 			node = Term();
-			debug("in simple expression else");
-			debug(node.toString());
 		}
 
 		if (test(MATH_ADD) || test(MATH_SUB)) {
@@ -536,16 +517,12 @@ public class Parser {
 //Expression = SimpleExpression [(Õ=Õ | Õ#Õ | Õ<Õ | Õ<=Õ | Õ>Õ | Õ>=Õ) SimpleExpression].
 	private AbstractNode Expression() throws ParserAcceptError {
 		AbstractNode node;
-  		debug("before simpleexp");
 		node = SimpleExpression();
-		debug("after simpleexp");
 		while (test(EQUAL) || test(NOT_EQUAL) || test(LESS) || test(LESS_EQUAL) || test(MORE) || test(MORE_EQUAL)) {
 			Tokens token = current.getToken();
 			next();
-			debug("in simpleexp while");
 			node = new ExpressionNode(token, node, SimpleExpression());
 		}
-		debug(node.toString());
 		return node;
 	}
 //IndexExpression = integer | ConstIdent.

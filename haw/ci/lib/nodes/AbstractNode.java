@@ -7,10 +7,6 @@ import java.io.Serializable;
 public abstract class AbstractNode implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Object symbolTable;
-
-	public String toString() {
-		return this.getClass().getName();
-	}
 	
 	/*
 	 * Zu klärende Fragen:
@@ -39,6 +35,21 @@ public abstract class AbstractNode implements Serializable {
 	 * declare variables or create child table
 	 */
 //	protected abstract void buildSymbolTable();
+	
+	protected String toString(int indentation, String result) {
+        String indentedString = "";
+        for (int i = 0; i < indentation; ++i) {
+            indentedString += " ";
+        }    
+        return result.replaceAll("^", indentedString);
+    }
+	
+	@Override
+    public String toString() {
+        return toString(0);
+    }
+
+	public abstract String toString(int indentation);
 	
 //	protected abstract String generateCode();
 	

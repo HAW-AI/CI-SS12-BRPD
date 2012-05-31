@@ -16,4 +16,14 @@ public class ConstListNode extends AbstractNode {
 	public List<ConstNode> getList() {
 		return nodes;
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String output = toString(indentation,"ConstListNode\n");
+		
+		for (ConstNode node : nodes) {
+			output += node.toString(indentation+1) + "\n";
+		}
+		return  output;
+	}
 }

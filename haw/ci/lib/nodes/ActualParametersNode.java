@@ -6,11 +6,11 @@ import java.util.List;
 public class ActualParametersNode extends AbstractNode {
 	
 	@Override
-	public String toString() {
-		String output = "ActualParametersNode";
+	public String toString(int indentation) {
+		String output = "ActualParametersNode\n";
 		
 		for (AbstractNode node : nodes) {
-			output += "\n" + node.toString();
+			output += node.toString(indentation+1) + "\n";
 		}
 		return  output;
 	}

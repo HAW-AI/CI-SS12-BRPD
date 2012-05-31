@@ -12,4 +12,14 @@ public class DeclarationNode extends AbstractNode {
 		nodes.add(node);
 	}
 
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		
+		for (AbstractNode node : nodes) {
+			result += node.toString(indentation+1) + "\n";
+		}
+		
+	    return result;
+	}
 }

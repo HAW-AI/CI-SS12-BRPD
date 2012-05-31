@@ -41,6 +41,17 @@ public class ArrayTypeNode extends TypeNode {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString(int indentation) {
+		String result = "ArrayTypeNode\n";
+		if(indexExpression != null)
+		         result += indexExpression.toString(indentation+1) + "\n";
+		if(type != null)
+		result += type.toString(indentation+1) + "\n";
+		
+		return result;
+	}
 	
 	
 }
