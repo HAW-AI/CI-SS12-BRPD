@@ -447,7 +447,7 @@ public class Parser {
 			node = Ident();
 			break;
 		case INTEGER:
-			node = new IntegerNode(Integer.getInteger(current.getValue()));
+			node = new IntegerNode(Integer.valueOf(current.getValue()));
 			next();
 			break;
 		// TODO: String
