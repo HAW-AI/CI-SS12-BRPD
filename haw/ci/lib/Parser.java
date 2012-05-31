@@ -296,9 +296,13 @@ public class Parser {
 	}
 //Assignment = ident Selector Õ:=Õ Expression.
 	private AssignmentNode Assignment() throws ParserAcceptError {
+		debug("assign left");
 		IdentNode ident = Ident();
+		debug("after identifier");
 		SelectorNode selector = Selector();
+		debug("after selector");
 		require(ASSIGN);
+		debug("assign right");
 
 		return new AssignmentNode(ident, selector, Expression());
 	}
@@ -417,6 +421,7 @@ public class Parser {
 		StatementSequenceNode statementSequence = new StatementSequenceNode();
 		statementSequence.add(Statement());
 		while (test(SEMICOLON)) {
+			require(SEMICOLON);
 			AbstractNode nextStatement = Statement();
 			if (nextStatement != null) {
 				statementSequence.add(nextStatement);
@@ -521,13 +526,16 @@ public class Parser {
 //Expression = SimpleExpression [(Õ=Õ | Õ#Õ | Õ<Õ | Õ<=Õ | Õ>Õ | Õ>=Õ) SimpleExpression].
 	private AbstractNode Expression() throws ParserAcceptError {
 		AbstractNode node;
+		debug("before simpleexp");
 		node = SimpleExpression();
+		debug("after simpleexp");
 		while (test(EQUAL) || test(NOT_EQUAL) || test(LESS) || test(LESS_EQUAL) || test(MORE) || test(MORE_EQUAL)) {
 			Tokens token = current.getToken();
 			next();
+			debug("in simpleexp while");
 			node = new ExpressionNode(token, node, SimpleExpression());
 		}
-
+		debug(node.toString());
 		return node;
 	}
 //IndexExpression = integer | ConstIdent.
