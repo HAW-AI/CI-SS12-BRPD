@@ -10,5 +10,19 @@ public class ProcedureBodyNode extends AbstractNode {
 		this.declaration = declaration;
 		this.statementSequence = statementSequence;
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(statementSequence != null) {
+		    result += statementSequence.toString() + "\n";
+		}
+		if(declaration != null) {
+		    result += declaration.toString() + "\n";
+		}
+
+	    return result;
+	}
+
 
 }

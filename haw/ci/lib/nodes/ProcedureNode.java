@@ -10,5 +10,19 @@ public class ProcedureNode extends AbstractNode {
 		this.procedureHeading = procedureHeading;
 		this.procedureBody = procedureBody;
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(procedureHeading != null) {
+		    result += procedureHeading.toString() + "\n";
+		}
+		if(procedureBody != null) {
+		    result += procedureBody.toString() + "\n";
+		}
+
+	    return result;
+	}
+
 
 }

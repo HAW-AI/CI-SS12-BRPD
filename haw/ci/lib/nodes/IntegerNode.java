@@ -32,4 +32,14 @@ public class IntegerNode extends AbstractNode {
 		}
 	}
 
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(value != null) {
+		    result += value.toString() + "\n";
+		}
+
+	    return result;
+	}
+
 }

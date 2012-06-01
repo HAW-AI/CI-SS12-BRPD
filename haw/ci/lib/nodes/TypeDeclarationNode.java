@@ -42,8 +42,16 @@ public class TypeDeclarationNode extends AbstractNode {
 	}
 
 	@Override
-	public String toString() {
-		return "TypeDeclarationNode [ident=" + ident + ", type=" + type + "]";
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(ident != null) {
+		    result += ident.toString() + "\n";
+		}
+		if(type != null) {
+		    result += type.toString() + "\n";
+		}
+
+	    return result;
 	}
 	
 }

@@ -19,4 +19,15 @@ public class StatementSequenceNode extends AbstractNode {
 	public void add(AbstractNode abstractNode) {
 		nodes.add(abstractNode);
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String output = toString(indentation, this.getClass().getName() + "\n");
+		
+		for (AbstractNode node : nodes) {
+			output += node.toString(indentation+1) + "\n";
+		}
+		return  output;
+	}
+
 }

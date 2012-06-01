@@ -47,6 +47,21 @@ public class ExpressionNode extends AbstractNode {
 		}
 	}
 
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(binOpToken != null) {
+		    result += binOpToken.toString() + "\n";
+		}
+		if(left != null) {
+		    result += left.toString(indentation+1);
+		}
+		if(right != null) {
+		    result += right.toString(indentation+1);
+		}
+	    return result;
+	}
+
 
 	
 }

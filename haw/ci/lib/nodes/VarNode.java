@@ -9,4 +9,18 @@ public class VarNode extends AbstractNode {
 		this.identList = identList;
 		this.type = type;
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(identList != null) {
+		    result += identList.toString() + "\n";
+		}
+		if(type != null) {
+		    result += type.toString() + "\n";
+		}
+
+	    return result;
+	}
+
 }

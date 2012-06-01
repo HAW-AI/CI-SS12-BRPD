@@ -32,8 +32,13 @@ public class IdentNode extends AbstractNode {
 		}
 	}
 	
-	public String toString() {
-		return this.value;
-	}
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(value != null) {
+		    result += value.toString() + "\n";
+		}
 
+	    return result;
+	}
 }

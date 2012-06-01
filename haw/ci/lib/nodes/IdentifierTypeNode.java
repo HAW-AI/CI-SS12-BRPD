@@ -35,8 +35,13 @@ public class IdentifierTypeNode extends TypeNode {
 	}
 
 	@Override
-	public String toString() {
-		return "IdentifierTypeNode [identifier=" + identifier + "]";
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(identifier != null) {
+		    result += identifier.toString() + "\n";
+		}
+
+	    return result;
 	}
 	
 }

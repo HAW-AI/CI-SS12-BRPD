@@ -7,4 +7,15 @@ public class StatementNode extends AbstractNode {
 	public StatementNode(AbstractNode node) {
 		this.node = node;
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(node != null) {
+		    result += node.toString() + "\n";
+		}
+
+	    return result;
+	}
+
 }

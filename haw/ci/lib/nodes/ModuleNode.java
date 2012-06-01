@@ -25,7 +25,20 @@ public class ModuleNode extends AbstractNode {
 		return ident;
 	}
 
-	public String toString() {
-		return String.format("%s(%s){%s}", getClass().getName(), getIdent(), getStatementSequence());
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(ident != null) {
+		    result += ident.toString(indentation+1);
+		}
+		if(declaration != null) {
+		    result += declaration.toString(indentation+1);
+		}
+		if(statementSequence != null) {
+		    result += statementSequence.toString(indentation+1);
+		}
+
+	    return result;
 	}
+
 }

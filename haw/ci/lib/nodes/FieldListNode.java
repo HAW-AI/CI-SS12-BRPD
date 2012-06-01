@@ -38,4 +38,16 @@ public class FieldListNode extends AbstractNode {
 			return false;
 		}
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(identList != null) {
+		    result += identList.toString() + "\n";
+		}
+		if(type != null) {
+		    result += type.toString(indentation+1);
+		}
+	    return result;
+	}
 }

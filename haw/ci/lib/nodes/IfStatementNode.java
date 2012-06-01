@@ -56,4 +56,22 @@ public class IfStatementNode extends AbstractNode {
 			return false;
 		return true;
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(expression != null) {
+		    result += expression.toString() + "\n";
+		}
+		if(statementSeq1 != null) {
+		    result += statementSeq1.toString(indentation+1);
+		}
+		if(elsif != null) {
+		    result += elsif.toString(indentation+1);
+		}
+		if(statementSeq2 != null) {
+		    result += statementSeq2.toString(indentation+1);
+		}
+	    return result;
+	}
 }

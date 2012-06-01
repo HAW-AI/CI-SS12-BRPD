@@ -33,4 +33,18 @@ public class RecordTypeNode extends TypeNode {
 			return false;
 		}
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String output = toString(indentation, this.getClass().getName() + "\n");
+		if (fieldsList != null) {
+			for (AbstractNode node : fieldsList) {
+				if (node != null) {
+					output += node.toString(indentation+1) + "\n";
+				}
+			}
+		}
+		return  output;
+	}
+
 }

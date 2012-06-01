@@ -6,9 +6,6 @@ public class SelectorNode extends AbstractNode {
 	private SelectorNode selector;
 	private AbstractNode expression;
 	
-	public SelectorNode() {
-	}
-	
 	public SelectorNode(IdentNode ident, SelectorNode selector) {
 		this.ident = ident;
 		this.selector = selector;
@@ -42,5 +39,19 @@ public class SelectorNode extends AbstractNode {
 			return false;
 		}
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(ident != null) {
+		    result += ident.toString() + "\n";
+		}
+		if(selector != null) {
+		    result += selector.toString() + "\n";
+		}
+
+	    return result;
+	}
+
 
 }

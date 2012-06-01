@@ -14,11 +14,6 @@ public class ReadNode extends AbstractNode {
     }
 
     @Override
-	public String toString() {
-        return value.toString();
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
@@ -43,4 +38,14 @@ public class ReadNode extends AbstractNode {
         return result;
     }
 	
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(value != null) {
+		    result += value.toString() + "\n";
+		}
+
+	    return result;
+	}
+
 }

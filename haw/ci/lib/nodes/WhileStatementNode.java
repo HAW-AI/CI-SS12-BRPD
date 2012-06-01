@@ -38,4 +38,17 @@ public class WhileStatementNode extends AbstractNode {
 			return false;
 		}
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(expression != null) {
+		    result += expression.toString() + "\n";
+		}
+		if(statementSequence != null) {
+		    result += statementSequence.toString() + "\n";
+		}
+
+	    return result;
+	}
 }

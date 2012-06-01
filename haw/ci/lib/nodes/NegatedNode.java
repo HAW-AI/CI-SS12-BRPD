@@ -30,4 +30,14 @@ public class NegatedNode extends AbstractNode {
 		}
 	}
 	
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(node != null) {
+		    result += node.toString() + "\n";
+		}
+
+	    return result;
+	}
+
 }

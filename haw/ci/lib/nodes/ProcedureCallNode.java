@@ -41,9 +41,16 @@ public class ProcedureCallNode extends AbstractNode {
 	}
 
 	@Override
-	public String toString() {
-		return "ProcedureCallNode [ident=" + ident + ", actualParameters="
-				+ actualParameters + "]";
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(ident != null) {
+		    result += ident.toString() + "\n";
+		}
+		if(actualParameters != null) {
+		    result += actualParameters.toString() + "\n";
+		}
+
+	    return result;
 	}
 
 }

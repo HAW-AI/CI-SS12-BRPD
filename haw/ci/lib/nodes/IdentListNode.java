@@ -34,4 +34,15 @@ public class IdentListNode extends AbstractNode {
 	public void add(IdentNode node) {
 		nodes.add(node);
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String output = toString(indentation, this.getClass().getName() + "\n");
+		
+		for (AbstractNode node : nodes) {
+			output += node.toString(indentation+1) + "\n";
+		}
+		return  output;
+	}
+
 }

@@ -7,7 +7,7 @@ public class ActualParametersNode extends AbstractNode {
 	
 	@Override
 	public String toString(int indentation) {
-		String output = "ActualParametersNode\n";
+		String output = toString(indentation, this.getClass().getName() + "\n");
 		
 		for (AbstractNode node : nodes) {
 			output += node.toString(indentation+1) + "\n";

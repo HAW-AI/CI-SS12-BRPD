@@ -20,7 +20,7 @@ public class Application {
 		AbstractNode node;
 		try {
 			node = parser.build();
-			System.out.println(node);
+			System.out.println(node.toString());
 			
 			SymTaG.build(node);
 		} catch (ParserAcceptError e) {

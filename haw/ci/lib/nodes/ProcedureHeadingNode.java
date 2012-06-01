@@ -11,4 +11,18 @@ public class ProcedureHeadingNode extends AbstractNode {
 		this.ident = ident;
 		this.formalParameter = formalParameter;
 	}
+	
+	@Override
+	public String toString(int indentation) {
+		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(ident != null) {
+		    result += ident.toString() + "\n";
+		}
+		if(formalParameter != null) {
+		    result += formalParameter.toString() + "\n";
+		}
+
+	    return result;
+	}
+
 }
