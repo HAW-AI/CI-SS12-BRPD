@@ -7,28 +7,30 @@ public class IdentListNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	private final List<IdentNode> nodes = new ArrayList<IdentNode>();
 
+
+	@Override
 	public int hashCode() {
-		final int prime = 43;
-        int result = 1;
-        result = prime * result + ((nodes == null) ? 0 : nodes.hashCode());
-        return result;
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((nodes == null) ? 0 : nodes.hashCode());
+		return result;
 	}
 
-	public boolean equals(Object object) {
-		if (this == object) { return true; }
-		if (object == null) { return false; }
-		if (object instanceof IdentNode) {
-			IdentListNode otherNode = (IdentListNode) object;
-			if (nodes == null && otherNode.nodes != null) {
-				return false;
-			} else if (!nodes.equals(otherNode.nodes)) {
-				return false;
-			} else {
-				return true;
-			}
-		} else {
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
+		if (getClass() != obj.getClass())
+			return false;
+		IdentListNode other = (IdentListNode) obj;
+		if (nodes == null) {
+			if (other.nodes != null)
+				return false;
+		} else if (!nodes.equals(other.nodes))
+			return false;
+		return true;
 	}
 
 	public void add(IdentNode node) {

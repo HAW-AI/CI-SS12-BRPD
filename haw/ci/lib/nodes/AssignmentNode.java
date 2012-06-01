@@ -12,36 +12,49 @@ public class AssignmentNode extends AbstractNode {
 		this.expression = expression;
 	}
 	
+	@Override
 	public int hashCode() {
-		final int prime = 43;
-        int result = 1;
-        result = prime * result + ((ident == null) ? 0 : ident.hashCode());
-        result = prime * result + ((selector == null) ? 0 : selector.hashCode());
-        result = prime * result + ((expression == null) ? 0 : expression.hashCode());
-        return result;
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((expression == null) ? 0 : expression.hashCode());
+		result = prime * result + ((ident == null) ? 0 : ident.hashCode());
+		result = prime * result
+				+ ((selector == null) ? 0 : selector.hashCode());
+		return result;
 	}
-	
-	public boolean equals(Object object) {
-		if (this == object) { return true; }
-		if (object == null) { return false; }
-		if (object instanceof AssignmentNode) {
-			AssignmentNode otherNode = (AssignmentNode) object;
-			if (selector == null && otherNode.selector != null) {
-				return false;
-			} else if (!selector.equals(otherNode.selector)) {
-				return false;
-			} else if (expression == null && otherNode.expression != null) {
-				return false;
-			} else if (!expression.equals(otherNode.expression)) {
-				return false;
-			} else {
-				return true;
-			}
-		} else {
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
+		if (getClass() != obj.getClass())
+			return false;
+		AssignmentNode other = (AssignmentNode) obj;
+		if (expression == null) {
+			if (other.expression != null)
+				return false;
+		} else if (!expression.equals(other.expression))
+			return false;
+		if (ident == null) {
+			if (other.ident != null)
+				return false;
+		} else if (!ident.equals(other.ident))
+			return false;
+		if (selector == null) {
+			if (other.selector != null)
+				return false;
+		} else if (!selector.equals(other.selector))
+			return false;
+		return true;
 	}
-	
+
+
+
 	@Override
 	public String toString(int indentation) {
 		String result = toString(indentation, "AssignmentNode\n");

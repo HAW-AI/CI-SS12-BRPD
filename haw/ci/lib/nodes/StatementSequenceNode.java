@@ -6,14 +6,30 @@ import java.util.List;
 public class StatementSequenceNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	private List<AbstractNode> nodes = new ArrayList<AbstractNode>();
-	
-	
+
+	@Override
 	public int hashCode() {
-		return nodes.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((nodes == null) ? 0 : nodes.hashCode());
+		return result;
 	}
-	
-	public boolean equals(Object object) {
-		return nodes.equals(object);
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		StatementSequenceNode other = (StatementSequenceNode) obj;
+		if (nodes == null) {
+			if (other.nodes != null)
+				return false;
+		} else if (!nodes.equals(other.nodes))
+			return false;
+		return true;
 	}
 
 	public void add(AbstractNode abstractNode) {

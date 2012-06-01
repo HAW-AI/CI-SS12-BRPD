@@ -9,36 +9,42 @@ public class WhileStatementNode extends AbstractNode {
 		this.expression = expression;
 		this.statementSequence = statementSequence;
 	}
-
-	public int hashCode() {
-		final int prime = 43;
-        int result = 1;
-        result = prime * result + ((expression == null) ? 0 : expression.hashCode());
-        result = prime * result + ((statementSequence == null) ? 0 : statementSequence.hashCode());
-        return result;
-	}
-
-	public boolean equals(Object object) {
-		if (this == object) { return true; }
-		if (object == null) { return false; }
-		if (object instanceof WhileStatementNode) {
-			WhileStatementNode otherNode = (WhileStatementNode) object;
-			if (expression == null && otherNode.expression != null) {
-				return false;
-			} else if (!expression.equals(otherNode.expression)) {
-				return false;
-			} else if (statementSequence == null && otherNode.statementSequence != null) {
-				return false;
-			} else if (!statementSequence.equals(otherNode.statementSequence)) {
-				return false;
-			} else {
-				return true;
-			}
-		} else {
-			return false;
-		}
-	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((expression == null) ? 0 : expression.hashCode());
+		result = prime
+				* result
+				+ ((statementSequence == null) ? 0 : statementSequence
+						.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		WhileStatementNode other = (WhileStatementNode) obj;
+		if (expression == null) {
+			if (other.expression != null)
+				return false;
+		} else if (!expression.equals(other.expression))
+			return false;
+		if (statementSequence == null) {
+			if (other.statementSequence != null)
+				return false;
+		} else if (!statementSequence.equals(other.statementSequence))
+			return false;
+		return true;
+	}
+
 	@Override
 	public String toString(int indentation) {
 		String result = toString(indentation, this.getClass().getName() + "\n");

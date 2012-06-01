@@ -9,31 +9,33 @@ public class RecordTypeNode extends TypeNode {
 	public RecordTypeNode(List<FieldListNode> fieldsList) {
 		this.fieldsList = fieldsList;
 	}
-
-	public int hashCode() {
-		final int prime = 43;
-        int result = 1;
-        result = prime * result + ((fieldsList == null) ? 0 : fieldsList.hashCode());
-        return result;
-	}
-
-	public boolean equals(Object object) {
-		if (this == object) { return true; }
-		if (object == null) { return false; }
-		if (object instanceof IdentNode) {
-			RecordTypeNode otherNode = (RecordTypeNode) object;
-			if (fieldsList == null && otherNode.fieldsList != null) {
-				return false;
-			} else if (!fieldsList.equals(otherNode.fieldsList)) {
-				return false;
-			} else {
-				return true;
-			}
-		} else {
-			return false;
-		}
-	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((fieldsList == null) ? 0 : fieldsList.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RecordTypeNode other = (RecordTypeNode) obj;
+		if (fieldsList == null) {
+			if (other.fieldsList != null)
+				return false;
+		} else if (!fieldsList.equals(other.fieldsList))
+			return false;
+		return true;
+	}
+
 	@Override
 	public String toString(int indentation) {
 		String output = toString(indentation, this.getClass().getName() + "\n");

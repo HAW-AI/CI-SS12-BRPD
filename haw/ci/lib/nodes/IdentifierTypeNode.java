@@ -8,6 +8,7 @@ public class IdentifierTypeNode extends TypeNode {
 		this.identifier = identifier;
 	}
 
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -16,6 +17,7 @@ public class IdentifierTypeNode extends TypeNode {
 				+ ((identifier == null) ? 0 : identifier.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -33,6 +35,7 @@ public class IdentifierTypeNode extends TypeNode {
 			return false;
 		return true;
 	}
+
 
 	@Override
 	public String toString(int indentation) {

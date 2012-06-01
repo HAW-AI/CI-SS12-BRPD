@@ -16,16 +16,23 @@ public class IfStatementNode extends AbstractNode {
 		this.statementSeq2 = statementSeq2;
 	}
 	
+	
+	@Override
 	public int hashCode() {
-		final int prime = 43;
+		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((expression == null) ? 0 : expression.hashCode());
-		result = prime * result + ((statementSeq1 == null) ? 0 : statementSeq1.hashCode());
 		result = prime * result + ((elsif == null) ? 0 : elsif.hashCode());
-		result = prime * result + ((statementSeq2 == null) ? 0 : statementSeq2.hashCode());
+		result = prime * result
+				+ ((expression == null) ? 0 : expression.hashCode());
+		result = prime * result
+				+ ((statementSeq1 == null) ? 0 : statementSeq1.hashCode());
+		result = prime * result
+				+ ((statementSeq2 == null) ? 0 : statementSeq2.hashCode());
 		return result;
 	}
-	
+
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -56,7 +63,8 @@ public class IfStatementNode extends AbstractNode {
 			return false;
 		return true;
 	}
-	
+
+
 	@Override
 	public String toString(int indentation) {
 		String result = toString(indentation, this.getClass().getName() + "\n");

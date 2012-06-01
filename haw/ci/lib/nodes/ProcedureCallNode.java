@@ -11,34 +11,44 @@ public class ProcedureCallNode extends AbstractNode {
 		this.actualParameters = actualParameters;
 	}
 	
+
+
+	@Override
 	public int hashCode() {
-		final int prime = 43;
-        int result = 1;
-        result = prime * result + ((ident == null) ? 0 : ident.hashCode());
-        result = prime * result + ((actualParameters == null) ? 0 : actualParameters.hashCode());
-        return result;
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((actualParameters == null) ? 0 : actualParameters.hashCode());
+		result = prime * result + ((ident == null) ? 0 : ident.hashCode());
+		return result;
 	}
-	
-	public boolean equals(Object object) {
-		if (this == object) { return true; }
-		if (object == null) { return false; }
-		if (object instanceof ProcedureCallNode) {
-			ProcedureCallNode otherNode = (ProcedureCallNode) object;
-			if (ident == null && otherNode.ident != null) {
-				return false;
-			} else if (!ident.equals(otherNode.ident)) {
-				return false;
-			} else if (actualParameters == null && otherNode.actualParameters != null) {
-				return false;
-			} else if (!actualParameters.equals(otherNode.actualParameters)) {
-				return false;
-			} else {
-				return true;
-			}
-		} else {
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
+		if (getClass() != obj.getClass())
+			return false;
+		ProcedureCallNode other = (ProcedureCallNode) obj;
+		if (actualParameters == null) {
+			if (other.actualParameters != null)
+				return false;
+		} else if (!actualParameters.equals(other.actualParameters))
+			return false;
+		if (ident == null) {
+			if (other.ident != null)
+				return false;
+		} else if (!ident.equals(other.ident))
+			return false;
+		return true;
 	}
+
+
 
 	@Override
 	public String toString(int indentation) {

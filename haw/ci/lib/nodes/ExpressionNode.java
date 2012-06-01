@@ -13,39 +13,43 @@ public class ExpressionNode extends AbstractNode {
 		this.right = right;
 	}
 	
+
+	@Override
 	public int hashCode() {
-		final int prime = 43;
-        int result = 1;
-        result = prime * result + ((binOpToken == null) ? 0 : binOpToken.hashCode());
-        result = prime * result + ((left == null) ? 0 : left.hashCode());
-        result = prime * result + ((right == null) ? 0 : right.hashCode());
-        return result;
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((binOpToken == null) ? 0 : binOpToken.hashCode());
+		result = prime * result + ((left == null) ? 0 : left.hashCode());
+		result = prime * result + ((right == null) ? 0 : right.hashCode());
+		return result;
 	}
-	
-	public boolean equals(Object object) {
-		if (this == object) { return true; }
-		if (object == null) { return false; }
-		if (object instanceof ExpressionNode) {
-			ExpressionNode otherNode = (ExpressionNode) object;
-			if (binOpToken == null && otherNode.binOpToken != null) {
-				return false;
-			} else if (!binOpToken.equals(otherNode.binOpToken)) {
-				return false;
-			} else if (left == null && otherNode.left != null) {
-				return false;
-			} else if (!left.equals(otherNode.left)) {
-				return false;
-			} else if (right == null && otherNode.right != null) {
-				return false;
-			} else if (!right.equals(otherNode.right)) {
-				return false;
-			} else {
-				return true;
-			}
-		} else {
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
+		if (getClass() != obj.getClass())
+			return false;
+		ExpressionNode other = (ExpressionNode) obj;
+		if (binOpToken != other.binOpToken)
+			return false;
+		if (left == null) {
+			if (other.left != null)
+				return false;
+		} else if (!left.equals(other.left))
+			return false;
+		if (right == null) {
+			if (other.right != null)
+				return false;
+		} else if (!right.equals(other.right))
+			return false;
+		return true;
 	}
+
 
 	@Override
 	public String toString(int indentation) {
