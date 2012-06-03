@@ -1,12 +1,14 @@
 package haw.ci.lib.nodes;
 
 import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
 
 import java.io.Serializable;
 
 public abstract class AbstractNode implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Object symbolTable;
+	static int labelCount = 1;
 	
 	/*
 	 * Zu klärende Fragen:
@@ -50,7 +52,21 @@ public abstract class AbstractNode implements Serializable {
     }
 
 	public abstract String toString(int indentation);
+
+	public static int getNextLabelNumber(){
+    	return labelCount++;
+    }
 	
-//	protected abstract String generateCode();
+	public Descriptor compile(SymbolTable symbolTable){
+		return null;
+    }
+    
+    public Descriptor compile(SymbolTable symbolTable, Descriptor desct){
+    	return null;
+    }
+    
+    public void write(String code){
+    	System.out.println(code);
+    }
 	
 }

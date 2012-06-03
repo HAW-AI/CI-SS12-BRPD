@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,5 +53,13 @@ public class DeclarationNode extends AbstractNode {
 		}
 		
 	    return result;
+	}
+	
+	public Descriptor compile(SymbolTable symbolTable){
+		for(AbstractNode node : nodes){
+			node.compile(symbolTable);
+		}
+
+		return null;
 	}
 }

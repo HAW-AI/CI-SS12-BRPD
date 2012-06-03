@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 public class AssignmentNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	private final SelectorNode selector;
@@ -57,7 +60,7 @@ public class AssignmentNode extends AbstractNode {
 
 	@Override
 	public String toString(int indentation) {
-		String result = toString(indentation, "AssignmentNode\n");
+		String result = toString(indentation, this.getClass().getName() + "\n");
 		if(ident != null) {
 		    result += ident.toString(indentation+1) + "\n";
 		}
@@ -65,6 +68,19 @@ public class AssignmentNode extends AbstractNode {
 		    result += expression.toString(indentation+1);
 		}
 	    return result;
+	}
+	
+	@Override
+	public Descriptor compile(SymbolTable symbolTable) {
+	    ident.compile(symbolTable);
+	    if (selector != null) {
+	    	selector.compile(symbolTable);
+	    }
+	    expression.compile(symbolTable);
+	    write("ASSIGN, 1");
+	    // TODO is this assign correct??
+
+	    return null;
 	}
 
 }

@@ -44,7 +44,7 @@ public class ConstListNode extends AbstractNode {
 
 	@Override
 	public String toString(int indentation) {
-		String output = toString(indentation,"ConstListNode\n");
+		String output = toString(indentation, this.getClass().getName() + "\n");
 		
 		for (ConstNode node : nodes) {
 			output += node.toString(indentation+1) + "\n";

@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 public class IntegerNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	private final Integer value;
@@ -40,10 +43,16 @@ public class IntegerNode extends AbstractNode {
 	public String toString(int indentation) {
 		String result = toString(indentation, this.getClass().getName() + "\n");
 		if(value != null) {
-		    result += value.toString() + "\n";
+			result += toString(indentation, "Value: " + value.toString() + "\n");
 		}
 
 	    return result;
+	}
+	
+	@Override
+	public Descriptor compile(SymbolTable symbolTable) {
+		write("PUSHI, " + value);
+		return super.compile(symbolTable);
 	}
 
 }

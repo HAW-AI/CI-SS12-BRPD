@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 public class StatementNode extends AbstractNode {
 	private static final long serialVersionUID = -4328693297321257313L;
 	private AbstractNode node;
@@ -44,6 +47,13 @@ public class StatementNode extends AbstractNode {
 		}
 
 	    return result;
+	}
+	
+	@Override
+	public Descriptor compile(SymbolTable symbolTable) {
+		node.compile(symbolTable);
+
+	    return null;
 	}
 
 }

@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 public class SelectorNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	private IdentNode ident;
@@ -67,6 +70,16 @@ public class SelectorNode extends AbstractNode {
 		}
 
 	    return result;
+	}
+	
+	@Override
+	public Descriptor compile(SymbolTable symbolTable) {
+		ident.compile(symbolTable);
+		if (selector != null) {
+			selector.compile(symbolTable);
+		}
+
+	    return null;
 	}
 
 

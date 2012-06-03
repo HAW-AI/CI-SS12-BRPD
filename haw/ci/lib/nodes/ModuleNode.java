@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 public class ModuleNode extends AbstractNode {
 	private static final long serialVersionUID = 5975246380655596518L;
 
@@ -81,6 +84,18 @@ public class ModuleNode extends AbstractNode {
 		}
 
 	    return result;
+	}
+	
+	@Override
+	public Descriptor compile(SymbolTable symbolTable) {
+		write("PUSHS, " + ident.getValue());
+		write("JMP, 0");
+		write("LABEL, 0");
+	    declaration.compile(symbolTable);
+	    statementSequence.compile(symbolTable);
+	    write("STOP");
+
+	    return null;
 	}
 
 }
