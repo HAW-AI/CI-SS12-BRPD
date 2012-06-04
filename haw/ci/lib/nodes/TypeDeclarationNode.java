@@ -3,9 +3,9 @@ package haw.ci.lib.nodes;
 public class TypeDeclarationNode extends AbstractNode {
 	private static final long serialVersionUID = -1319709422716461088L;
 	private IdentNode ident;
-	private TypeNode type;
+	private AbstractNode type;
 	
-	public TypeDeclarationNode(IdentNode ident, TypeNode type) {
+	public TypeDeclarationNode(IdentNode ident, AbstractNode type) {
 		this.ident = ident;
 		this.type = type;
 	}

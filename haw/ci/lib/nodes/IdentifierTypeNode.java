@@ -1,6 +1,6 @@
 package haw.ci.lib.nodes;
 
-public class IdentifierTypeNode extends TypeNode {
+public class IdentifierTypeNode extends AbstractNode {
 	private static final long serialVersionUID = -6958497112703299089L;
 	private String identifier;
 	

@@ -1,11 +1,16 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+import haw.ci.lib.descriptor.SimpleTypeDescriptor;
+import haw.ci.lib.descriptor.SimpleTypeDescriptor.Type;
+
 public class VarNode extends AbstractNode {
 	private static final long serialVersionUID = -8257259901064314426L;
 	private IdentListNode identList;
-	private TypeNode type;
+	private AbstractNode type;
 	
-	public VarNode(IdentListNode identList, TypeNode type) {
+	public VarNode(IdentListNode identList, AbstractNode type) {
 		this.identList = identList;
 		this.type = type;
 	}
@@ -53,6 +58,28 @@ public class VarNode extends AbstractNode {
 		}
 
 	    return result;
+	}
+	
+	public Descriptor compile(SymbolTable symbolTable) {
+		Descriptor descriptor = null;
+		
+		if (type instanceof IdentNode) {
+			String identifierName = ((IdentNode) type).getIdentifierName();
+			if (identifierName.equals("boolean")) {
+				descriptor = new SimpleTypeDescriptor(Type.BOOLEAN);
+			} else if (identifierName.equals("integer")) {
+				descriptor = new SimpleTypeDescriptor(Type.INTEGER);
+			} else if (identifierName.equals("string")) {
+				descriptor = new SimpleTypeDescriptor(Type.STRING);
+			} else {
+				System.out.println("Error occured in VarNode compile.");
+			}
+		} else {
+			descriptor = type.compile(symbolTable);
+		}
+		identList.compile(symbolTable, descriptor);
+		
+		return null;
 	}
 
 }

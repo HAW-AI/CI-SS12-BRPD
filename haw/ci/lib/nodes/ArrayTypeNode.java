@@ -1,11 +1,11 @@
 package haw.ci.lib.nodes;
 
-public class ArrayTypeNode extends TypeNode {
+public class ArrayTypeNode extends AbstractNode {
 	private static final long serialVersionUID = -104260727543163557L;
 	private AbstractNode indexExpression;
-	private TypeNode type;
+	private AbstractNode type;
 
-	public ArrayTypeNode(AbstractNode indexExpression, TypeNode type) {
+	public ArrayTypeNode(AbstractNode indexExpression, AbstractNode type) {
 		this.indexExpression = indexExpression;
 		this.type = type;
 	}

@@ -58,4 +58,8 @@ public class IdentNode extends AbstractNode {
 		write("PUSHI, " + symbolTable.addressOf(value));
 		return null;
 	}
+	
+	public String getIdentifierName() {
+		return value;
+	}
 }

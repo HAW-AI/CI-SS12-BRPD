@@ -36,7 +36,6 @@ public class SymTaG {
 		if (node instanceof RecordTypeNode) { }
 		if (node instanceof SelectorNode) { }
 		if (node instanceof StringNode) { }
-		if (node instanceof TypeNode) { }
 		if (node instanceof VarListNode) { }
 		if (node instanceof VarNode) { }
 		if (node instanceof WhileStatementNode) { }

@@ -3,9 +3,9 @@ package haw.ci.lib.nodes;
 public class FieldListNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	private final IdentListNode identList;
-	private final TypeNode type;
+	private final AbstractNode type;
 
-	public FieldListNode(IdentListNode identList, TypeNode type) {
+	public FieldListNode(IdentListNode identList, AbstractNode type) {
 		this.identList = identList;
 		this.type = type;
 	}

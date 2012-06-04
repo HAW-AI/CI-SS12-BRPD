@@ -73,7 +73,6 @@ import haw.ci.lib.nodes.StatementNode;
 import haw.ci.lib.nodes.StatementSequenceNode;
 import haw.ci.lib.nodes.StringNode;
 import haw.ci.lib.nodes.TypeDeclarationNode;
-import haw.ci.lib.nodes.TypeNode;
 import haw.ci.lib.nodes.VarListNode;
 import haw.ci.lib.nodes.VarNode;
 import haw.ci.lib.nodes.WhileStatementNode;
@@ -102,13 +101,13 @@ public class Parser {
 		return identList;
 	}
 //ArrayType = ÕARRAYÕ Õ[Õ IndexExpression Õ]Õ ÕOFÕ Type.
-	private TypeNode Arraytype() throws ParserAcceptError {
+	private AbstractNode Arraytype() throws ParserAcceptError {
 		require(ARRAY);
 		require(BRACE_SQUARE_OPEN);
 		AbstractNode node = IndexExpression();
 		require(BRACE_SQUARE_CLOSE);
 		require(OF);
-		TypeNode type = Type();
+		AbstractNode type = Type();
 		return new ArrayTypeNode(node, type);
 	}
 //FieldList = [IdentList Õ:Õ Type].
@@ -123,7 +122,7 @@ public class Parser {
 		return node;
 	}
 //RecordType = ÕRECORDÕ FieldList {Õ;Õ FieldList} ÕENDÕ.
-	private TypeNode RecordType() throws ParserAcceptError {
+	private AbstractNode RecordType() throws ParserAcceptError {
 		require(RECORD);
 		List<FieldListNode> fieldLists = new ArrayList<FieldListNode>();
 		FieldListNode fieldList = FieldList();
@@ -143,8 +142,8 @@ public class Parser {
 		return new RecordTypeNode(fieldLists);
 	}
 //Type = ident | ArrayType | RecordType.
-	private TypeNode Type() throws ParserAcceptError {
-		TypeNode type = null;
+	private AbstractNode Type() throws ParserAcceptError {
+		AbstractNode type = null;
 		switch (current.getToken()) {
 		case IDENTIFER:
 			type = new IdentifierTypeNode(current.getValue());
@@ -164,7 +163,7 @@ public class Parser {
 		require(VAR);
 		IdentListNode identList = IdentList();
 		require(COLON);
-		TypeNode type = Type();
+		AbstractNode type = Type();
 		return new FormalParameterSectionNode(identList, type);
 	}
 //FormalParameters = FPSection {Õ;Õ FPSection}.
@@ -220,7 +219,7 @@ public class Parser {
 			while(test(IDENTIFER)) {
 				IdentNode ident = Ident();
 				require(EQUAL);
-				TypeNode type = Type();
+				AbstractNode type = Type();
 				require(SEMICOLON);
 				declaration.add(new TypeDeclarationNode(ident, type));
 			}
@@ -258,7 +257,7 @@ public class Parser {
 		require(VAR);
 		IdentListNode identList = IdentList();
 		require(COLON);
-		TypeNode type = Type();
+		AbstractNode type = Type();
 		require(SEMICOLON);
 		varList.add(new VarNode(identList,type));
 		while(test(IDENTIFER)) {

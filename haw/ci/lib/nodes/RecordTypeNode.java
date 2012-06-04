@@ -2,7 +2,7 @@ package haw.ci.lib.nodes;
 
 import java.util.List;
 
-public class RecordTypeNode extends TypeNode {
+public class RecordTypeNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	private final List<FieldListNode> fieldsList;
 
