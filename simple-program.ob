@@ -1,4 +1,5 @@
 module foo;
+var i, j : integer;
 begin
 i  :=  1;
 j  :=  2;

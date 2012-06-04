@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +48,14 @@ public class IdentListNode extends AbstractNode {
 			output += node.toString(indentation+1) + "\n";
 		}
 		return  output;
+	}
+	
+	public Descriptor compile(SymbolTable symbolTable, Descriptor descriptor) {
+		for (IdentNode node : nodes) {
+			symbolTable.declare(node.getIdentifierName(), descriptor);
+		}
+
+		return null;
 	}
 
 }

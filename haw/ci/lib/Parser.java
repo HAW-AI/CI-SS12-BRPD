@@ -55,7 +55,6 @@ import haw.ci.lib.nodes.FormalParameterNode;
 import haw.ci.lib.nodes.FormalParameterSectionNode;
 import haw.ci.lib.nodes.IdentListNode;
 import haw.ci.lib.nodes.IdentNode;
-import haw.ci.lib.nodes.IdentifierTypeNode;
 import haw.ci.lib.nodes.IfStatementNode;
 import haw.ci.lib.nodes.IntegerNode;
 import haw.ci.lib.nodes.ModuleNode;
@@ -146,7 +145,7 @@ public class Parser {
 		AbstractNode type = null;
 		switch (current.getToken()) {
 		case IDENTIFER:
-			type = new IdentifierTypeNode(current.getValue());
+			type = new IdentNode(current.getValue());
 			next();
 			break;
 		case ARRAY:

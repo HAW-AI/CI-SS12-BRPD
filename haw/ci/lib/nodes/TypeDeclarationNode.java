@@ -45,10 +45,10 @@ public class TypeDeclarationNode extends AbstractNode {
 	public String toString(int indentation) {
 		String result = toString(indentation, this.getClass().getName() + "\n");
 		if(ident != null) {
-		    result += ident.toString() + "\n";
+		    result += ident.toString(indentation) + "\n";
 		}
 		if(type != null) {
-		    result += type.toString() + "\n";
+		    result += type.toString(indentation) + "\n";
 		}
 
 	    return result;

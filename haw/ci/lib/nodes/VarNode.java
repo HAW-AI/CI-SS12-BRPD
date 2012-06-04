@@ -51,10 +51,10 @@ public class VarNode extends AbstractNode {
 	public String toString(int indentation) {
 		String result = toString(indentation, this.getClass().getName() + "\n");
 		if(identList != null) {
-		    result += identList.toString() + "\n";
+		    result += identList.toString(indentation) + "\n";
 		}
 		if(type != null) {
-		    result += type.toString() + "\n";
+		    result += type.toString(indentation) + "\n";
 		}
 
 	    return result;

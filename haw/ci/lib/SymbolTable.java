@@ -40,14 +40,14 @@ public class SymbolTable {
 	
 
 	
-	public void declare(String ident, Descriptor descr) {
+	public void declare(String ident, Descriptor descriptor) {
 		if(!(addressMap.containsKey(ident))){
-			descriptorMap.put(ident, descr);
+			descriptorMap.put(ident, descriptor);
 			addressMap.put(ident, currentAddress);
-			if(descr == null){
+			if(descriptor == null){
 				System.out.println("---- compile Error-----\n Variable = " + ident);
 			}
-			currentAddress += descr.size();
+			currentAddress += descriptor.size();
 		}else{
 			System.out.println("Fehler, zweimal die gleiche Variable deklariert");
 		}
