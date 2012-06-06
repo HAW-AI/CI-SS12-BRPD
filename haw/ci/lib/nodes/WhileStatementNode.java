@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 public class WhileStatementNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	private final AbstractNode expression;
@@ -56,5 +59,18 @@ public class WhileStatementNode extends AbstractNode {
 		}
 
 	    return result;
+	}
+
+	@Override
+	public Descriptor compile(SymbolTable symbolTable) {
+		final int labelWhile = getNextLabelNumber();
+		final int labelEnd = getNextLabelNumber();
+		label(labelWhile);
+		expression.compile(symbolTable);
+		branchFalse(labelEnd);
+		statementSequence.compile(symbolTable);
+		jump(labelWhile);
+		label(labelEnd);
+		return null;
 	}
 }
