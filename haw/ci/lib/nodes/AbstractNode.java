@@ -49,7 +49,8 @@ public abstract class AbstractNode implements Serializable {
 	public Descriptor compile() {
 		return compile(new SymbolTable());
 	}
-	
+
+//	public abstract Descriptor compile(SymbolTable symbolTable);
 	public Descriptor compile(SymbolTable symbolTable){
 		return null;
     }
@@ -62,4 +63,13 @@ public abstract class AbstractNode implements Serializable {
     	System.out.println(code);
     }
 	
+    public void label(int n) {
+    	write(String.format("LABEL, %d", n));
+    }
+    public void jump(int n) {
+    	write(String.format("JMP, %d", n));
+    }
+    public void branchFalse(int n) {
+    	write(String.format("BF, %d", n));
+    }
 }

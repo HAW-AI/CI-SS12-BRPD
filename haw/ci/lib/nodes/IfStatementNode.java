@@ -91,14 +91,15 @@ public class IfStatementNode extends AbstractNode {
 	public Descriptor compile(SymbolTable symbolTable) {
 		final int labelElse = getNextLabelNumber();
 		final int labelEnd = getNextLabelNumber();
+		
 		expression.compile(symbolTable);
-		write(String.format("BF, %d", labelElse));
+		branchFalse(labelElse);
 		statementSeq1.compile(symbolTable);
-		write(String.format("JMP, %d", labelEnd));
-		write(String.format("LABEL, %d", labelElse)); 
+		jump(labelEnd);
+		label(labelElse); 
 		if (elsif != null) elsif.compile(symbolTable);
 		if (statementSeq2 != null) statementSeq2.compile(symbolTable);
-		write(String.format("LABEL, %d", labelEnd));
+		label(labelEnd);
 		return null;
 	}	
 }
