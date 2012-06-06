@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 public class PrintNode extends AbstractNode {
 	private static final long serialVersionUID = 1664634323229382354L;
 	private AbstractNode expression;
@@ -47,4 +50,11 @@ public class PrintNode extends AbstractNode {
 	    return result;
 	}
 
+	@Override 
+	public Descriptor compile(SymbolTable symbolTable) {
+		expression.compile(symbolTable);
+		if (expression instanceof IdentNode) write("CONT, 1");
+		write("PRINT");
+		return null;
+	}
 }
