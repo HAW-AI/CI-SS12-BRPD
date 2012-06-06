@@ -8,5 +8,5 @@ else
   debug = ARGV[1] || 0
 end
 puts "File: #{file}"
-puts `java -jar NewOBI.jar #{file} #{debug}`
+exec "java -jar NewOBI.jar #{file} #{debug}"
 
