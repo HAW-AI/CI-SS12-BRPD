@@ -24,8 +24,7 @@ public class Application {
 			System.out.println(node.toString());
 			
 			System.out.println("Code:");
-			SymbolTable symbolTable = new SymbolTable();
-			node.compile(symbolTable);
+			node.compile(new SymbolTable());
 		} catch (ParserAcceptError e) {
 			System.out.println(String.format("Failure (cur: %s, nex: %s)", parser.getCurrent(),parser.getNext()));
 			e.printStackTrace();
