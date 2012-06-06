@@ -3,6 +3,10 @@ var i, j : integer;
 begin
 i  :=  1;
 j  :=  2;
-Print i;
-Print j;
+
+if i < j
+then
+	Print i;
+	Print j;
+end;
 end foo.
