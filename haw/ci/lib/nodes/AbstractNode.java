@@ -17,17 +17,6 @@ public abstract class AbstractNode implements Serializable {
 	 * 3) Die Descriptoren werden in die SymbolTabelle geschrieben?
 	 */
 	
-	
-	/*
-	 * 1) trigger sym. tab. generation.
-	 * 2) genrate code based on symboltable
-	 */
-	public String compile() {
-		symbolTable(new SymbolTable());
-//		return generateCode();
-		return "";
-	}
-	
 	protected void symbolTable(SymbolTable symbolTable) {
 		if (this.symbolTable != null) return;
 		this.symbolTable = symbolTable;
@@ -56,6 +45,10 @@ public abstract class AbstractNode implements Serializable {
 	public static int getNextLabelNumber(){
     	return labelCount++;
     }
+	
+	public Descriptor compile() {
+		return compile(new SymbolTable());
+	}
 	
 	public Descriptor compile(SymbolTable symbolTable){
 		return null;
