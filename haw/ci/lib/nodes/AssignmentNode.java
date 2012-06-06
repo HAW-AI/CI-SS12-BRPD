@@ -72,14 +72,12 @@ public class AssignmentNode extends AbstractNode {
 	
 	@Override
 	public Descriptor compile(SymbolTable symbolTable) {
+		expression.compile(symbolTable);
 	    ident.compile(symbolTable);
-	    if (selector != null) {
+	    if (selector != null) { // FIXME: is this the right place to do?
 	    	selector.compile(symbolTable);
 	    }
-	    expression.compile(symbolTable);
 	    write("ASSIGN, 1");
-	    // TODO is this assign correct??
-
 	    return null;
 	}
 
