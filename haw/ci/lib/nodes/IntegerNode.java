@@ -52,7 +52,7 @@ public class IntegerNode extends AbstractNode {
 	@Override
 	public Descriptor compile(SymbolTable symbolTable) {
 		write("PUSHI, " + value);
-		return super.compile(symbolTable);
+		return null;
 	}
 
 }
