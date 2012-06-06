@@ -1,8 +1,11 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 public class ConstNode extends AbstractNode {
 	private static final long serialVersionUID = 4386388009177664496L;
-	
+
 	private IdentNode ident;
 	private AbstractNode expression;
 
@@ -14,7 +17,7 @@ public class ConstNode extends AbstractNode {
 	public IdentNode getIdent() {
 		return ident;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -50,12 +53,18 @@ public class ConstNode extends AbstractNode {
 	@Override
 	public String toString(int indentation) {
 		String result = toString(indentation, this.getClass().getName() + "\n");
-		if(ident != null) {
-		    result += ident.toString(indentation+1) + "\n";
+		if (ident != null) {
+			result += ident.toString(indentation + 1) + "\n";
 		}
-		if(expression != null) {
-		    result += expression.toString(indentation+1);
+		if (expression != null) {
+			result += expression.toString(indentation + 1);
 		}
-	    return result;
+		return result;
+	}
+
+	public Descriptor compile(SymbolTable symbolTable) {
+		ident.compile(symbolTable);
+		expression.compile(symbolTable);
+		return null;
 	}
 }
