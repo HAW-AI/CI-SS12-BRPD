@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 public class ReadNode extends AbstractNode {
 	private static final long serialVersionUID = 4878830500194065679L;
 
@@ -48,4 +51,9 @@ public class ReadNode extends AbstractNode {
 	    return result;
 	}
 
+	@Override
+	public Descriptor compile(SymbolTable symbolTable) {
+		// FIXME: what should we do here?
+		return null;
+	}
 }
