@@ -3,4 +3,6 @@ var i, j : integer;
 begin
 i  :=  1;
 j  :=  2;
+Print i;
+Print j;
 end foo.
