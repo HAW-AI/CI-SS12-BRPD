@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 public class IfStatementNode extends AbstractNode {
 	private static final long serialVersionUID = -8068718524238360831L;
 	private AbstractNode expression;
@@ -82,4 +85,20 @@ public class IfStatementNode extends AbstractNode {
 		}
 	    return result;
 	}
+
+
+	@Override
+	public Descriptor compile(SymbolTable symbolTable) {
+		final int labelElse = getNextLabelNumber();
+		final int labelEnd = getNextLabelNumber();
+		expression.compile(symbolTable);
+		write(String.format("BF, %d", labelElse));
+		statementSeq1.compile(symbolTable);
+		write(String.format("JMP, %d", labelEnd));
+		write(String.format("LABEL, %d", labelElse)); 
+		if (elsif != null) elsif.compile(symbolTable);
+		if (statementSeq2 != null) statementSeq2.compile(symbolTable);
+		write(String.format("LABEL, %d", labelEnd));
+		return null;
+	}	
 }
