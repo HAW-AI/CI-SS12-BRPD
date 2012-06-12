@@ -44,7 +44,7 @@ public class PrintNode extends AbstractNode {
 	public String toString(int indentation) {
 		String result = toString(indentation, this.getClass().getName() + "\n");
 		if(expression != null) {
-		    result += expression.toString() + "\n";
+		    result += expression.toString(indentation+1) + "\n";
 		}
 
 	    return result;
