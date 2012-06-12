@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 public class RepeatStatementNode extends AbstractNode {
 	private static final long serialVersionUID = 4321921938744342985L;
 
@@ -64,6 +67,16 @@ public class RepeatStatementNode extends AbstractNode {
 		}
 
 	    return result;
+	}
+	
+	public Descriptor compile(SymbolTable symbolTable) {
+		int beginningLabel = getNextLabelNumber();
+		label(beginningLabel);
+		statementSequence.compile(symbolTable);
+		expression.compile(symbolTable);
+		branchFalse(beginningLabel);
+
+		return null;
 	}
 
 }
