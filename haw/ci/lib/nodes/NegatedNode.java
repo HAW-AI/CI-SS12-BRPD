@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 public class NegatedNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	private final AbstractNode node;
@@ -44,6 +47,13 @@ public class NegatedNode extends AbstractNode {
 		}
 
 	    return result;
+	}
+
+	public Descriptor compile(SymbolTable symbolTable) {
+		node.compile(symbolTable);
+		write("PUSHI, 0");
+		write("SUB");
+		return null;
 	}
 
 }
