@@ -51,4 +51,8 @@ public class StringNode extends AbstractNode {
 		// Nothing to do
 		return null;
 	}
+
+	public String getValue() {
+		return value;
+	}
 }

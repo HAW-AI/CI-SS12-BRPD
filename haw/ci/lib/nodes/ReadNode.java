@@ -53,7 +53,7 @@ public class ReadNode extends AbstractNode {
 
 	@Override
 	public Descriptor compile(SymbolTable symbolTable) {
-		// FIXME: what should we do here?
+		write("READ, " + value.getValue());
 		return null;
 	}
 }
