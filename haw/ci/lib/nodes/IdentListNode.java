@@ -50,6 +50,7 @@ public class IdentListNode extends AbstractNode {
 		return  output;
 	}
 	
+	@Override
 	public Descriptor compile(SymbolTable symbolTable, Descriptor descriptor) {
 		for (IdentNode node : nodes) {
 			symbolTable.declare(node.getIdentifierName(), descriptor);

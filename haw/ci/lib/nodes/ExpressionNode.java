@@ -1,6 +1,5 @@
 package haw.ci.lib.nodes;
 
-import sun.org.mozilla.javascript.internal.Token;
 import haw.ci.lib.SymbolTable;
 import haw.ci.lib.Tokens;
 import haw.ci.lib.descriptor.Descriptor;

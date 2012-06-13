@@ -38,6 +38,10 @@ public class SymbolTable {
 		return constMap.get(ident);
 	}
 	
+	public boolean isLocal() {
+		return parentTable != null;
+	}
+	
 
 	
 	public void declare(String ident, Descriptor descriptor) {
@@ -171,10 +175,4 @@ public class SymbolTable {
 			return false;
 		return true;
 	}
-
-	public static void main(String args[]){
-		System.out.println(SymbolTable.class.getClassLoader());
-		System.out.println(SymbolTable.class.getClassLoader());
-	}
-
 }

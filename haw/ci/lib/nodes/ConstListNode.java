@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -50,5 +53,13 @@ public class ConstListNode extends AbstractNode {
 			output += node.toString(indentation+1) + "\n";
 		}
 		return  output;
+	}
+	
+	@Override
+	public Descriptor compile(SymbolTable symbolTable) {
+		for (AbstractNode node : nodes) {
+			node.compile(symbolTable);
+		}
+		return null;
 	}
 }

@@ -1,5 +1,9 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+import haw.ci.lib.descriptor.ProcedureDescriptor;
+
 public class ProcedureNode extends AbstractNode {
 	private static final long serialVersionUID = -8384343829441859287L;
 	private ProcedureHeadingNode procedureHeading;
@@ -56,6 +60,56 @@ public class ProcedureNode extends AbstractNode {
 		}
 
 	    return result;
+	}
+	
+	public Descriptor compile(SymbolTable symbolTable) {
+		Descriptor descriptor = null;
+		SymbolTable localSymboleTable = new SymbolTable(symbolTable);
+		procedureHeading.compile(localSymboleTable);
+		String name = procedureHeading.getName();
+		int startAddress = getNextLabelNumber();
+		int lengthparblock = localSymboleTable.size();
+		int framesize = localSymboleTable.size() + 3;// 3 saved registers
+		int size = framesize; //TODO same as framesize??
+
+		label(startAddress);
+
+		pushReg("RK");
+		pushReg("FP");
+		pushI(1);
+		pushReg("SL");
+		write("GETSP");
+		write("SETFP");
+		write("GETFP");
+		pushI(1);
+		write("SETSL");
+		write("GETSP");
+		pushI(3);
+		write("ADD");
+		write("SETSP");
+
+		procedureBody.compile(localSymboleTable);
+
+		//TODO new Label??
+		write("GETFP");
+		write("SETSP");
+		pushI(1);
+		popReg("SL");
+		popReg("FP");
+		popReg("RK");
+		
+		write("GETSP");
+		pushI(0);
+		write("SUB");
+		write("SETSP");
+		
+		write("REDUCE, " + framesize);
+		write("RET");
+		
+		
+		descriptor = new ProcedureDescriptor(localSymboleTable, size, name, startAddress, lengthparblock, framesize);
+		symbolTable.declare(procedureHeading.getName(), descriptor);
+		return null;
 	}
 
 

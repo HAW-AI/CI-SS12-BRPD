@@ -63,4 +63,10 @@ public class ProcedureHeadingNode extends AbstractNode {
 	    return result;
 	}
 
+
+
+	public String getName() {
+		return ident.getIdentifierName();
+	}
+
 }

@@ -72,4 +72,13 @@ public abstract class AbstractNode implements Serializable {
     public void branchFalse(int n) {
     	write(String.format("BF, %d", n));
     }
+    public void pushReg(String register) {
+    	write(String.format("PUSHREG, %s", register));
+    }
+    public void popReg(String register) {
+    	write(String.format("POPREG, %s", register));
+    }
+    public void pushI(int i) {
+    	write(String.format("PUSHI, %d", i));
+	}
 }

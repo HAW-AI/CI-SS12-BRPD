@@ -1,0 +1,17 @@
+module foo;
+var i : integer;
+
+procedure p1();
+	var i : integer;
+begin
+	i := 100;
+end p1;
+
+begin
+
+i  :=  500;
+Print i;
+p1();
+Print i;
+
+end foo.

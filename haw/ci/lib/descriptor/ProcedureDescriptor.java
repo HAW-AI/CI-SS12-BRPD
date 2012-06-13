@@ -5,31 +5,41 @@ import haw.ci.lib.SymbolTable;
 public class ProcedureDescriptor implements Descriptor {
 
 	private SymbolTable params;
+	private int size;
+	private String name;
+	private int startAddress;
+	private int lengthparblock;
+	private int framesize;
 
-	public ProcedureDescriptor(SymbolTable params){
+	public ProcedureDescriptor(SymbolTable params, int size, String name,
+			int startAddress, int lengthparblock, int framesize) {
 		this.params = params;
+		this.size = size;
+		this.name = name;
+		this.startAddress = startAddress;
+		this.lengthparblock = lengthparblock;
+		this.framesize = framesize;
 	}
-	
+
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.size;
 	}
 	
 	public String name() {
-		return "foo";
+		return this.name;
 	}
 	
 	public int startAddress() {
-		return 0;
+		return this.startAddress;
 	}
 	
 	public int lengthparblock() {
-		return 0;
+		return this.lengthparblock;
 	}
 	
 	public int framesize() {
-		return 0;
+		return this.framesize;
 	}
 	
 	public SymbolTable getParams() {

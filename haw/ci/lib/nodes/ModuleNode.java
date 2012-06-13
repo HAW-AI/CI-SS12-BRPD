@@ -90,8 +90,8 @@ public class ModuleNode extends AbstractNode {
 	public Descriptor compile(SymbolTable symbolTable) {
 		write("PUSHS, " + ident.getValue());
 		write("JMP, 0");
+		declaration.compile(symbolTable);
 		write("LABEL, 0");
-	    declaration.compile(symbolTable);
 	    write(String.format("PUSHI, %d",symbolTable.size()));
 	    write("SETSP");
 	    statementSequence.compile(symbolTable);

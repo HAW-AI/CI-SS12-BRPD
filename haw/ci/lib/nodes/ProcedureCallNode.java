@@ -1,5 +1,11 @@
 package haw.ci.lib.nodes;
 
+import java.nio.channels.WritableByteChannel;
+
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+import haw.ci.lib.descriptor.ProcedureDescriptor;
+
 public class ProcedureCallNode extends AbstractNode {
 	private static final long serialVersionUID = 2157301143846556904L;
 	private IdentNode ident;
@@ -57,10 +63,20 @@ public class ProcedureCallNode extends AbstractNode {
 		    result += ident.toString() + "\n";
 		}
 		if(actualParameters != null) {
-		    result += actualParameters.toString() + "\n";
+//		    result += actualParameters.toString() + "\n";
 		}
 
 	    return result;
+	}
+	
+	@Override
+	public Descriptor compile(SymbolTable symbolTable) {
+		ProcedureDescriptor procedureDescriptor = (ProcedureDescriptor) symbolTable.descriptorFor(ident.getIdentifierName());
+
+		write("INIT, " + procedureDescriptor.framesize());
+		write("CALL, " + procedureDescriptor.startAddress());
+		
+		return null;
 	}
 
 }
