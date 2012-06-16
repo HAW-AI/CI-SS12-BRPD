@@ -65,14 +65,19 @@ public class ArrayTypeNode extends AbstractNode {
 		int numberOfElements = ((IntegerValue)indexExpression).getValue(); // TODO: Fix me!
 
 		TypeDescriptor descriptor = null;
-		if (((IdentNode) type).getIdentifierName().equals("boolean")) {
-			descriptor = new SimpleTypeDescriptor(Type.BOOLEAN);
-		} else if (((IdentNode) type).getIdentifierName().equals("integer")) {
-			descriptor = new SimpleTypeDescriptor(Type.INTEGER);
-		} else if (((IdentNode) type).getIdentifierName().equals("string")) {
-			descriptor = new SimpleTypeDescriptor(Type.STRING);
-		} else {
-			System.out.println("Error occured in VarNode compile.");
+		if (type instanceof IdentNode) {
+			if (((IdentNode) type).getIdentifierName().equals("boolean")) {
+				descriptor = new SimpleTypeDescriptor(Type.BOOLEAN);
+			} else if (((IdentNode) type).getIdentifierName().equals("integer")) {
+				descriptor = new SimpleTypeDescriptor(Type.INTEGER);
+			} else if (((IdentNode) type).getIdentifierName().equals("string")) {
+				descriptor = new SimpleTypeDescriptor(Type.STRING);
+			} else {
+				System.out.println("Error occured in VarNode compile.");
+			}
+		} 
+		else {
+			descriptor = (TypeDescriptor) type.compile();
 		}
 		return new ArrayDescriptor(numberOfElements, descriptor);
 	}
