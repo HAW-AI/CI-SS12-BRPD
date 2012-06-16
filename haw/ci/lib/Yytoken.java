@@ -15,7 +15,7 @@ public class Yytoken {
 	}
 	
 	public String toString() {
-		return String.format("%s@%d:%d", token, line, column);
+		return token.toString();
 	}
 
 	/**
@@ -36,5 +36,13 @@ public class Yytoken {
 	
 	public int getLine() {
 		return line;
+	}
+	
+	public int getColumn() {
+		return column;
+	}
+	
+	public String getValue() {
+		return value;
 	}
 }

@@ -1,4 +1,4 @@
-package haw.ci.lexer;
+package haw.ci.lib;
 
 import static haw.ci.lib.Tokens.*;
 import static haw.ci.lib.Yytoken.*;
@@ -28,12 +28,12 @@ letter       = [A-Za-z]*
 digit        = [0-9]
 alphanumeric = {letter}|{digit}
 other_identifer = "_"
+quote_double = \"
 
 integer   = {digit}+
 real      = {integer}\.{integer}
 identifer = {letter}({alphanumeric}|{other_identifer})*
-comment_line = "#"[^\r\n]*
-comment = {comment_line}
+string    = {quote_double}({alphanumeric}|{whitespace})*{quote_double}
 
 math_add = "+"
 math_mul = "*"
@@ -43,6 +43,7 @@ math_div = "/"
 assign = ":="
 
 cond_equal  = "="
+cond_not_equal = "#"
 cond_less   = "<"
 cond_less_or_equal = "<="
 cond_more   = ">"
@@ -82,8 +83,6 @@ cmd_while  = [Ww][Hh][Ii][Ll][Ee]
 
 {whitespace}*	{}
 
-{comment}       { return token(COMMENT, yyline, yycolumn, yytext()); }
-
 {math_add}      { return token(MATH_ADD, yyline, yycolumn); }
 {math_mul}      { return token(MATH_MUL, yyline, yycolumn); }
 {math_sub}      { return token(MATH_SUB, yyline, yycolumn); }
@@ -92,6 +91,7 @@ cmd_while  = [Ww][Hh][Ii][Ll][Ee]
 {assign}        { return token(ASSIGN, yyline, yycolumn); }
 
 {cond_equal}    { return token(EQUAL, yyline, yycolumn); }
+{cond_not_equal}    { return token(NOT_EQUAL, yyline, yycolumn); }
 {cond_less_or_equal} { return token(LESS_EQUAL, yyline, yycolumn); }
 {cond_less_or_more}  { return token(MORE_EQUAL, yyline, yycolumn); }
 {cond_less}     { return token(LESS, yyline, yycolumn); }
@@ -129,5 +129,6 @@ cmd_while  = [Ww][Hh][Ii][Ll][Ee]
 
 {integer}       { return token(INTEGER, yyline, yycolumn, yytext()); }
 {identifer}     { return token(IDENTIFER, yyline, yycolumn, yytext()); }
+{string}        { return token(STRING, yyline, yycolumn, yytext()); }
 
 . { System.out.println("Illegal char, '" + yytext() + "' line: " + yyline + ", column: " + yycolumn); }

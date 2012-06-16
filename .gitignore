@@ -2,3 +2,6 @@
 bin/*
 .classpath
 .project
+Tokenizer.java~
+codelst
+tmpinstr

@@ -1,0 +1,12 @@
+module foo;
+	var i,j,k,l : integer;
+	procedure p1();
+	begin i := j; end p1;
+	
+	procedure p2();
+	begin j := 3; p1(); end p2;
+
+begin
+	p2();
+	Print i;
+end foo.

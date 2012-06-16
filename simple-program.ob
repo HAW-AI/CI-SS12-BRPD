@@ -1,0 +1,14 @@
+module foo;
+var i, j : integer;
+begin
+i  :=  1;
+j  :=  2;
+
+if i > j
+then
+	Print i;
+	Print j;
+else
+	Print 3;
+end;
+end foo.
