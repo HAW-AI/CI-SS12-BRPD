@@ -38,8 +38,8 @@ public class SymbolTable {
 		return constMap.get(ident);
 	}
 	
-	public boolean isLocal() {
-		return parentTable != null;
+	public boolean isLocal(String ident) {
+		return addressMap.containsKey(ident);
 	}
 	
 

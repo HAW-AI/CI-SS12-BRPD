@@ -62,6 +62,9 @@ public class AssignmentNode extends AbstractNode {
 	@Override
 	public Descriptor compile(SymbolTable symbolTable) {
 		expression.compile(symbolTable);
+		if (!(expression instanceof IntegerNode) && !(expression instanceof StringNode)) {
+			write("CONT, 1");
+		}
 		selector.compile(symbolTable);
 	    write("ASSIGN, 1");
 	    return null;

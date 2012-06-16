@@ -57,7 +57,7 @@ public class IdentNode extends AbstractNode {
 	public Descriptor compile(SymbolTable symbolTable) {
 		write("PUSHI, " + symbolTable.addressOf(value));
 		// if we are in a local scope get add FP offset to address
-		if (symbolTable.isLocal()) {
+		if (symbolTable.isLocal(value)) {
 			write("GETFP");
 			write("ADD");
 		}

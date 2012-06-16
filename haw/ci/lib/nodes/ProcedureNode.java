@@ -69,7 +69,7 @@ public class ProcedureNode extends AbstractNode {
 		String name = procedureHeading.getName();
 		int startAddress = getNextLabelNumber();
 		int lengthparblock = localSymboleTable.size();
-		int framesize = localSymboleTable.size() + 3;// 3 saved registers
+		int framesize = localSymboleTable.size() + 3 +2;// 3 saved registers
 		int size = framesize; //TODO same as framesize??
 
 		label(startAddress);
@@ -87,9 +87,11 @@ public class ProcedureNode extends AbstractNode {
 		pushI(3);
 		write("ADD");
 		write("SETSP");
-
+		
+		write("");
 		procedureBody.compile(localSymboleTable);
-
+		write("");
+		
 		//TODO new Label??
 		write("GETFP");
 		write("SETSP");
@@ -99,12 +101,13 @@ public class ProcedureNode extends AbstractNode {
 		popReg("RK");
 		
 		write("GETSP");
-		pushI(0);
+		pushI(3);
 		write("SUB");
 		write("SETSP");
 		
 		write("REDUCE, " + framesize);
 		write("RET");
+		write("");write("");write("");
 		
 		
 		descriptor = new ProcedureDescriptor(localSymboleTable, size, name, startAddress, lengthparblock, framesize);

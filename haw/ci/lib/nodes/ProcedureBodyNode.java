@@ -1,5 +1,8 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+
 public class ProcedureBodyNode extends AbstractNode {
 	private static final long serialVersionUID = -7312376636705994625L;
 	private StatementSequenceNode statementSequence;
@@ -59,5 +62,11 @@ public class ProcedureBodyNode extends AbstractNode {
 	    return result;
 	}
 
+	@Override
+	public Descriptor compile(SymbolTable symbolTable){
+		declaration.compile(symbolTable);
+		statementSequence.compile(symbolTable);
+		return null;
+    }
 
 }
