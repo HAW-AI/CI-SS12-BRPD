@@ -1,7 +1,9 @@
 package haw.ci.lib.nodes;
 
 import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.ArrayDescriptor;
 import haw.ci.lib.descriptor.Descriptor;
+import haw.ci.lib.descriptor.TypeDescriptor;
 
 public class SelectorNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
@@ -63,10 +65,10 @@ public class SelectorNode extends AbstractNode {
 	public String toString(int indentation) {
 		String result = toString(indentation, this.getClass().getName() + "\n");
 		if(ident != null) {
-		    result += ident.toString() + "\n";
+		    result += ident.toString(indentation+1) + "\n";
 		}
 		if(selector != null) {
-		    result += selector.toString() + "\n";
+		    result += selector.toString(indentation+1) + "\n";
 		}
 
 	    return result;
@@ -74,13 +76,26 @@ public class SelectorNode extends AbstractNode {
 	
 	@Override
 	public Descriptor compile(SymbolTable symbolTable) {
-		ident.compile(symbolTable);
-		if (selector != null) {
-			selector.compile(symbolTable);
+		return compile(symbolTable, null, ident);
+	}
+	
+	public Descriptor compile(SymbolTable symbolTable, Descriptor descriptor, IdentNode parentIdent) {
+		if (ident != null) {
+			ident.compile(symbolTable);
 		}
-
+		if (expression != null) {
+			expression.compile(symbolTable);
+			Descriptor d = symbolTable.descriptorFor(parentIdent.getIdentifierName());
+			pushI(((ArrayDescriptor)d).type().size());
+			write("MUL");
+			write("ADD");
+		}
+		if (selector != null) {
+			if (ident != null) {
+				parentIdent = ident;
+			}
+			selector.compile(symbolTable, descriptor, parentIdent);
+		}
 	    return null;
 	}
-
-
 }

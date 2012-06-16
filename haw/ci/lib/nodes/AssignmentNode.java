@@ -7,10 +7,8 @@ public class AssignmentNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
 	private final SelectorNode selector;
 	private final AbstractNode expression;
-	private IdentNode ident;
 
-	public AssignmentNode(IdentNode ident, SelectorNode selector, AbstractNode expression) {
-		this.ident = ident;
+	public AssignmentNode(SelectorNode selector, AbstractNode expression) {
 		this.selector = selector;
 		this.expression = expression;
 	}
@@ -21,7 +19,6 @@ public class AssignmentNode extends AbstractNode {
 		int result = 1;
 		result = prime * result
 				+ ((expression == null) ? 0 : expression.hashCode());
-		result = prime * result + ((ident == null) ? 0 : ident.hashCode());
 		result = prime * result
 				+ ((selector == null) ? 0 : selector.hashCode());
 		return result;
@@ -43,11 +40,6 @@ public class AssignmentNode extends AbstractNode {
 				return false;
 		} else if (!expression.equals(other.expression))
 			return false;
-		if (ident == null) {
-			if (other.ident != null)
-				return false;
-		} else if (!ident.equals(other.ident))
-			return false;
 		if (selector == null) {
 			if (other.selector != null)
 				return false;
@@ -61,9 +53,6 @@ public class AssignmentNode extends AbstractNode {
 	@Override
 	public String toString(int indentation) {
 		String result = toString(indentation, this.getClass().getName() + "\n");
-		if(ident != null) {
-		    result += ident.toString(indentation+1) + "\n";
-		}
 		if(expression != null) {
 		    result += expression.toString(indentation+1);
 		}
@@ -73,10 +62,7 @@ public class AssignmentNode extends AbstractNode {
 	@Override
 	public Descriptor compile(SymbolTable symbolTable) {
 		expression.compile(symbolTable);
-	    ident.compile(symbolTable);
-	    if (selector != null) { // FIXME: is this the right place to do?
-	    	selector.compile(symbolTable);
-	    }
+		selector.compile(symbolTable);
 	    write("ASSIGN, 1");
 	    return null;
 	}

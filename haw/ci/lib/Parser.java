@@ -284,11 +284,10 @@ public class Parser {
 	}
 //Assignment = ident Selector Õ:=Õ Expression.
 	private AssignmentNode Assignment() throws ParserAcceptError {
-		IdentNode ident = Ident();
-		SelectorNode selector = Selector();
+		SelectorNode selector = new SelectorNode(Ident(), Selector());
 		require(ASSIGN);
 
-		return new AssignmentNode(ident, selector, Expression());
+		return new AssignmentNode(selector, Expression());
 	}
 //ActualParameters = Expression {Õ,Õ Expression}.
 	private ActualParametersNode ActualParameters() throws ParserAcceptError {
@@ -396,9 +395,7 @@ public class Parser {
 	}
 	private PrintNode Print() throws ParserAcceptError {
 		require(PRINT);
-		PrintNode node;
-		node = new PrintNode(Expression());
-		return node;
+		return new PrintNode(Expression());
 	}
 	//StatementSequence = Statement {Õ;Õ Statement}.
 	private StatementSequenceNode StatementSequence() throws ParserAcceptError {
@@ -434,8 +431,7 @@ public class Parser {
 		switch(current.getToken()) {
 		case IDENTIFER:
 			if(testNext(DOT) || testNext(BRACE_SQUARE_OPEN)) {
-				next();
-				node = Selector();
+				node = new SelectorNode(Ident(), Selector());
 			} else {
 				node = Ident();
 			}
@@ -514,8 +510,7 @@ public class Parser {
 	}
 //Expression = SimpleExpression [(Õ=Õ | Õ#Õ | Õ<Õ | Õ<=Õ | Õ>Õ | Õ>=Õ) SimpleExpression].
 	private AbstractNode Expression() throws ParserAcceptError {
-		AbstractNode node;
-		node = SimpleExpression();
+		AbstractNode node = SimpleExpression();
 		while (test(EQUAL) || test(NOT_EQUAL) || test(LESS) || test(LESS_EQUAL) || test(MORE) || test(MORE_EQUAL)) {
 			Tokens token = current.getToken();
 			next();
@@ -525,18 +520,17 @@ public class Parser {
 	}
 //IndexExpression = integer | ConstIdent.
 	private AbstractNode IndexExpression() {
-		next();
 		AbstractNode node = null;
 		// Have to do it this way because calling Integer() or ConstIdent() will move to next Token
 		switch (current.getToken()) {
 		case INTEGER:
-			node = new IntegerNode(Integer.getInteger(current.getValue()));
+			node = new IntegerNode(Integer.valueOf(current.getValue()));
 			break;
 		case IDENTIFER:
 			node = new IdentNode(current.getValue());
-		default:
 			break;
 		}
+		next();
 		return node;
 	}
 //ConstIdent = ident.

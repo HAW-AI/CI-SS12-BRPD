@@ -50,10 +50,10 @@ public abstract class AbstractNode implements Serializable {
 		return compile(new SymbolTable());
 	}
 
-//	public abstract Descriptor compile(SymbolTable symbolTable);
-	public Descriptor compile(SymbolTable symbolTable){
-		return null;
-    }
+	public abstract Descriptor compile(SymbolTable symbolTable);
+//	public Descriptor compile(SymbolTable symbolTable){
+//		return null;
+//    }
     
     public Descriptor compile(SymbolTable symbolTable, Descriptor desct){
     	return null;

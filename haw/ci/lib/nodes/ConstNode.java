@@ -3,7 +3,7 @@ package haw.ci.lib.nodes;
 import haw.ci.lib.SymbolTable;
 import haw.ci.lib.descriptor.Descriptor;
 
-public class ConstNode extends AbstractNode {
+public class ConstNode extends AbstractNode implements IntegerValue {
 	private static final long serialVersionUID = 4386388009177664496L;
 
 	private IdentNode ident;
@@ -66,5 +66,11 @@ public class ConstNode extends AbstractNode {
 		ident.compile(symbolTable);
 		expression.compile(symbolTable);
 		return null;
+	}
+
+	@Override
+	public int getValue() {
+		// TODO: Fix me, should we evaluate the full expression stack? (needed for Array declaration)
+		return 0;
 	}
 }
