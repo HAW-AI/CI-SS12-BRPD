@@ -95,13 +95,13 @@ public class SymbolTable {
 	
 	public String toString(){
 		StringBuffer result = new StringBuffer();
+		result.append("-----------------------------------------start\n");
 		for(Map.Entry<String, Integer> e : addressMap.entrySet()){
 			result.append(e.getKey());
 			result.append(" : ");
 			result.append(e.getValue());
 			result.append("\n");
 		}
-		result.append("\n");
 		
 		for(Map.Entry<String, Descriptor> e : descriptorMap.entrySet()){
 			result.append(e.getKey());
@@ -109,7 +109,6 @@ public class SymbolTable {
 			result.append(e.getValue());
 			result.append("\n");
 		}
-		result.append("\n");
 		
 		for(Map.Entry<String, Integer> e : constMap.entrySet()){
 			result.append(e.getKey());
@@ -117,11 +116,9 @@ public class SymbolTable {
 			result.append(e.getValue());
 			result.append("\n");
 		}
-		result.append("\n");
 		
 		result.append("currentAddress: " + currentAddress + "\n");
-		result.append("-----------------------------------------\n\n");
-		result.append("parentTable: \n" + parentTable + "\n");
+		result.append("-----------------------------------------end\n");
 		
 		return result.toString();
 	}

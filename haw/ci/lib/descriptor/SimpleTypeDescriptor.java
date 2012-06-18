@@ -18,4 +18,9 @@ public class SimpleTypeDescriptor implements TypeDescriptor {
 		public Type type(){
 			return this.type;
 		}
+		
+		@Override
+		public String toString() {
+			return this.getClass().getCanonicalName() + "(" + this.type() + ")";
+		}
 }

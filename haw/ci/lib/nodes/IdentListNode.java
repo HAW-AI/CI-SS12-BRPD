@@ -55,7 +55,6 @@ public class IdentListNode extends AbstractNode {
 		for (IdentNode node : nodes) {
 			symbolTable.declare(node.getIdentifierName(), descriptor);
 		}
-
 		return null;
 	}
 

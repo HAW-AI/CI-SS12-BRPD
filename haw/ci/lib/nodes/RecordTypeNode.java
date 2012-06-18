@@ -1,9 +1,14 @@
 package haw.ci.lib.nodes;
 
+import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.Descriptor;
+import haw.ci.lib.descriptor.RecordDescriptor;
+
 import java.util.List;
 
 public class RecordTypeNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
+	private static int anonymousNameCounter = 0;
 	private final List<FieldListNode> fieldsList;
 
 	public RecordTypeNode(List<FieldListNode> fieldsList) {
@@ -49,4 +54,17 @@ public class RecordTypeNode extends AbstractNode {
 		return  output;
 	}
 
+	@Override
+	public Descriptor compile(SymbolTable parentSymbolTable) {
+		SymbolTable symbolTable = new SymbolTable(parentSymbolTable);
+		for (AbstractNode e : fieldsList) {
+			e.compile(symbolTable);
+		}
+		parentSymbolTable.declare(getNextAnonymousName(), new RecordDescriptor(symbolTable));
+		return new RecordDescriptor(symbolTable);
+    }
+	
+	private String getNextAnonymousName() {
+		return String.format("Record-%d",anonymousNameCounter++);
+	}
 }

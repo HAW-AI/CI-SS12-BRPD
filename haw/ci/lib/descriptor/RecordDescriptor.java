@@ -6,6 +6,10 @@ public class RecordDescriptor implements TypeDescriptor {
 
 	private SymbolTable fields;
 
+	public RecordDescriptor(SymbolTable symbolTable) {
+		fields = symbolTable;
+	}
+
 	@Override
 	public int size() {
 		return fields.size();

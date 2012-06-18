@@ -3,7 +3,7 @@ package haw.ci.lib.nodes;
 import haw.ci.lib.SymbolTable;
 import haw.ci.lib.descriptor.ArrayDescriptor;
 import haw.ci.lib.descriptor.Descriptor;
-import haw.ci.lib.descriptor.TypeDescriptor;
+import haw.ci.lib.descriptor.RecordDescriptor;
 
 public class SelectorNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
@@ -81,7 +81,17 @@ public class SelectorNode extends AbstractNode {
 	
 	public Descriptor compile(SymbolTable symbolTable, Descriptor descriptor, IdentNode parentIdent) {
 		if (ident != null) {
-			ident.compile(symbolTable);
+			Descriptor d = symbolTable.descriptorFor(ident.getIdentifierName());
+			if (d != null) {
+				if (d instanceof RecordDescriptor) {
+					RecordDescriptor r = (RecordDescriptor) d;
+					symbolTable = r.fields();
+				}
+				ident.compile(symbolTable);
+			}
+			else { 
+				System.out.println("Descriptor for " + ident.getIdentifierName() + " is null");
+			}
 		}
 		if (expression != null) {
 			expression.compile(symbolTable);
