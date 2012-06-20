@@ -5,4 +5,13 @@ a := 8;
 b := 2;
 Print 10;
 Print a+b;
+
+Print 6;
+Print a-b;
+
+Print 16;
+Print a*b;
+
+Print 4;
+Print a/b;
 end test.
