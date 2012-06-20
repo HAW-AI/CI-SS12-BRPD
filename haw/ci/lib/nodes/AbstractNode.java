@@ -6,6 +6,7 @@ import haw.ci.lib.descriptor.Descriptor;
 import java.io.Serializable;
 
 public abstract class AbstractNode implements Serializable {
+	public static boolean DEBUG = true;
 	private static final long serialVersionUID = 1L;
 	private Object symbolTable;
 	static int labelCount = 1;
@@ -59,9 +60,18 @@ public abstract class AbstractNode implements Serializable {
     	return null;
     }
     
-    public void write(String code){
-    	System.out.println(code);
+    public void write(String code) {
+    	if (DEBUG) {
+    	System.out.println(String.format("[%30s]: %s",this.getClass().getSimpleName(),code));
+    	} else {
+    		System.out.println(code);
+    	}
     }
+    public void debug(String msg) {
+    	if (DEBUG) {
+    		System.out.println(String.format("--- %s", msg));
+    	}
+	}
 	
     public void label(int n) {
     	write(String.format("LABEL, %d", n));

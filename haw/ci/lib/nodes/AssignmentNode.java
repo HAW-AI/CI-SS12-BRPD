@@ -53,6 +53,9 @@ public class AssignmentNode extends AbstractNode {
 	@Override
 	public String toString(int indentation) {
 		String result = toString(indentation, this.getClass().getName() + "\n");
+		if(selector != null) {
+		    result += selector.toString(indentation+1);
+		}
 		if(expression != null) {
 		    result += expression.toString(indentation+1);
 		}
