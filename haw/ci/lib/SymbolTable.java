@@ -6,14 +6,18 @@ package haw.ci.lib;
  */
 
 
+import haw.ci.lib.descriptor.ConstDescriptor;
 import haw.ci.lib.descriptor.Descriptor;
+import haw.ci.lib.nodes.IdentNode;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class SymbolTable {
 	private Map<String, Integer> addressMap = new HashMap<String, Integer>();
 	private Map<String, Descriptor> descriptorMap = new HashMap<String,Descriptor>();
-	private Map<String, Integer> constMap = new HashMap<String,Integer>();
+	private Map<String, ConstDescriptor> constMap = new HashMap<String,ConstDescriptor>();
 	private int currentAddress = 0;
 	private SymbolTable parentTable;
 	
@@ -30,11 +34,11 @@ public class SymbolTable {
 		return new SymbolTable();
 	}
 	
-	public void declareConst(String ident, int value){
-		constMap.put(ident, value);
+	public void declareConst(String ident, ConstDescriptor constDescriptor){
+		constMap.put(ident, constDescriptor);
 	}
 	
-	public int getConstVal(String ident){
+	public ConstDescriptor getConst(String ident){
 		return constMap.get(ident);
 	}
 	
@@ -42,8 +46,10 @@ public class SymbolTable {
 		return addressMap.containsKey(ident);
 	}
 	
-
-	
+	public boolean isConst(String value) {
+		return constMap.containsKey(value);
+	}
+		
 	public void declare(String ident, Descriptor descriptor) {
 		if(!(addressMap.containsKey(ident))){
 			descriptorMap.put(ident, descriptor);
@@ -72,9 +78,6 @@ public class SymbolTable {
 		return d;
 	}
 
-	
-
-	
 	public int addressOf(String ident) {
 		
 		if(addressMap.containsKey(ident)){
@@ -110,7 +113,7 @@ public class SymbolTable {
 			result.append("\n");
 		}
 		
-		for(Map.Entry<String, Integer> e : constMap.entrySet()){
+		for(Entry<String, ConstDescriptor> e : constMap.entrySet()){
 			result.append(e.getKey());
 			result.append(" : ");
 			result.append(e.getValue());

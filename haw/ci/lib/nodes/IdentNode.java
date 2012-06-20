@@ -1,6 +1,7 @@
 package haw.ci.lib.nodes;
 
 import haw.ci.lib.SymbolTable;
+import haw.ci.lib.descriptor.ConstDescriptor;
 import haw.ci.lib.descriptor.Descriptor;
 
 public class IdentNode extends AbstractNode {
@@ -55,11 +56,16 @@ public class IdentNode extends AbstractNode {
 	
 	@Override
 	public Descriptor compile(SymbolTable symbolTable) {
-		write("PUSHI, " + symbolTable.addressOf(value));
-		// if we are in a local scope get add FP offset to address
-		if (symbolTable.isLocal(value)) {
-			write("GETFP");
-			write("ADD");
+		if (symbolTable.isConst(value)) {
+			((ConstDescriptor) symbolTable.getConst(value)).getNode().compile(symbolTable);
+		}
+		else {
+			write("PUSHI, " + symbolTable.addressOf(value));
+			// if we are in a local scope get add FP offset to address
+			if (symbolTable.isLocal(value)) {
+				write("GETFP");
+				write("ADD");
+			}
 		}
 		return null;
 	}

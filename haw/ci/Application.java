@@ -22,7 +22,10 @@ public class Application {
 			out = new PrintStream(new File("TestRun.txt"));
 		}
 		if(f == null || !f.exists()) {
-			f = new File("./TestRun.ob");
+//			f = new File("./TestRun.ob");
+//			f = new File("./voeller/test1-statements.ob");
+//			f = new File("./math1.ob");
+			f = new File("test0-assign.ob");
 		}
 		Reader fileReader = new FileReader(f);
 		ITokenStream tokenStream = new Tokenizer(fileReader);

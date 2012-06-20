@@ -1,0 +1,20 @@
+module foo;
+const c = 10;
+var i : integer;
+begin
+i := 500;
+Print 500;
+Print i;
+
+i := i;
+Print 500;
+Print i;
+
+i := i*1;
+
+Print 500;
+Print i;
+
+Print 10;
+Print c;
+end foo.

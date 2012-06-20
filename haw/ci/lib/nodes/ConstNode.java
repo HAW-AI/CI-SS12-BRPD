@@ -1,7 +1,10 @@
 package haw.ci.lib.nodes;
 
 import haw.ci.lib.SymbolTable;
+import haw.ci.lib.Tokens;
+import haw.ci.lib.descriptor.ConstDescriptor;
 import haw.ci.lib.descriptor.Descriptor;
+import haw.ci.lib.descriptor.TypeDescriptor;
 
 public class ConstNode extends AbstractNode implements IntegerValue {
 	private static final long serialVersionUID = 4386388009177664496L;
@@ -12,10 +15,6 @@ public class ConstNode extends AbstractNode implements IntegerValue {
 	public ConstNode(IdentNode ident, AbstractNode expression) {
 		this.ident = ident;
 		this.expression = expression;
-	}
-
-	public IdentNode getIdent() {
-		return ident;
 	}
 
 	@Override
@@ -53,9 +52,6 @@ public class ConstNode extends AbstractNode implements IntegerValue {
 	@Override
 	public String toString(int indentation) {
 		String result = toString(indentation, this.getClass().getName() + "\n");
-		if (ident != null) {
-			result += ident.toString(indentation + 1) + "\n";
-		}
 		if (expression != null) {
 			result += expression.toString(indentation + 1);
 		}
@@ -63,8 +59,8 @@ public class ConstNode extends AbstractNode implements IntegerValue {
 	}
 
 	public Descriptor compile(SymbolTable symbolTable) {
-		ident.compile(symbolTable);
 		expression.compile(symbolTable);
+		symbolTable.declareConst(ident.getIdentifierName(), new ConstDescriptor(this));
 		return null;
 	}
 

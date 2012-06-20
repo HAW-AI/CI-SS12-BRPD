@@ -14,4 +14,7 @@ Print a*b;
 
 Print 4;
 Print a/b;
+
+Print -8;
+Print -1*a;
 end test.
