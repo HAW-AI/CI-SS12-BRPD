@@ -97,6 +97,7 @@ public class ModuleNode extends AbstractNode {
 	    statementSequence.compile(symbolTable);
 	    write("STOP");
 
+	    debug(symbolTable.toString());
 	    return null;
 	}
 

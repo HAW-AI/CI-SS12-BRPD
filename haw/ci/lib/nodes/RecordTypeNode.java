@@ -60,7 +60,7 @@ public class RecordTypeNode extends AbstractNode {
 		for (AbstractNode e : fieldsList) {
 			e.compile(symbolTable);
 		}
-		parentSymbolTable.declare(getNextAnonymousName(), new RecordDescriptor(symbolTable));
+		//parentSymbolTable.declare(getNextAnonymousName(), new RecordDescriptor(symbolTable));
 		return new RecordDescriptor(symbolTable);
     }
 	

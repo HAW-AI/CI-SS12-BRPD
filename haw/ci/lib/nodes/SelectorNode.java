@@ -91,7 +91,6 @@ ASSIGN, 1 // [3] := 2
 		
 		*/
 		if (ident != null) {
-			debug("selector - ident compile");
 			Descriptor d = symbolTable.descriptorFor(ident.getIdentifierName());
 			if (d != null) {
 				if (d instanceof RecordDescriptor) {

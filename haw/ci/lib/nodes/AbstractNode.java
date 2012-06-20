@@ -6,7 +6,7 @@ import haw.ci.lib.descriptor.Descriptor;
 import java.io.Serializable;
 
 public abstract class AbstractNode implements Serializable {
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	private static final long serialVersionUID = 1L;
 	private Object symbolTable;
 	static int labelCount = 1;
