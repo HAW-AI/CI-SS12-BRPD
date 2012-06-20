@@ -47,6 +47,12 @@ public abstract class AbstractNode implements Serializable {
     	return labelCount++;
     }
 	
+	public Descriptor compile(Boolean debug) {
+		DEBUG = debug;
+		compile();
+		return null;
+	}
+	
 	public Descriptor compile() {
 		return compile(new SymbolTable());
 	}

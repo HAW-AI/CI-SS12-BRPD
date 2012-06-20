@@ -95,10 +95,14 @@ public class SelectorNode extends AbstractNode {
 		}
 		if (expression != null) {
 			expression.compile(symbolTable);
-			if (descriptor == null) descriptor = symbolTable.descriptorFor(parentIdent.getIdentifierName());
-			pushI(((ArrayDescriptor)descriptor).type().size());
-			descriptor = ((ArrayDescriptor)descriptor).type();
-			write("MUL");
+			if (descriptor == null) {
+				descriptor = symbolTable.descriptorFor(parentIdent.getIdentifierName());
+			}
+			else {
+				pushI(((ArrayDescriptor)descriptor).type().size());
+				descriptor = ((ArrayDescriptor)descriptor).type();
+				write("MUL");
+			}
 		}
 		if (selector != null) {
 			if (ident != null) {

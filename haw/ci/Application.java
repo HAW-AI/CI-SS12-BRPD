@@ -16,6 +16,7 @@ public class Application {
 		File f = null;
 		PrintStream backup = System.out;
 		PrintStream out = null;
+		Boolean debug = false;
 		
 		if (args.length > 0) {
 			f = new File(args[0]);
@@ -26,8 +27,8 @@ public class Application {
 //			f = new File("./voeller/test1-statements.ob");
 //			f = new File("./math1.ob");
 //			f = new File("test0-assign.ob");
-//			f = new File("./voeller/test3-array.ob");
-			f = new File("./simple-program3.ob");
+			f = new File("./voeller/test3-array.ob");
+//			f = new File("./simple-program3.ob");
 		}
 		Reader fileReader = new FileReader(f);
 		ITokenStream tokenStream = new Tokenizer(fileReader);
@@ -38,10 +39,11 @@ public class Application {
 			if (out == null) {
 				System.out.println(node.toString());
 				System.out.println("Code:");
+				debug = true;
 			}
 			else System.setOut(out);
 			
-			node.compile();
+			node.compile(debug);
 			
 			if (out != null) System.setOut(backup);
 			
