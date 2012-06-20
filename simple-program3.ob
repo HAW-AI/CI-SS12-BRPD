@@ -3,7 +3,7 @@ var i : array[10] of array[8] of array[6] of integer;
 
 begin
 
-i[1][2][3]  :=  500;
+i[1][2][3] := 500;
 Print i[1][2][3];
 
 end foo.
