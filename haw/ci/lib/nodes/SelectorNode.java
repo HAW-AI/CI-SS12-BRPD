@@ -80,16 +80,6 @@ public class SelectorNode extends AbstractNode {
 	}
 	
 	public Descriptor compile(SymbolTable symbolTable, Descriptor descriptor, IdentNode parentIdent) {
-		/*
-PUSHI, 2  // value
-PUSHI, 3  // scope offset           
-PUSHI, 0  // variable offset         Ident#compile
-GETFP     // locale offset (0)       Ident#compile
-ADD       // 0 + 0 = 0               Ident#compile
-ADD       // 0 + 3 = 3
-ASSIGN, 1 // [3] := 2
-		
-		*/
 		if (ident != null) {
 			Descriptor d = symbolTable.descriptorFor(ident.getIdentifierName());
 			if (d != null) {
