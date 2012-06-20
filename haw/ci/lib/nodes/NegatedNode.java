@@ -43,15 +43,15 @@ public class NegatedNode extends AbstractNode {
 	public String toString(int indentation) {
 		String result = toString(indentation, this.getClass().getName() + "\n");
 		if(node != null) {
-		    result += node.toString() + "\n";
+		    result += node.toString(indentation+1) + "\n";
 		}
 
 	    return result;
 	}
 
 	public Descriptor compile(SymbolTable symbolTable) {
-		node.compile(symbolTable);
 		write("PUSHI, 0");
+		node.compile(symbolTable);
 		write("SUB");
 		return null;
 	}
