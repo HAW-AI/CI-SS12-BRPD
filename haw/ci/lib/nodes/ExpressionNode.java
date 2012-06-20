@@ -71,12 +71,12 @@ public class ExpressionNode extends AbstractNode {
 	public Descriptor compile(SymbolTable symbolTable) {
 		left.compile(symbolTable);
 
-		if (left instanceof IdentNode) {
+		if (left instanceof IdentNode && !symbolTable.isConst(((IdentNode)left).getIdentifierName())) {
 			write("CONT, 1");
 		}
 		right.compile(symbolTable);
 
-		if (right instanceof IdentNode) {
+		if (right instanceof IdentNode && !symbolTable.isConst(((IdentNode)right).getIdentifierName())) {
 			write("CONT, 1");
 		}
 

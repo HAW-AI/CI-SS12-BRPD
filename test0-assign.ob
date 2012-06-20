@@ -17,4 +17,7 @@ Print i;
 
 Print 10;
 Print c;
+
+Print 11;
+Print c+1;
 end foo.
