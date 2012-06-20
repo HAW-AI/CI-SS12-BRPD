@@ -441,6 +441,10 @@ public class Parser {
 			next();
 			break;
 		// TODO: String
+		case STRING:
+			 node = new StringNode(current.getValue());
+			 next();
+			 break;
 		case READ:
 			node = Read();
 			break;

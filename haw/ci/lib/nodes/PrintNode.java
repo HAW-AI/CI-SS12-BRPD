@@ -55,6 +55,7 @@ public class PrintNode extends AbstractNode {
 		expression.compile(symbolTable);
 		if (expression instanceof IdentNode) write("CONT, 1");
 		if (expression instanceof SelectorNode) write("CONT, 1");
+		if (expression instanceof StringNode) write("CONT, 1");
 		write("PRINT");
 		return null;
 	}

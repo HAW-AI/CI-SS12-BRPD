@@ -40,7 +40,7 @@ public class StringNode extends AbstractNode {
 	public String toString(int indentation) {
 		String result = toString(indentation, this.getClass().getName() + "\n");
 		if(value != null) {
-		    result += value.toString() + "\n";
+		    result += toString(indentation, "Value: " + value.toString() + "\n");
 		}
 
 	    return result;
