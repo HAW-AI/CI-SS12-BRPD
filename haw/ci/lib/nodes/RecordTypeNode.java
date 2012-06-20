@@ -8,7 +8,6 @@ import java.util.List;
 
 public class RecordTypeNode extends AbstractNode {
 	private static final long serialVersionUID = 1L;
-	private static int anonymousNameCounter = 0;
 	private final List<FieldListNode> fieldsList;
 
 	public RecordTypeNode(List<FieldListNode> fieldsList) {
@@ -60,11 +59,6 @@ public class RecordTypeNode extends AbstractNode {
 		for (AbstractNode e : fieldsList) {
 			e.compile(symbolTable);
 		}
-		//parentSymbolTable.declare(getNextAnonymousName(), new RecordDescriptor(symbolTable));
 		return new RecordDescriptor(symbolTable);
     }
-	
-	private String getNextAnonymousName() {
-		return String.format("Record-%d",anonymousNameCounter++);
-	}
 }
