@@ -487,8 +487,9 @@ public class Parser {
 		AbstractNode node = Factor();
 
 		if (test(MATH_MUL) || test(MATH_DIV)) {
+			Tokens token = current.getToken();
 			next();
-			node = new ExpressionNode(current.getToken(), node, Factor());
+			node = new ExpressionNode(token, node, Factor());
 		}
 
 		return node;

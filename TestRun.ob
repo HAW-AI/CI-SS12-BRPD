@@ -1,0 +1,4 @@
+module Hello;
+begin
+	Print 1337;
+end Hello.

@@ -101,7 +101,7 @@ public class ExpressionNode extends AbstractNode {
 		} else if (binOpToken.equals(Tokens.NOT_EQUAL)) {
 			write("NEQ");
 		} else {
-			write("UNEXPECTED SYMBOL IN: ExpressionNode");
+			write("UNEXPECTED SYMBOL IN: ExpressionNode("+binOpToken+")");
 		}
 		return null;
 	}
