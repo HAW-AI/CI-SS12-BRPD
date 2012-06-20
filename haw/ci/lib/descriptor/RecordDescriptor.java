@@ -19,4 +19,9 @@ public class RecordDescriptor implements TypeDescriptor {
 		return fields;
 	}
 
+	@Override
+	public SymbolTable symbolTable() {
+		return fields();
+	}
+
 }

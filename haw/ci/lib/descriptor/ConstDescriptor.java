@@ -1,5 +1,6 @@
 package haw.ci.lib.descriptor;
 
+import haw.ci.lib.SymbolTable;
 import haw.ci.lib.nodes.ConstNode;
 
 public class ConstDescriptor implements TypeDescriptor {
@@ -17,5 +18,10 @@ public class ConstDescriptor implements TypeDescriptor {
 
 	public ConstNode getNode() {
 		return node;
+	}
+
+	@Override
+	public SymbolTable symbolTable() {
+		return null;
 	}
 }

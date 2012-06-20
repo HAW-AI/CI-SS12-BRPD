@@ -97,4 +97,8 @@ public abstract class AbstractNode implements Serializable {
     public void pushI(int i) {
     	write(String.format("PUSHI, %d", i));
 	}
+    public void assign(int l) {
+    	write(String.format("ASSIGN, %d", l));
+	}
+    
 }

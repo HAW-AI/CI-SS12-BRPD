@@ -46,4 +46,9 @@ public class ProcedureDescriptor implements Descriptor {
 		return params;
 	}
 
+	@Override
+	public SymbolTable symbolTable() {
+		return getParams();
+	}
+
 }

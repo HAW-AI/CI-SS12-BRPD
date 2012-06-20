@@ -1,5 +1,7 @@
 package haw.ci.lib.descriptor;
 
+import haw.ci.lib.SymbolTable;
+
 public class VariableDescriptor implements Descriptor {
 
 	private TypeDescriptor type;
@@ -21,6 +23,11 @@ public class VariableDescriptor implements Descriptor {
 	@Override
 	public int size() {
 		return -1;
+	}
+
+	@Override
+	public SymbolTable symbolTable() {
+		return null;
 	}
 
 }

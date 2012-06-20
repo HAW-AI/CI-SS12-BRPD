@@ -2,7 +2,6 @@ module foo;
 var i : array[10] of array[8] of array[6] of integer;
 
 begin
-
 i[4][3][2] := 500;
 Print i[4][3][2];
 

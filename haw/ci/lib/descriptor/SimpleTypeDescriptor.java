@@ -1,5 +1,7 @@
 package haw.ci.lib.descriptor;
 
+import haw.ci.lib.SymbolTable;
+
 public class SimpleTypeDescriptor implements TypeDescriptor {
 		public enum Type{
 			BOOLEAN, INTEGER, STRING;
@@ -22,5 +24,10 @@ public class SimpleTypeDescriptor implements TypeDescriptor {
 		@Override
 		public String toString() {
 			return this.getClass().getCanonicalName() + "(" + this.type() + ")";
+		}
+
+		@Override
+		public SymbolTable symbolTable() {
+			return null;
 		}
 }

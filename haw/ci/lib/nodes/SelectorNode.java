@@ -98,11 +98,9 @@ public class SelectorNode extends AbstractNode {
 			if (descriptor == null) {
 				descriptor = symbolTable.descriptorFor(parentIdent.getIdentifierName());
 			}
-			else {
-				pushI(((ArrayDescriptor)descriptor).type().size());
-				descriptor = ((ArrayDescriptor)descriptor).type();
-				write("MUL");
-			}
+			pushI(((ArrayDescriptor)descriptor).type().size());
+			descriptor = ((ArrayDescriptor)descriptor).type();
+			write("MUL");
 		}
 		if (selector != null) {
 			if (ident != null) {
@@ -112,5 +110,23 @@ public class SelectorNode extends AbstractNode {
 			write("ADD");
 		}
 	    return null;
+	}
+	
+	public int getSize(SymbolTable symbolTable) {
+		return getDeepestDescriptor(symbolTable,null).size();
+	}
+	
+	public Descriptor getDeepestDescriptor(SymbolTable symbolTable, Descriptor descriptor) {
+		if (ident != null) {
+			descriptor = symbolTable.descriptorFor(ident.getIdentifierName());
+		}
+		if (expression != null) {
+			descriptor = ((ArrayDescriptor)descriptor).type();
+		}
+		if (selector != null) {
+			Descriptor d = selector.getDeepestDescriptor(symbolTable, descriptor);
+			if (d != null) { descriptor = d; }
+		}
+		return descriptor;
 	}
 }

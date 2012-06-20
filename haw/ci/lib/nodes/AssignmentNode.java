@@ -69,7 +69,7 @@ public class AssignmentNode extends AbstractNode {
 			write("CONT, 1");
 		}
 		selector.compile(symbolTable);
-	    write("ASSIGN, 1");
+		assign(selector.getSize(symbolTable));
 	    return null;
 	}
 

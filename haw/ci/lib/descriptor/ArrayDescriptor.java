@@ -1,5 +1,7 @@
 package haw.ci.lib.descriptor;
 
+import haw.ci.lib.SymbolTable;
+
 public class ArrayDescriptor implements TypeDescriptor {
 
 	private TypeDescriptor type;
@@ -21,6 +23,11 @@ public class ArrayDescriptor implements TypeDescriptor {
 	
 	public TypeDescriptor type() {
 		return type;
+	}
+
+	@Override
+	public SymbolTable symbolTable() {
+		return null;
 	}
 
 }
