@@ -100,5 +100,7 @@ public abstract class AbstractNode implements Serializable {
     public void assign(int l) {
     	write(String.format("ASSIGN, %d", l));
 	}
-    
+    public void cont(int l) {
+    	write(String.format("CONT, %d", l));
+	}
 }

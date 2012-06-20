@@ -64,12 +64,13 @@ public class AssignmentNode extends AbstractNode {
 	
 	@Override
 	public Descriptor compile(SymbolTable symbolTable) {
+		int size = selector.getSize(symbolTable);
 		expression.compile(symbolTable);
 		if (expression instanceof VarNode || expression instanceof SelectorNode || expression instanceof IdentNode) {
-			write("CONT, 1");
+			cont(size);
 		}
 		selector.compile(symbolTable);
-		assign(selector.getSize(symbolTable));
+		assign(size);
 	    return null;
 	}
 

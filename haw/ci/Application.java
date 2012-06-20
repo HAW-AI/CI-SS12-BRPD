@@ -25,10 +25,11 @@ public class Application {
 		if(f == null || !f.exists()) {
 //			f = new File("./TestRun.ob");
 //			f = new File("./voeller/test1-statements.ob");
-//			f = new File("./math1.ob");
-//			f = new File("test0-assign.ob");
 //			f = new File("./voeller/test3-array.ob");
-			f = new File("./simple-program3.ob");
+//			f = new File("./math1.ob");
+//			f = new File("./test0-assign.ob");
+			f = new File("./test1-loop.ob");
+//			f = new File("./simple-program3.ob");
 		}
 		Reader fileReader = new FileReader(f);
 		ITokenStream tokenStream = new Tokenizer(fileReader);

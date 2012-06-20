@@ -1,0 +1,15 @@
+module m4;
+var
+ a, b : array[10] of integer;
+ i : integer;
+ 
+begin
+ i := 0;
+ while i < 10 do
+  a[i] := i;
+  i := i + 1;
+ end;
+ b := a;
+ Print a[9];
+ Print b[9];
+end m4.
