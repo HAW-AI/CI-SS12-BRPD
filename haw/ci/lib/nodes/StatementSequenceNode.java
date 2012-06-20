@@ -44,7 +44,9 @@ public class StatementSequenceNode extends AbstractNode {
 		String output = toString(indentation, this.getClass().getName() + "\n");
 		
 		for (AbstractNode node : nodes) {
-			output += node.toString(indentation+1) + "\n";
+			if (node != null) {
+				output += node.toString(indentation+1) + "\n";
+			}
 		}
 		return  output;
 	}
@@ -52,7 +54,9 @@ public class StatementSequenceNode extends AbstractNode {
 	@Override
 	public Descriptor compile(SymbolTable symbolTable) {
 	    for (AbstractNode node : nodes) {
-	        node.compile(symbolTable);
+	    	if (node != null) {
+	    		node.compile(symbolTable);
+	    	}
 	    }
 
 	    return null;
