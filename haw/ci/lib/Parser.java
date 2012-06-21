@@ -320,9 +320,11 @@ public class Parser {
 		if (test(ELSIF)) {
 			elsif = Elsif();
 		}
-		if (test(ELSE)) {
-			require(ELSE);
-			statementSeq2 = StatementSequence();
+		else {
+			if (test(ELSE)) {
+				require(ELSE);
+				statementSeq2 = StatementSequence();
+			}
 		}
 		require(END);
 
@@ -330,7 +332,7 @@ public class Parser {
 	}
 	private IfStatementNode Elsif() throws ParserAcceptError {
 		AbstractNode expression = null, elsif = null;
-		StatementSequenceNode statementSeq = null;
+		StatementSequenceNode statementSeq = null,statementSeq2 = null;;
 		if (require(ELSIF)) {
 			expression = Expression();
 		}
@@ -340,7 +342,11 @@ public class Parser {
 		if (test(ELSIF)) {
 			elsif = Elsif();
 		}
-		return new IfStatementNode(expression, statementSeq, elsif, null);
+		if (test(ELSE)) {
+			require(ELSE);
+			statementSeq2 = StatementSequence();
+		}
+		return new IfStatementNode(expression, statementSeq, elsif, statementSeq2);
 	}
 	//WhileStatement = ÕWHILEÕ Expression ÕDOÕ StatementSequence ÕENDÕ.
 	private AbstractNode WhileStatement() throws ParserAcceptError {
