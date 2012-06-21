@@ -71,6 +71,7 @@ public class WhileStatementNode extends AbstractNode {
 		statementSequence.compile(symbolTable);
 		jump(labelWhile);
 		label(labelEnd);
+		debug(symbolTable.toString());
 		return null;
 	}
 }

@@ -93,8 +93,11 @@ public class SelectorNode extends AbstractNode {
 				System.out.println("Descriptor for " + ident.getIdentifierName() + " is null");
 			}
 		}
-		if (expression != null) {
+		if (expression != null) { // Array
 			expression.compile(symbolTable);
+			if (expression instanceof IdentNode) {
+				cont(symbolTable.descriptorFor(((IdentNode) expression).getIdentifierName()).size());
+			}
 			if (descriptor == null) {
 				descriptor = symbolTable.descriptorFor(parentIdent.getIdentifierName());
 			}
