@@ -56,7 +56,7 @@ public class PrintNode extends AbstractNode {
 		if (expression instanceof IdentNode && !symbolTable.isConst(((IdentNode)expression).getIdentifierName())) cont(1);
 		if (expression instanceof SelectorNode) cont(1);
 		if (expression instanceof StringNode) cont(1);
-		write("PRINT");
+		print();
 		return null;
 	}
 }

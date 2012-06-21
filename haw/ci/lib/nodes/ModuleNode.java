@@ -88,12 +88,12 @@ public class ModuleNode extends AbstractNode {
 	
 	@Override
 	public Descriptor compile(SymbolTable symbolTable) {
-		write("PUSHS, " + ident.getValue());
+		pushS(ident.getValue());
 		write("JMP, 0");
 		declaration.compile(symbolTable);
 		write("LABEL, 0");
 	    pushI(symbolTable.size());
-	    write("SETSP");
+	    set("SP");
 	    statementSequence.compile(symbolTable);
 	    write("STOP");
 

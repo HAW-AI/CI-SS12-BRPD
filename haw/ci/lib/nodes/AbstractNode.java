@@ -102,7 +102,7 @@ public abstract class AbstractNode implements Serializable {
     	this.stackSize++;
 	}
     public void pushS(String s) {
-    	write(String.format("PUSHS, %d", s));
+    	write(String.format("PUSHS, %s", s));
     	this.stackSize++;
 	}
     public void assign(int l) {
@@ -136,5 +136,13 @@ public abstract class AbstractNode implements Serializable {
     public void set(String p) {
     	write("SET%s");
     	this.stackSize--;
+    }
+    public void print() {
+    	write("PRINT");
+    	this.stackSize--;
+    }
+    public void read(String msg) {
+    	write("READ, "+msg);
+    	this.stackSize++;
     }
 }
