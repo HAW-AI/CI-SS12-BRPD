@@ -100,14 +100,14 @@ public class SelectorNode extends AbstractNode {
 			}
 			pushI(((ArrayDescriptor)descriptor).type().size());
 			descriptor = ((ArrayDescriptor)descriptor).type();
-			write("MUL");
+			mul();
 		}
 		if (selector != null) {
 			if (ident != null) {
 				parentIdent = ident;
 			}
 			selector.compile(symbolTable, descriptor, parentIdent);
-			write("ADD");
+			add();
 		}
 	    return null;
 	}

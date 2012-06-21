@@ -78,37 +78,36 @@ public class ProcedureNode extends AbstractNode {
 		pushReg("FP");
 		pushI(1);
 		pushReg("SL");
-		write("GETSP");
-		write("SETFP");
-		write("GETFP");
+		get("SP");
+		set("FP");
+		get("FP");
 		pushI(1);
-		write("SETSL");
-		write("GETSP");
+		set("SL");
+		get("SP");
 		pushI(3);
-		write("ADD");
-		write("SETSP");
+		add();
+		set("SP");
 		
-		write("");
+		debug("");
 		procedureBody.compile(localSymboleTable);
-		write("");
+		debug("");
 		
 		//TODO new Label??
-		write("GETFP");
-		write("SETSP");
+		get("FP");
+		set("SP");
 		pushI(1);
 		popReg("SL");
 		popReg("FP");
 		popReg("RK");
 		
-		write("GETSP");
+		get("SP");
 		pushI(3);
-		write("SUB");
-		write("SETSP");
+		sub();
+		set("SP");
 		
 		write("REDUCE, " + framesize);
 		write("RET");
-		write("");write("");write("");
-		
+		debug("--------------------------------------------------------------");
 		
 		descriptor = new ProcedureDescriptor(localSymboleTable, size, name, startAddress, lengthparblock, framesize);
 		symbolTable.declare(procedureHeading.getName(), descriptor);

@@ -50,9 +50,9 @@ public class NegatedNode extends AbstractNode {
 	}
 
 	public Descriptor compile(SymbolTable symbolTable) {
-		write("PUSHI, 0");
+		pushI(0);
 		node.compile(symbolTable);
-		write("SUB");
+		sub();
 		return null;
 	}
 

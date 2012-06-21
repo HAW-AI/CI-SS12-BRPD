@@ -92,7 +92,7 @@ public class ModuleNode extends AbstractNode {
 		write("JMP, 0");
 		declaration.compile(symbolTable);
 		write("LABEL, 0");
-	    write(String.format("PUSHI, %d",symbolTable.size()));
+	    pushI(symbolTable.size());
 	    write("SETSP");
 	    statementSequence.compile(symbolTable);
 	    write("STOP");

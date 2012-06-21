@@ -9,6 +9,7 @@ public abstract class AbstractNode implements Serializable {
 	public static boolean DEBUG = false;
 	private static final long serialVersionUID = 1L;
 	private Object symbolTable;
+	private static int stackSize=0;
 	static int labelCount = 1;
 	
 	/*
@@ -68,7 +69,7 @@ public abstract class AbstractNode implements Serializable {
     
     public void write(String code) {
     	if (DEBUG) {
-    	System.out.println(String.format("[%30s]: %s",this.getClass().getSimpleName(),code));
+    	System.out.println(String.format("S:%d [%30s]: %s",this.stackSize, this.getClass().getSimpleName(),code));
     	} else {
     		System.out.println(code);
     	}
@@ -90,17 +91,50 @@ public abstract class AbstractNode implements Serializable {
     }
     public void pushReg(String register) {
     	write(String.format("PUSHREG, %s", register));
+    	this.stackSize++;
     }
     public void popReg(String register) {
     	write(String.format("POPREG, %s", register));
+    	this.stackSize--;
     }
     public void pushI(int i) {
     	write(String.format("PUSHI, %d", i));
+    	this.stackSize++;
+	}
+    public void pushS(String s) {
+    	write(String.format("PUSHS, %d", s));
+    	this.stackSize++;
 	}
     public void assign(int l) {
     	write(String.format("ASSIGN, %d", l));
+    	this.stackSize -= l;
 	}
     public void cont(int l) {
     	write(String.format("CONT, %d", l));
+    	this.stackSize += l;
 	}
+    public void sub() {
+    	write("SUB");
+    	this.stackSize--;
+    }
+    public void add() {
+    	write("ADD");
+    	this.stackSize--;
+    }
+    public void mul() {
+    	write("MUL");
+    	this.stackSize--;
+    }
+    public void div() {
+    	write("DIV");
+    	this.stackSize--;
+    }
+    public void get(String p) {
+    	write("GET%s");
+    	this.stackSize++;
+    }
+    public void set(String p) {
+    	write("SET%s");
+    	this.stackSize--;
+    }
 }

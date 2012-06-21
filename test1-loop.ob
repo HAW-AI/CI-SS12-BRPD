@@ -9,6 +9,7 @@ begin
   a[i] := i;
   i := i + 1;
  end;
+ Print b[9];
  b := a;
  Print a[9];
  Print b[9];

@@ -77,17 +77,17 @@ public class ExpressionNode extends AbstractNode {
 		right.compile(symbolTable);
 
 		if (right instanceof IdentNode && !symbolTable.isConst(((IdentNode)right).getIdentifierName())) {
-			write("CONT, 1");
+			cont(1);
 		}
 
 		if (binOpToken.equals(Tokens.MATH_ADD)) {
-			write("ADD");
+			add();
 		} else if (binOpToken.equals(Tokens.MATH_SUB)) {
-			write("SUB");
+			sub();
 		} else if (binOpToken.equals(Tokens.MATH_MUL)) {
-			write("MUL");
+			mul();
 		} else if (binOpToken.equals(Tokens.MATH_DIV)) {
-			write("DIV");
+			div();;
 		} else if (binOpToken.equals(Tokens.EQUAL)) {
 			write("EQ");
 		} else if (binOpToken.equals(Tokens.MORE)) {

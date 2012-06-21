@@ -60,11 +60,11 @@ public class IdentNode extends AbstractNode {
 			((ConstDescriptor) symbolTable.getConst(value)).getNode().compile(symbolTable);
 		}
 		else {
-			write("PUSHI, " + symbolTable.addressOf(value));
+			pushI(symbolTable.addressOf(value));
 			// if we are in a local scope get add FP offset to address
 			if (symbolTable.isLocal(value)) {
-				write("GETFP");
-				write("ADD");
+				get("FP");
+				add();
 			}
 		}
 		return null;

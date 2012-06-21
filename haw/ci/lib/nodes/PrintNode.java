@@ -53,9 +53,9 @@ public class PrintNode extends AbstractNode {
 	@Override 
 	public Descriptor compile(SymbolTable symbolTable) {
 		expression.compile(symbolTable);
-		if (expression instanceof IdentNode && !symbolTable.isConst(((IdentNode)expression).getIdentifierName())) write("CONT, 1");
-		if (expression instanceof SelectorNode) write("CONT, 1");
-		if (expression instanceof StringNode) write("CONT, 1");
+		if (expression instanceof IdentNode && !symbolTable.isConst(((IdentNode)expression).getIdentifierName())) cont(1);
+		if (expression instanceof SelectorNode) cont(1);
+		if (expression instanceof StringNode) cont(1);
 		write("PRINT");
 		return null;
 	}

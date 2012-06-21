@@ -51,7 +51,7 @@ public class IntegerNode extends AbstractNode implements IntegerValue {
 	
 	@Override
 	public Descriptor compile(SymbolTable symbolTable) {
-		write("PUSHI, " + value);
+		pushI(value);
 		return null;
 	}
 
