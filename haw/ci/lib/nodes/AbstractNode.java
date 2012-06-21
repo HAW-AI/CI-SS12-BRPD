@@ -130,11 +130,11 @@ public abstract class AbstractNode implements Serializable {
     	this.stackSize--;
     }
     public void get(String p) {
-    	write("GET%s");
+    	write(String.format("GET%s",p));
     	this.stackSize++;
     }
     public void set(String p) {
-    	write("SET%s");
+    	write(String.format("SET%s",p));
     	this.stackSize--;
     }
     public void print() {
